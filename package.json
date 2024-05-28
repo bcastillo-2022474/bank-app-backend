@@ -6,12 +6,13 @@
   "main": "server",
   "scripts": {
     "preinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('.git')) { require('child_process').execSync('git config core.hooksPath git-hooks'); }\"",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests",
     "lint": "eslint .",
     "dev": "run-p devenv typesafe-i18n",
     "devenv": "node --watch server.js",
     "start": "node server.js",
-    "typesafe-i18n": "typesafe-i18n"
+    "typesafe-i18n": "typesafe-i18n",
+    "once-typesafe-i18n": "typesafe-i18n --no-watch"
   },
   "keywords": [],
   "author": "",
