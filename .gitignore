@@ -1,0 +1,11 @@
+node_modules
+
+.idea
+.vscode
+
+coverage/
+i18n/i18n-node.js
+i18n/i18n-types.d.ts
+i18n/i18n-util.async.js
+i18n/i18n-util.js
+i18n/i18n-util.sync.js

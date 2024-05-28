@@ -1,0 +1,8 @@
+{
+  "name": "@joao-cst/eslint-plugin",
+  "version": "1.0.0",
+  "author": "Joao Castillo",
+  "main": "eslint-plugin.cjs",
+  "private": true,
+  "license": "ISC"
+}

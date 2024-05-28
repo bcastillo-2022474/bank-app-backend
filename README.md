@@ -26,14 +26,14 @@ Table User {
 
   // properties
   main_account Account [ref: - Account.id, not null]
-  accounts Account[] [ref: <> Account.id, default: '[]']
+  accounts Account[] [ref: <> Account.id, default: "[]"]
   
   // TUPLE INFO
   created_at timestamp [not null]
   updated_at timestamp
   created_by User
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -49,7 +49,7 @@ Table Account {
   // balance
   balance double [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -78,7 +78,7 @@ Table Currency {
   // USED FOR THE API
   key varchar [unique, not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -102,7 +102,7 @@ Table Transaction {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -121,7 +121,7 @@ Table Transference {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -142,7 +142,7 @@ Table Payout {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -163,7 +163,7 @@ Table Purchase {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -184,7 +184,7 @@ Table Service {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
@@ -206,7 +206,7 @@ Table Product {
   created_at timestamp [not null]
   updated_at timestamp [not null]
 
-  tp_status varchar [not null, default: 'ACTIVE']
+  tp_status varchar [not null, default: "ACTIVE"]
 }
 ```
 
