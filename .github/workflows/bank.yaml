@@ -26,7 +26,7 @@ jobs:
         run: npm i
 
       - name: Generate types
-        run: npm run typesafe-i18n
+        run: npm run once-typesafe-i18n
 
       - name: Check eslint
         run: npm run lint
