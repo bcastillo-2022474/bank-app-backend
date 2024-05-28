@@ -37,6 +37,4 @@ const currencySchema = new Schema({
   },
 });
 
-const currencyModel = model("Currency", currencySchema);
-
-export default currencyModel;
+export default model("Currency", currencySchema);

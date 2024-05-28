@@ -29,6 +29,7 @@ const en = {
   DB_PHONE_NUMBER_REQUIRED: "The phone number is required",
   DB_JOB_NAME_REQUIRED: "The job name is required",
   DB_MONTHLY_INCOME_REQUIRED: "The monthly income is required",
+  INTERNAL_SERVER_ERROR: "Internal server error",
 };
 
 export default en;
