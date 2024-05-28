@@ -7,33 +7,33 @@ const currencySchema = new Schema({
   symbol: {
     type: String,
     unique: true,
-    required: [true, L.en.DB_SYMBOL_REQUIRED],
+    required: [true, L.en.DB_SYMBOL_REQUIRED()],
   },
   name: {
     type: String,
     unique: true,
-    required: [true, L.en.DB_NAME_REQUIRED],
+    required: [true, L.en.DB_NAME_REQUIRED()],
   },
   key: {
     type: String,
     unique: true,
-    required: [true, L.en.DB_KEY_REQUIRED],
+    required: [true, L.en.DB_KEY_REQUIRED()],
   },
   tp_status: {
     type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED],
+    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
     enum: [ACTIVE, INACTIVE],
     default: ACTIVE,
   },
   created_at: {
     type: Date,
     default: Date.now,
-    required: [true, L.en.DB_CREATED_AT_REQUIRED],
+    required: [true, L.en.DB_CREATED_AT_REQUIRED()],
   },
   updated_at: {
     type: Date,
     default: Date.now,
-    required: [true, L.en.DB_UPDATED_AT_REQUIRED],
+    required: [true, L.en.DB_UPDATED_AT_REQUIRED()],
   },
 });
 
