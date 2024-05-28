@@ -1,61 +1,62 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { L } from "../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
-const UserSchema = mongoose.Schema({
+const UserSchema = Schema({
   email: {
     type: String,
-    required: [true, "The email is required"],
+    required: [true, L.en.DB_EMAIL_REQUIRED()],
     unique: true,
   },
   username: {
     type: String,
-    required: [true, "The username is required"],
+    required: [true, L.en.DB_USERNAME_REQUIRED],
     unique: true,
   },
   password: {
     type: String,
-    required: [true, "The password is required"],
+    required: [true, L.en.DB_PASSWORD_REQUIRED],
   },
   name: {
     type: String,
-    required: [true, "The name is required"],
+    required: [true, L.en.DB_NAME_REQUIRED],
   },
   last_name: {
     type: String,
-    required: [true, "The the last name is required"],
+    required: [true, L.en.DB_LASTNAME_REQUIRED],
   },
   address: {
     type: String,
-    required: [true, "The the Address is required"],
+    required: [true, L.en.DB_ADDRESS_REQUIRED],
   },
   DPI: {
     type: String,
-    required: [true, "The the DPI  is required"],
+    required: [true, L.en.DB_DPI_REQUIRED],
   },
   phone_number: {
     type: String,
-    required: [true, "The the DPI  is required"],
+    required: [true, L.en.DB_PHONE_NUMBER_REQUIRED],
   },
   job_name: {
     type: String,
-    required: [true, "The the Job Name is required"],
+    required: [true, L.en.DB_JOB_NAME_REQUIRED],
   },
   monthly_income: {
     type: Number,
-    required: [true, "The the Monthly Income is required"],
+    required: [true, L.en.DB_MONTHLY_INCOME_REQUIRED],
   },
   currency_income: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Currency",
   },
   main_account: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Acount",
   },
   accounts: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Acount",
       default: [],
     },
@@ -76,4 +77,4 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-export default mongoose.model("User", UserSchema);
+export default model("User", UserSchema);
