@@ -1,0 +1,36 @@
+name: Check Backend
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+    paths:
+      - "src/**"
+      - "server.js"
+      - "i18n/**"
+      - "tests/**"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Generate types
+        run: npm run typesafe-i18n
+
+      - name: Check eslint
+        run: npm run lint
+
+      - name: Check tests
+        run: npm run test
+
