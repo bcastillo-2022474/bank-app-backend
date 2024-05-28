@@ -1,36 +1,40 @@
 import { Schema, model } from "mongoose";
+import { L } from "../../i18n/i18n-node.js";
+
+const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const currencySchema = new Schema({
-    symbol: {
-        type: String,
-        unique: true,
-        required: [true, "The symbol is required"],
-    },
-    name: {
-        type: String,
-        unique: true,
-        required: [true, "The name is required"],
-    },
-    key: {
-        type: String,
-        unique: true,
-        required: [true, "The key is required"]
-    },
-    tp_status: {
-        type: String,
-        required: [true, "The status is required"],
-        enum: ["ACTIVE", "INACTIVE"],
-        default: "ACTIVE",
-    },
-    created_at: {
-        type: Date,
-        default: Date.now,
-        required: [true, "The `created_at` is required"],
-    },
-      updated_at: {
-        type: Date,
-        default: Date.now,
-    },
+  symbol: {
+    type: String,
+    unique: true,
+    required: [true, L.en.DB_SYMBOL_REQUIRED],
+  },
+  name: {
+    type: String,
+    unique: true,
+    required: [true, L.en.DB_NAME_REQUIRED],
+  },
+  key: {
+    type: String,
+    unique: true,
+    required: [true, L.en.DB_KEY_REQUIRED],
+  },
+  tp_status: {
+    type: String,
+    required: [true, L.en.DB_TP_STATUS_REQUIRED],
+    enum: [ACTIVE, INACTIVE],
+    default: ACTIVE,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+    required: [true, L.en.DB_CREATED_AT_REQUIRED],
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now,
+    required: [true, L.en.DB_UPDATED_AT_REQUIRED],
+  },
 });
 
 const currencyModel = model("Currency", currencySchema);
