@@ -11,6 +11,10 @@ const en = {
   USER_ALREADY_EXISTS: "User already exists",
   USER_CREATED: "User created successfully",
   ENDPOINT_NOT_FOUND: "Endpoint not found",
+  DB_OWNER_REQUIRED: "User owner is required",
+  DB_CURRENCY_REQUIRED: "Currency is requires",
+  DB_BALANCE_REQUIRED: "Balance is required",
+  DB_TP_STATUS_REQUIRED: "Tp status is required",
   DB_EMAIL_REQUIRED: "The email is required",
   DB_USERNAME_REQUIRED: "The username is required",
   DB_PASSWORD_REQUIRED: "The password is required",
@@ -21,8 +25,6 @@ const en = {
   DB_PHONE_NUMBER_REQUIRED: "The phone number is required",
   DB_JOB_NAME_REQUIRED: "The job name is required",
   DB_MONTHLY_INCOME_REQUIRED: "The monthly income is required",
-  
-
 };
 
 export default en;
