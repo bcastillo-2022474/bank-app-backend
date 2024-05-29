@@ -35,6 +35,7 @@ const en = {
   DB_TYPE_REQUIRED: "The type is required",
   DB_DESCRIPTION_REQUIRED: "The description is required",
   DB_PRICE_REQUIRED: "The price is required",
+  DB_STOCK_REQUIRED: "The stock is required",
 };
 
 export default en;
