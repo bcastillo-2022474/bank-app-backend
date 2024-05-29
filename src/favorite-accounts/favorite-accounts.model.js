@@ -6,10 +6,12 @@ const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 const favoriteAccountsSchema = new Schema({
   account: {
     type: Schema.Types.ObjectId,
+    ref: "Account",
     required: [true, L.en.DB_ACCOUNT_REQUIRED()],
   },
   owner: {
     type: Schema.Types.ObjectId,
+    ref: "Account",
     required: [true, L.en.DB_OWNER_REQUIRED()],
   },
   alias: {

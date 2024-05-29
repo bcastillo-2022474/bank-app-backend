@@ -31,6 +31,8 @@ const en = {
   DB_PHONE_NUMBER_REQUIRED: "The phone number is required",
   DB_JOB_NAME_REQUIRED: "The job name is required",
   DB_MONTHLY_INCOME_REQUIRED: "The monthly income is required",
+  DB_QUANTITY_REQUIRED: "The quantity is required",
+  DB_TYPE_REQUIRED: "The type is required",
 };
 
 export default en;
