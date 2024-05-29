@@ -33,6 +33,8 @@ const en = {
   DB_MONTHLY_INCOME_REQUIRED: "The monthly income is required",
   DB_QUANTITY_REQUIRED: "The quantity is required",
   DB_TYPE_REQUIRED: "The type is required",
+  DB_DESCRIPTION_REQUIRED: "The description is required",
+  DB_PRICE_REQUIRED: "The price is required",
 };
 
 export default en;
