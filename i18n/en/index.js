@@ -17,7 +17,9 @@ const en = {
   DB_TP_STATUS_REQUIRED: "The tp_status is required",
   DB_CREATED_AT_REQUIRED: "The created_at is required",
   DB_UPDATED_AT_REQUIRED: "The updated_at is required",
+  DB_ACCOUNT_REQUIRED: "The account is required",
   DB_OWNER_REQUIRED: "User owner is required",
+  DB_ALIAS_REQUIRED: "The alias is required",
   DB_CURRENCY_REQUIRED: "Currency is requires",
   DB_BALANCE_REQUIRED: "Balance is required",
   DB_EMAIL_REQUIRED: "The email is required",
@@ -29,6 +31,11 @@ const en = {
   DB_PHONE_NUMBER_REQUIRED: "The phone number is required",
   DB_JOB_NAME_REQUIRED: "The job name is required",
   DB_MONTHLY_INCOME_REQUIRED: "The monthly income is required",
+  DB_QUANTITY_REQUIRED: "The quantity is required",
+  DB_TYPE_REQUIRED: "The type is required",
+  DB_DESCRIPTION_REQUIRED: "The description is required",
+  DB_PRICE_REQUIRED: "The price is required",
+  DB_STOCK_REQUIRED: "The stock is required",
 };
 
 export default en;

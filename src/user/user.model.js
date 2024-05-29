@@ -7,12 +7,10 @@ const UserSchema = Schema({
   email: {
     type: String,
     required: [true, L.en.DB_EMAIL_REQUIRED()],
-    unique: true,
   },
   username: {
     type: String,
     required: [true, L.en.DB_USERNAME_REQUIRED],
-    unique: true,
   },
   password: {
     type: String,
@@ -76,5 +74,18 @@ const UserSchema = Schema({
     default: ACTIVE,
   },
 });
+
+// This ensures that each 'email' is unique only among active currencies
+UserSchema.index(
+  { email: 1, tp_status: 1 },
+  // this makes the index to take effect only on active currencies
+  { unique: true, partialFilterExpression: { tp_status: ACTIVE } },
+);
+
+// This ensures that each 'username' is unique only among active currencies
+UserSchema.index(
+  { username: 1, tp_status: 1 },
+  { unique: true, partialFilterExpression: { tp_status: ACTIVE } },
+);
 
 export default model("User", UserSchema);
