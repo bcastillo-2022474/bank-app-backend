@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.json({ message: "HI", data: undefined });
+  res.json({ message: "Hello World", data: undefined });
 });
 
 app.use("*", (req, res) => {

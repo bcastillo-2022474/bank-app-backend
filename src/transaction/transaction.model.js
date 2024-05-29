@@ -35,11 +35,7 @@ const transactionSchema = new Schema({
   },
   updated_at: {
     type: Date,
-    default: Date.now,
-    required: [true, L.en.DB_UPDATED_AT_REQUIRED()],
   },
 });
 
-const transactionModel = model("Transaction", transactionSchema);
-
-export default transactionModel;
+export default model("Transaction", transactionSchema);

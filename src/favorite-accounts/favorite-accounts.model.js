@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../i18n/i18n-node.js";
 
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
-
 const favoriteAccountsSchema = new Schema({
   account: {
     type: Schema.Types.ObjectId,
@@ -16,14 +14,7 @@ const favoriteAccountsSchema = new Schema({
   },
   alias: {
     type: String,
-    unique: true,
     required: [true, L.en.DB_ALIAS_REQUIRED()],
-  },
-  tp_status: {
-    type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
-    enum: [ACTIVE, INACTIVE],
-    default: ACTIVE,
   },
   created_at: {
     type: Date,
@@ -32,11 +23,19 @@ const favoriteAccountsSchema = new Schema({
   },
   updated_at: {
     type: Date,
-    default: Date.now,
-    required: [true, L.en.DB_UPDATED_AT_REQUIRED()],
   },
 });
 
-const favoriteAccountsModel = model("FavoriteAccounts", favoriteAccountsSchema);
+// Create a compound index on the 'account' and 'owner' fields
+// This ensures that a combination of 'account' and 'owner' is unique
+// Meaning, a specific 'account' can only be marked as a favorite once per 'owner'
+// If a combination of 'account' and 'owner' already exists, an error will be thrown
+favoriteAccountsSchema.index({ account: 1, owner: 1 }, { unique: true });
 
-export default favoriteAccountsModel;
+// Create a compound index on the 'alias' and 'owner' fields
+// This ensures that a combination of 'alias' and 'owner' is unique
+// Meaning, a specific 'alias' can only exist once per 'owner'
+// If a combination of 'alias' and 'owner' already exists, an error will be thrown
+favoriteAccountsSchema.index({ alias: 1, owner: 1 }, { unique: true });
+
+export default model("FavoriteAccounts", favoriteAccountsSchema);

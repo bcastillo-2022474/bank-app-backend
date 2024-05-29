@@ -28,8 +28,6 @@ const serviceSchema = new Schema({
   },
   updated_at: {
     type: Date,
-    default: Date.now,
-    required: [true, L.en.DB_UPDATED_AT_REQUIRED()],
   },
   tp_status: {
     type: String,
@@ -39,6 +37,4 @@ const serviceSchema = new Schema({
   },
 });
 
-const serviceModel = model("Service", serviceSchema);
-
-export default serviceModel;
+export default model("Service", serviceSchema);

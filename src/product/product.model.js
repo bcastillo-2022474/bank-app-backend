@@ -32,8 +32,6 @@ const productSchema = new Schema({
   },
   updated_at: {
     type: Date,
-    default: Date.now,
-    required: [true, L.en.DB_UPDATED_AT_REQUIRED()],
   },
   tp_status: {
     type: String,
@@ -43,6 +41,4 @@ const productSchema = new Schema({
   },
 });
 
-const productModel = model("Product", productSchema);
-
-export default productModel;
+export default model("Product", productSchema);
