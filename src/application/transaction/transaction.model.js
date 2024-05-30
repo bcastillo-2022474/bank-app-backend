@@ -1,11 +1,13 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+const [DEPOSIT, WITHDRAWAL] = ["DEPOSIT", "WITHDRAWAL"];
 
 const transactionSchema = new Schema({
   type: {
     type: String,
+    enum: [DEPOSIT, WITHDRAWAL],
     required: [true, L.en.DB_TYPE_REQUIRED()],
   },
   quantity: {
