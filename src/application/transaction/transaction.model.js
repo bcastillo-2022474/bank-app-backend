@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 const [DEPOSIT, WITHDRAWAL] = ["DEPOSIT", "WITHDRAWAL"];

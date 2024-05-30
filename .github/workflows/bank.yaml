@@ -1,5 +1,10 @@
 name: Check Backend
+
 on:
+  # On every manul trigger
+  workflow_dispatch:
+
+  # on every pull request to develop or master
   pull_request:
     branches:
       - develop
@@ -13,17 +18,57 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:4.4.6
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
+          MONGO_INITDB_DATABASE: bank-app-test
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd mongo
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
 
+      - name: Install mongosh
+        run: |
+          sudo apt-get install gnupg
+          wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-mongosh
+          mongosh --version
+
+      - name: Create MongoDB User
+        run: |
+          mongosh --host localhost:27017 -u root -p root --authenticationDatabase admin --quiet <<EOF
+            use bank-app-test
+            db.createUser({ user: 'app-user', pwd: 'app-password', roles: [{ role: 'readWrite', db: 'bank-app-test' }] })
+          EOF
+
       - name: Install dependencies
-        run: npm i
+        run: npm install
+
+      - name: Set environment variables
+        run: |
+            rm .env.*
+            touch .env.test
+            echo "PORT=4000" >> .env.test
+            echo "MONGO_URL='mongodb://app-user:app-password@localhost:27017/bank-app-test'" >> .env.test
+            echo "JWT_SECRET='6bef1104a2bab0b3a9e9d27875e033da86547968fc3b6ebdbe3f068a2a466e9b'" >> .env.test
 
       - name: Generate types
         run: npm run once-typesafe-i18n
@@ -31,6 +76,10 @@ jobs:
       - name: Check eslint
         run: npm run lint
 
-      - name: Check tests
+      - name: Run tests
         run: npm run test
 
+      # - name: Run tests
+      #   uses: ArtiomTr/jest-coverage-report-action@v2
+      #   with:
+      #     test-script: npm run test

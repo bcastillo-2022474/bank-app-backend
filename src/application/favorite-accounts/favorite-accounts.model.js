@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const favoriteAccountsSchema = new Schema({
   account: {

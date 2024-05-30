@@ -6,11 +6,11 @@
   "main": "server",
   "scripts": {
     "preinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('.git')) { require('child_process').execSync('git config core.hooksPath git-hooks'); }\"",
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests --setupFiles ./test-setup.js",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests --detectOpenHandles --forceExit --coverage",
     "lint": "eslint .",
     "dev": "run-p devenv typesafe-i18n",
     "devenv": "node --watch server.js",
-    "start": "node server.js",
+    "start": "npm run once-typesafe-i18n && node server.js",
     "typesafe-i18n": "typesafe-i18n",
     "once-typesafe-i18n": "typesafe-i18n --no-watch"
   },
@@ -19,6 +19,9 @@
   "license": "ISC",
   "devDependencies": {
     "@joao-cst/eslint-plugin": "file:./eslint-custom-rules",
+    "@types/jest": "^29.5.12",
+    "@types/supertest": "^6.0.2",
+    "@types/winston": "^2.4.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -40,6 +43,7 @@
     "intl": "^1.2.5",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
-    "typesafe-i18n": "^5.26.2"
+    "typesafe-i18n": "^5.26.2",
+    "winston": "^3.13.0"
   }
 }
