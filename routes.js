@@ -1,5 +1,4 @@
 import express from "express";
-import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import { getTranslationFunctions } from "./src/utils/get-translations-locale.js";
@@ -7,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import dbConnection from "./src/db/db-connection.js";
 import { printLanguage } from "./src/middleware/print-language.js";
 import { retrieveLocale } from "./src/middleware/retrieve-locale.js";
+import { logger } from "./src/utils/logger.js";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({
@@ -27,7 +27,10 @@ export const app = express();
 
 // eslint-disable-next-line @joao-cst/enforce-consistent-return-express
 app.use(express.json());
-app.use(morgan("dev"));
+app.use((req, res, next) => {
+  logger.request_info({ METHOD: req.method, PATH: req.path });
+  next();
+});
 app.use(cors());
 app.use(printLanguage);
 app.use(retrieveLocale);
@@ -38,7 +41,6 @@ app.get("/", (req, res) => {
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);
-  console.log({ locale, headers: req.headers });
   const LL = getTranslationFunctions(locale);
 
   res
