@@ -9,7 +9,7 @@ import { retrieveLocale } from "./src/middleware/retrieve-locale.js";
 import { logger } from "./src/utils/logger.js";
 import currencyRoutes from "./src/application/currency/currency.route.js";
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   dotenv.config({
     path: [".env", ".env.example"],
   });
