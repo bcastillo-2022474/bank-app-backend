@@ -10,17 +10,9 @@ const en = {
     USER_NOT_FOUND: "User not found",
     USER_ALREADY_EXISTS: "User already exists",
     USER_CREATED: "User created successfully",
-    ENDPOINT_NOT_FOUND: "Endpoint not found",
-    DB_SYMBOL_REQUIRED: "Symbol is required",
-    DB_NAME_REQUIRED: "The name is required",
-    DB_KEY_REQUIRED: "The key is required",
-    DB_TP_STATUS_REQUIRED: "The tp_status is required",
-    DB_CREATED_AT_REQUIRED: "The created_at is required",
-    DB_UPDATED_AT_REQUIRED: "The updated_at is required",
     DB_ACCOUNT_REQUIRED: "The account is required",
     DB_OWNER_REQUIRED: "User owner is required",
     DB_ALIAS_REQUIRED: "The alias is required",
-    DB_CURRENCY_REQUIRED: "Currency is requires",
     DB_BALANCE_REQUIRED: "Balance is required",
     DB_EMAIL_REQUIRED: "The email is required",
     DB_USERNAME_REQUIRED: "The username is required",
@@ -37,17 +29,48 @@ const en = {
     DB_DESCRIPTION_REQUIRED: "The description is required",
     DB_PRICE_REQUIRED: "The price is required",
     DB_STOCK_REQUIRED: "The stock is required",
-    CURRENCIES_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",
-    CURRENCIES_RETRIEVED_DELETE: "Currencies delete successfully",
-    CURRENCY_CREATED: "Currency created successfully",
-    INVALID_CURRENCY_SYMBOL: "Symbol is invalid",
-    INVALID_CURRENCY_NAME: "Name is invalid",
-    INVALID_CURRENCY_KEY: "Key is invalid",
-    INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
-    INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
-    INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
-    INVALID_MONGO_ID: "Invalid mongo id",
-    CURRENCY_UPDATED: "Currency update successfully",
+    GENERAL: {
+        ROUTES: {
+            ENDPOINT_NOT_FOUND: "Endpoint not found",
+            INVALID_OPTIONAL_LIMIT: "If provided, limit must be a valid positive integer",
+            INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
+            INVALID_MONGO_ID: "Invalid mongo id",
+        },
+        DB: {
+            TP_STATUS_REQUIRED: "The tp_status is required",
+            CREATED_AT_REQUIRED: "The created_at is required",
+        }
+    },
+    CURRENCY:{
+        ERROR: {
+            CURRENCY_ALREADY_EXIST: "Currency already exists",
+            CURRENCY_NOT_FOUND: "Currency not found",
+            SYMBOL_ALREADY_EXISTS: "A Currency with this symbol already exists",
+            NAME_ALREADY_EXISTS: "A Currency with this name already exists",
+            KEY_ALREADY_EXISTS: "A Currency with this key already exists",
+        },
+        DB: {
+            CURRENCY_REQUIRED: "Currency is required",
+            SYMBOL_REQUIRED: "Symbol is required",
+            NAME_REQUIRED: "The name is required",
+            KEY_REQUIRED: "The key is required",
+
+        },
+        ROUTES: {
+            INVALID_SYMBOL: "Symbol is invalid",
+            INVALID_NAME: "Name is invalid",
+            INVALID_KEY: "Key is invalid",
+            INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
+            INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
+            INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+        },
+        CONTROLLER: {
+            MULTIPLE_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",
+            DELETED: "Currency deleted successfully",
+            CREATED: "Currency created successfully",
+            UPDATED: "Currency update successfully",
+        }
+    }
 };
 
 export default en;

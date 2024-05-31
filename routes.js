@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "test") {
   dotenv.config({
     path: [".env.test"],
   });
-  // IF NODE_ENV is test, we should connect to the test database
+  // IF NODE_ENV is `test`, we should connect to the test database
   // here, since later on it will be impossible to change the connection
   await dbConnection();
 }
@@ -29,7 +29,11 @@ export const app = express();
 // eslint-disable-next-line @joao-cst/enforce-consistent-return-express
 app.use(express.json());
 app.use((req, res, next) => {
-  logger.request_info({ METHOD: req.method, PATH: req.path });
+  logger.request_info({
+    METHOD: req.method,
+    PATH: req.path,
+    "content-type": req.headers["content-type"],
+  });
   next();
 });
 app.use(cors());
