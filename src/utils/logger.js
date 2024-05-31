@@ -1,0 +1,20 @@
+import pino from "pino";
+// import prettyPrint from "pino-pretty";
+
+export const logger = pino({
+  customLevels: {
+    // color: 'indigo',
+    request_info: 35,
+  },
+  // color my custom level
+  // useOnlyCustomLevels: true,
+
+  transport: {
+    target: "pino-pretty",
+    options: {
+      customLevels: "request_info:35", // split by ','
+      customColors: "request_info:magenta", // split by ','
+      useOnlyCustomProps: false,
+    },
+  },
+});

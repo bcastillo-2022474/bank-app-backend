@@ -1,3 +1,5 @@
 node_modules/
 i18n/
 coverage/
+.idea/
+.run/
