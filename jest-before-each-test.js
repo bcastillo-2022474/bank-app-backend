@@ -10,3 +10,13 @@ beforeEach(async () => {
     }),
   );
 });
+
+afterEach(async () => {
+  await dbConnection();
+  // clean all collections
+  await Promise.all(
+    Object.values(mongoose.connection.collections).map(async (collection) => {
+      collection.deleteMany({});
+    }),
+  );
+});

@@ -43,11 +43,14 @@ router
         .isString()
         .isLength({ max: 3 })
         .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_SYMBOL()))
-        .custom((symbol, { req }) => {
+        .custom(async (symbol, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the symbol already exists in the database
-          const currency = Currency.findOne({ symbol, tp_status: ACTIVE });
-          if (!currency) {
+          const currency = await Currency.findOne({
+            symbol,
+            tp_status: ACTIVE,
+          });
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.SYMBOL_ALREADY_EXISTS(),
             );
@@ -61,11 +64,11 @@ router
         .isString()
         .isLength({ min: 3, max: 255 })
         .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_NAME()))
-        .custom((name, { req }) => {
+        .custom(async (name, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the name already exists in the database
-          const currency = Currency.findOne({ name, tp_status: ACTIVE });
-          if (!currency) {
+          const currency = await Currency.findOne({ name, tp_status: ACTIVE });
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.NAME_ALREADY_EXISTS(),
             );
@@ -78,11 +81,11 @@ router
         .isString()
         .isLength({ max: 3 })
         .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_KEY())) // If last check fails, this message will be shown
-        .custom((key, { req }) => {
+        .custom(async (key, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the key already exists in the database
-          const currency = Currency.findOne({ key, tp_status: ACTIVE });
-          if (!currency) {
+          const currency = await Currency.findOne({ key, tp_status: ACTIVE });
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.KEY_ALREADY_EXISTS(),
             );
@@ -106,15 +109,15 @@ router
         .optional()
         .isString()
         .isLength({ max: 3 })
-        .custom((symbol, { req }) => {
+        .custom(async (symbol, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the symbol already exists in another currency except itself
-          const currency = Currency.findOne({
+          const currency = await Currency.findOne({
             _id: { $ne: req.params.id },
             symbol,
             tp_status: ACTIVE,
           });
-          if (!currency) {
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.SYMBOL_ALREADY_EXISTS(),
             );
@@ -130,15 +133,15 @@ router
         .withMessage(
           message((LL) => LL.CURRENCY.ROUTES.INVALID_OPTIONAL_NAME()),
         )
-        .custom((name, { req }) => {
+        .custom(async (name, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the name already exists in another currency except itself
-          const currency = Currency.findOne({
+          const currency = await Currency.findOne({
             _id: { $ne: req.params.id },
             name,
             tp_status: ACTIVE,
           });
-          if (!currency) {
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.NAME_ALREADY_EXISTS(),
             );
@@ -152,15 +155,15 @@ router
         .isString()
         .isLength({ max: 3 })
         .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_OPTIONAL_KEY()))
-        .custom((key, { req }) => {
+        .custom(async (key, { req }) => {
           const LL = getTranslationFunctions(req.locale);
           // Check if the key already exists in another currency except itself
-          const currency = Currency.findOne({
+          const currency = await Currency.findOne({
             _id: { $ne: req.params.id },
             key,
             tp_status: ACTIVE,
           });
-          if (!currency) {
+          if (currency) {
             throw new CurrencyAlreadyExist(
               LL.CURRENCY.ERROR.KEY_ALREADY_EXISTS(),
             );
