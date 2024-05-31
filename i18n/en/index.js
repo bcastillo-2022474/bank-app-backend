@@ -42,6 +42,12 @@ const en = {
     CURRENCY_CREATED: "Currency created successfully",
     INVALID_CURRENCY_SYMBOL: "Symbol is invalid",
     INVALID_CURRENCY_NAME: "Name is invalid",
+    INVALID_CURRENCY_KEY: "Key is invalid",
+    INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
+    INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
+    INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+    INVALID_MONGO_ID: "Invalid mongo id",
+    CURRENCY_UPDATED: "Currency update successfully",
 };
 
 export default en;

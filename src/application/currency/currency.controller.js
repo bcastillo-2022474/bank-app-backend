@@ -49,6 +49,32 @@ export const createCurrency = async (req, res) => {
   }
 };
 
+export const updateCurrency = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    const { id } = req.params;
+    const { symbol, name, key } = req.body;
+
+    const currency = await Currency.findById(id);
+
+    currency.symbol = symbol;
+    currency.name = name;
+    currency.key = key;
+
+    await currency.save();
+
+    res.status(StatusCodes.OK).json({
+      message: LL.CURRENCY_UPDATED(),
+      data: currency,
+    });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: LL.INTERNAL_SERVER_ERROR(),
+      error,
+    });
+  }
+};
+
 export const deleteCurrencyById = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
