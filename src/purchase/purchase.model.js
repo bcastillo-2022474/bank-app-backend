@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../i18n/i18n-node.js";
-
+// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const purchaseSchema = new Schema({
