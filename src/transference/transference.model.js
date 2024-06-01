@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../i18n/i18n-node.js";
-const { Decimal128 } = require("mongoose").Schema.Types;
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
@@ -16,7 +15,7 @@ const transferenceSchema = new Schema({
     required: [true, L.en.DB_ACCOUNT_RECIVER_REQUIRED()],
   },
   quantity: {
-    type: Decimal128,
+    type: Schema.Types.Decimal128,
     required: [true, L.en.DB_QUANTITY_REQUIRED()],
   },
   currency: {

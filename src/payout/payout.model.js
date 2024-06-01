@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../i18n/i18n-node.js";
 
-const { Decimal128 } = require("mongoose").Schema.Types;
-
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const payoutSchema = new Schema({
@@ -12,7 +10,7 @@ const payoutSchema = new Schema({
     required: [true, L.en.DB_SERVICE_REQUIRED()],
   },
   total: {
-    type: Decimal128,
+    type: Schema.Types.Decimal128,
     required: [true, L.en.DB_TOTAL_REQUIRED()],
   },
   debited_account: {
