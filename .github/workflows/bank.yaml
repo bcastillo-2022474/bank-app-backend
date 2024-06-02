@@ -76,6 +76,9 @@ jobs:
       - name: Check eslint
         run: npm run lint
 
+      - name: Check typescript
+        run: npm run ts
+
       - name: Run tests
         run: npm run test
 

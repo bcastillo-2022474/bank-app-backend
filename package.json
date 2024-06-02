@@ -8,6 +8,7 @@
     "preinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('.git')) { require('child_process').execSync('git config core.hooksPath git-hooks'); }\"",
     "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests --detectOpenHandles --forceExit --coverage",
     "lint": "eslint .",
+    "ts": "npx tsc --noEmit --skipLibCheck",
     "dev": "run-p devenv typesafe-i18n",
     "devenv": "node --watch server.js | pino-pretty",
     "start": "npm run once-typesafe-i18n && node server.js",

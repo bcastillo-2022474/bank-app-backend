@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { L } from "../../i18n/i18n-node.js";
 
 /**

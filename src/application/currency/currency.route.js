@@ -1,4 +1,3 @@
-// @ts-check
 import { Router } from "express";
 import { retrieveLocale } from "../../middleware/retrieve-locale.js";
 import { body, query, param } from "express-validator";
