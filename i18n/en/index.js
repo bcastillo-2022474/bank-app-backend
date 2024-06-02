@@ -36,6 +36,60 @@ const en = {
   DB_DESCRIPTION_REQUIRED: "The description is required",
   DB_PRICE_REQUIRED: "The price is required",
   DB_STOCK_REQUIRED: "The stock is required",
+
+  TRANSFERENCE:{
+    ERROR: {
+      NOT_FOUND: "Transference not found",
+    },
+    DB: {
+      ACCOUNT_GIVEN_REQUIRED: "The account given is required",
+      ACCOUNT_RECIVER_REQUIRED: "The account reciver is required",
+      QUANTITY_REQUIRED: "The quantity is required",
+      CURRENCY_REQUIRED: "Te currency is required",
+    },
+    ROUTES: {
+
+    },
+    CONTROLLER: {
+
+    }
+  },
+  PURCHASE:{
+    ERROR: {
+      NOT_FOUND: "Purchase not found",
+    },
+    DB: {
+      PURCHASER_REQUIRED: "The purchaser account is required",
+      PRODUCT_REQUIRED: "The product is required",
+      QUANTITY_REQUIRED: "The quantity is required",
+      TOTAL_REQUIRED: "The total is required",
+      CURRENCY_REQUIRED: "Te currency is required",
+    },
+    ROUTES: {
+
+    },
+    CONTROLLER: {
+
+    }
+  },
+  PAYOUT:{
+    ERROR: {
+      NOT_FOUND: "Payout not found",
+    },
+    DB: {
+      SERVICE_REQUIRED: "The service is required",
+      DEBITED_ACCOUNT_REQUIRED: "The debited account is required",
+      TOTAL_REQUIRED: "The total is required",
+    },
+    ROUTES: {
+
+    },
+    CONTROLLER: {
+
+    }
+  },
+
+
 };
 
 export default en;

@@ -7,16 +7,16 @@ const payoutSchema = new Schema({
   service: {
     type: Schema.Types.ObjectId,
     ref: "Service",
-    required: [true, L.en.DB_SERVICE_REQUIRED()],
+    required: [true, L.en.PAYOUT.DB.SERVICE_REQUIRED()],
   },
   total: {
     type: Schema.Types.Decimal128,
-    required: [true, L.en.DB_TOTAL_REQUIRED()],
+    required: [true, L.en.PAYOUT.DB.TOTAL_REQUIRED()],
   },
   debited_account: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_DEBITED_ACCOUNT_REQUIRED()],
+    required: [true, L.en.PAYOUT.DB.DEBITED_ACCOUNT_REQUIRED()],
   },
   create_at: {
     type: Date,

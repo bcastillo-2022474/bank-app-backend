@@ -1,31 +1,31 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../i18n/i18n-node.js";
-// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const purchaseSchema = new Schema({
   purchaser: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_PURCHASER_ACCOUNT_REQUIRED()],
+    required: [true, L.en.PURCHASE.DB.PURCHASER_REQUIRED()],
   },
   product: {
     type: Schema.Types.ObjectId,
     ref: "Product",
-    required: [true, L.en.DB_PRODUCT_REQUIRED()],
+    required: [true, L.en.PURCHASE.DB.PRODUCT_REQUIRED()],
   },
   quantity: {
     type: Number,
-    required: [true, L.en.DB_QUANTITY_REQUIRED()],
+    required: [true, L.en.PURCHASE.DB.QUANTITY_REQUIRED()],
   },
   total: {
     type: Schema.Types.Decimal128,
-    required: [true, L.en.DB_TOTAL_REQUIRED()],
+    required: [true, L.en.PURCHASE.DB.TOTAL_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
-    required: [true, L.en.DB_CURRENCY_REQUIRED()],
+    required: [true, L.en.PURCHASE.DB.CURRENCY_REQUIRED()],
   },
   create_at: {
     type: Date,

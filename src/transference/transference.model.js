@@ -7,21 +7,21 @@ const transferenceSchema = new Schema({
   account_given: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_ACCOUNT_GIVEN_REQUIRED()],
+    required: [true, L.en.TRANSFERENCE.DB.ACCOUNT_GIVEN_REQUIRED()],
   },
   account_reciver: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_ACCOUNT_RECIVER_REQUIRED()],
+    required: [true, L.en.TRANSFERENCE.DB.ACCOUNT_RECIVER_REQUIRED()],
   },
   quantity: {
     type: Schema.Types.Decimal128,
-    required: [true, L.en.DB_QUANTITY_REQUIRED()],
+    required: [true, L.en.TRANSFERENCE.DB.QUANTITY_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
-    required: [true, L.en.DB_CURRENCY_REQUIRED()],
+    required: [true, L.en.TRANSFERENCE.DB.CURRENCY_REQUIRED()],
   },
   create_at: {
     type: Date,
@@ -32,7 +32,7 @@ const transferenceSchema = new Schema({
   },
   tp_status: {
     type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
+    required: [true, L.en.DB_T_TP_STATUS_REQUIRED()],
     enum: [ACTIVE, INACTIVE],
     default: ACTIVE,
   },
