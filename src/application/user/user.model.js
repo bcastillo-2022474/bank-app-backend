@@ -1,56 +1,58 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
-const UserSchema = Schema({
+const UserSchema = new Schema({
   email: {
     type: String,
-    required: [true, L.en.DB_EMAIL_REQUIRED()],
+    required: [true, L.en.USER.DB.EMAIL_REQUIRED()],
   },
   username: {
     type: String,
-    required: [true, L.en.DB_USERNAME_REQUIRED],
+    required: [true, L.en.USER.DB.USERNAME_REQUIRED()],
   },
   password: {
     type: String,
-    required: [true, L.en.DB_PASSWORD_REQUIRED],
+    required: [true, L.en.USER.DB.PASSWORD_REQUIRED()],
   },
   name: {
     type: String,
-    required: [true, L.en.DB_NAME_REQUIRED],
+    required: [true, L.en.USER.DB.NAME_REQUIRED()],
   },
   last_name: {
     type: String,
-    required: [true, L.en.DB_LASTNAME_REQUIRED],
+    required: [true, L.en.USER.DB.LAST_NAME_REQUIRED()],
   },
   address: {
     type: String,
-    required: [true, L.en.DB_ADDRESS_REQUIRED],
+    required: [true, L.en.USER.DB.ADDRESS_REQUIRED()],
   },
   DPI: {
     type: String,
-    required: [true, L.en.DB_DPI_REQUIRED],
+    required: [true, L.en.USER.DB.DPI_REQUIRED()],
   },
   phone_number: {
     type: String,
-    required: [true, L.en.DB_PHONE_NUMBER_REQUIRED],
+    required: [true, L.en.USER.DB.PHONE_NUMBER_REQUIRED()],
   },
   job_name: {
     type: String,
-    required: [true, L.en.DB_JOB_NAME_REQUIRED],
+    required: [true, L.en.USER.DB.JOB_NAME_REQUIRED()],
   },
   monthly_income: {
     type: Number,
-    required: [true, L.en.DB_MONTHLY_INCOME_REQUIRED],
+    required: [true, L.en.USER.DB.MONTHLY_INCOME_REQUIRED()],
   },
   currency_income: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
+    required: [true, L.en.USER.DB.CURRENCY_INCOME_REQUIRED()],
   },
   main_account: {
     type: Schema.Types.ObjectId,
     ref: "Acount",
+    required: [true, L.en.USER.DB.MAIN_ACCOUNT_REQUIRED()],
   },
   accounts: [
     {
@@ -61,7 +63,7 @@ const UserSchema = Schema({
   ],
   created_at: {
     type: Date,
-    required: true,
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
     default: Date.now,
   },
   updated_at: {
@@ -70,7 +72,7 @@ const UserSchema = Schema({
   tp_status: {
     type: String,
     enum: [ACTIVE, INACTIVE],
-    required: true,
+    required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
     default: ACTIVE,
   },
 });

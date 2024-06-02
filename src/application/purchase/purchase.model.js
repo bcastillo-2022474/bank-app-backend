@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
@@ -36,7 +36,7 @@ const purchaseSchema = new Schema({
   },
   tp_status: {
     type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
     enum: [ACTIVE, INACTIVE],
     default: ACTIVE,
   },

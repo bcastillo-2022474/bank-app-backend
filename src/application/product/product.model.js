@@ -1,41 +1,41 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const productSchema = new Schema({
   name: {
     type: String,
-    required: [true, L.en.DB_NAME_REQUIRED()],
+    required: [true, L.en.PRODUCT.DB.NAME_REQUIRED()],
   },
   description: {
     type: String,
-    required: [true, L.en.DB_DESCRIPTION_REQUIRED()],
+    required: [true, L.en.PRODUCT.DB.DESCRIPTION_REQUIRED()],
   },
   price: {
     type: Number,
-    required: [true, L.en.DB_PRICE_REQUIRED()],
+    required: [true, L.en.PRODUCT.DB.PRICE_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
-    required: [true, L.en.DB_CURRENCY_REQUIRED()],
+    required: [true, L.en.PRODUCT.DB.CURRENCY_REQUIRED()],
   },
   stock: {
     type: Number,
-    required: [true, L.en.DB_STOCK_REQUIRED()],
+    required: [true, L.en.PRODUCT.DB.STOCK_REQUIRED()],
   },
   created_at: {
     type: Date,
     default: Date.now,
-    required: [true, L.en.DB_CREATED_AT_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
   },
   updated_at: {
     type: Date,
   },
   tp_status: {
     type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
     enum: [ACTIVE, INACTIVE],
     default: ACTIVE,
   },

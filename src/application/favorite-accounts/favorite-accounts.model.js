@@ -1,25 +1,25 @@
 import { Schema, model } from "mongoose";
-import { L } from "../../i18n/i18n-node.js";
+import { L } from "../../../i18n/i18n-node.js";
 
 const favoriteAccountsSchema = new Schema({
   account: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_ACCOUNT_REQUIRED()],
+    required: [true, L.en.FAVORITE_ACCOUNT.DB.ACCOUNT_REQUIRED()],
   },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_OWNER_REQUIRED()],
+    required: [true, L.en.FAVORITE_ACCOUNT.DB.OWNER_REQUIRED()],
   },
   alias: {
     type: String,
-    required: [true, L.en.DB_ALIAS_REQUIRED()],
+    required: [true, L.en.FAVORITE_ACCOUNT.DB.ALIAS_REQUIRED()],
   },
   created_at: {
     type: Date,
     default: Date.now,
-    required: [true, L.en.DB_CREATED_AT_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
   },
   updated_at: {
     type: Date,

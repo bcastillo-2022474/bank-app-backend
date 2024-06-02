@@ -21,7 +21,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/*.spec.js", "**/*.spec.jsx"],
+      files: ["**/*.spec.js", "**/*.spec.jsx", "jest-before-each-test.js"],
       env: {
         jest: true,
       },
