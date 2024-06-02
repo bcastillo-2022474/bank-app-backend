@@ -40,13 +40,14 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cors());
-app.use(printLanguage);
 app.use(retrieveLocale);
 
 app.get("/", (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   res.status(StatusCodes.OK).json({ message: LL.HI(), data: undefined });
 });
+
+app.use(printLanguage);
 
 app.use("/currency", currencyRoutes);
 
