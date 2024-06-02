@@ -4,10 +4,11 @@
  * @typedef { import('../i18n-types.js').Translation } Translation
  */
 
+// @ts-ignore
 /** @satisfies { Translation } */
 const es = {
   // This is an example Translation, just rename or delete this folder if you want
-  HI: "¡Hola {name}! Por favor deja una estrella si te gusta este proyecto",
+  HI: "¡Hola Mundo!",
 };
 
 export default es;

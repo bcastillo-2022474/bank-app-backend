@@ -1,4 +1,4 @@
-import pino from "pino";
+import { pino } from "pino";
 // import prettyPrint from "pino-pretty";
 
 export const logger = pino({

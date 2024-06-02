@@ -42,7 +42,6 @@ describe("Create currency", () => {
     const response2 = await request(app)
       .post("/currency")
       .send({ symbol: "USD", name: "United States Dollar", key: "US" });
-    console.log(response2.body.error);
     expect(response2.status).toBe(StatusCodes.BAD_REQUEST);
   });
 });

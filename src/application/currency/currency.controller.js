@@ -1,4 +1,3 @@
-// @ts-check
 import { response } from "express";
 import Currency, { INACTIVE } from "./currency.model.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
@@ -13,7 +12,6 @@ export const getAllCurrencies = async (req, res = response) => {
     logger.info("Starting get all currencies");
 
     const { limit = 0, page = 0 } = req.query;
-    console.log({ limit, page });
     const [total, currency] = await Promise.all([
       Currency.countDocuments(),
       Currency.find()
@@ -35,7 +33,7 @@ export const getAllCurrencies = async (req, res = response) => {
     logger.error(stack);
 
     res.status(code).json({
-      message: LL.INTERNAL_SERVER_ERROR(),
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
       error,
     });
   }
@@ -71,7 +69,7 @@ export const createCurrency = async (req, res) => {
     logger.error(stack);
 
     res.status(code).json({
-      message: LL.INTERNAL_SERVER_ERROR(),
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
       error,
     });
   }
@@ -108,7 +106,7 @@ export const updateCurrency = async (req, res) => {
     logger.error(stack);
 
     res.status(code).json({
-      message: LL.INTERNAL_SERVER_ERROR(),
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
       error,
     });
   }
@@ -138,7 +136,7 @@ export const deleteCurrencyById = async (req, res) => {
     logger.error(stack);
 
     res.status(code).json({
-      message: LL.INTERNAL_SERVER_ERROR(),
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
       error,
     });
   }

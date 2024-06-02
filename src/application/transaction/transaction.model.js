@@ -8,32 +8,32 @@ const transactionSchema = new Schema({
   type: {
     type: String,
     enum: [DEPOSIT, WITHDRAWAL],
-    required: [true, L.en.DB_TYPE_REQUIRED()],
+    required: [true, L.en.TRANSACTION.DB.TYPE_REQUIRED()],
   },
   quantity: {
     type: Number,
-    required: [true, L.en.DB_QUANTITY_REQUIRED()],
+    required: [true, L.en.TRANSACTION.DB.QUANTITY_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
-    required: [true, L.en.DB_CURRENCY_REQUIRED()],
+    required: [true, L.en.TRANSACTION.DB.CURRENCY_REQUIRED()],
   },
   account: {
     type: Schema.Types.ObjectId,
     ref: "Account",
-    required: [true, L.en.DB_ACCOUNT_REQUIRED()],
+    required: [true, L.en.TRANSACTION.DB.ACCOUNT_REQUIRED()],
   },
   tp_status: {
     type: String,
-    required: [true, L.en.DB_TP_STATUS_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
     enum: [ACTIVE, INACTIVE],
     default: ACTIVE,
   },
   created_at: {
     type: Date,
     default: Date.now,
-    required: [true, L.en.DB_CREATED_AT_REQUIRED()],
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
   },
   updated_at: {
     type: Date,
