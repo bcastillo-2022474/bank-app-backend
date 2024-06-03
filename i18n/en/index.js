@@ -58,6 +58,7 @@ const en = {
   PAYOUT:{
     ERROR: {
       NOT_FOUND: "Payout not found",
+      PAYOUT_NOT_FOUND: "Payout not found",
     },
     DB: {
       SERVICE_REQUIRED: "The service is required",
@@ -68,6 +69,10 @@ const en = {
 
     },
     CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payout retrieved successfully",
+      CREATED: "Payout created successfully",
+      UPDATED: "Payout update successfully",
+      DELETED: "Payout deleted successfully",
 
     }
   },
