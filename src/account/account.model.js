@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 import { L } from "../../i18n/i18n-node.js";
 
 const AccountSchema = new Schema({
