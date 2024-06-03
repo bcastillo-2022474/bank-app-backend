@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { retrieveLocale } from "../../middleware/retrieve-locale.js";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 import { message } from "../../utils/message.js";
 import { validateChecks } from "../../middleware/validate-checks.js";
 import {
