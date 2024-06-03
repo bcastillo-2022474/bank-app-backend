@@ -1,40 +1,39 @@
 import { getErrorFromErrors } from "../../utils/http-errors.js";
 import { StatusCodes } from "http-status-codes";
-import { message } from "../../utils/message.js";
 
-export class CurrencyAlreadyExist extends Error {
+export class UserAlreadyExist extends Error {
   constructor(message) {
     super(message);
-    this.name = "CurrencyAlreadyExist";
+    this.name = "UserAlreadyExist";
   }
 }
 
-export class CurrencyNotFound extends Error {
+export class UserNotFound extends Error {
   constructor(message) {
     super(message);
-    this.name = "CurrencyNotFound";
+    this.name = "UserNotFound";
   }
 }
 
-export class CurrencyInvalidValue extends Error {
+export class UserInvalidValue extends Error {
   constructor(message) {
     super(message);
-    this.name = "CurrencyInvalidValue";
+    this.name = "UserInvalidValue";
   }
 }
 
 const errors = [
   {
     code: StatusCodes.NOT_FOUND,
-    classes: [CurrencyNotFound],
+    classes: [UserNotFound],
   },
   {
     code: StatusCodes.CONFLICT,
-    classes: [CurrencyAlreadyExist],
+    classes: [UserAlreadyExist],
   },
   {
     code: StatusCodes.BAD_REQUEST,
-    classes: [CurrencyInvalidValue],
+    classes: [UserInvalidValue],
   },
 ];
 
