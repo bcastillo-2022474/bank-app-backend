@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "module": "NodeNext",
+        // dont know why but this fixes some errors
+        "outDir": "./dist",
+        "moduleResolution": "nodenext",
+    },
+    "include": ["./src/**/*", "./test/**/*", "tests/account"],
+    "exclude": ["./i18n/**/*", "node_modules", "coverage", "eslint-custom-rules"]
+}
