@@ -31,9 +31,10 @@ const en = {
       CURRENCY_REQUIRED: "Te currency is required",
     },
     ROUTES: {
-
+      WHATEVER: "",
     },
     CONTROLLER: {
+
 
     }
   },
@@ -65,10 +66,9 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-
     },
     CONTROLLER: {
-
+      
     }
   },
   CURRENCY:{
@@ -106,7 +106,11 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
+    },
+    ERROR: {
+     ACOUNT_NOT_FOUND: "The account not found", 
     }
+
   },
   PRODUCT: {
     DB: {
