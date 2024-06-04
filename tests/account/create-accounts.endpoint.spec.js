@@ -57,7 +57,7 @@ describe("Create account", () => {
     const response = await baseRequest.send({
       owner: "user_id",
       currency: "USD",
-      balance: 200,
+      balance: 100,
     });
     expect(response.status).toBe(StatusCodes.CONFLICT);
   });
