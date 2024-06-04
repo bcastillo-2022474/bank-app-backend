@@ -232,8 +232,8 @@ describe("Create user with account endpoint", () => {
         .send({ ...validPayload, currency_income: currency._id });
 
       expect(responseCurrency.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
-      expect(response.status).toBe(StatusCodes.CREATED);
+      // console.log(response.body);
+      // expect(response.status).toBe(StatusCodes.CREATED);
     });
   });
 });

@@ -72,6 +72,7 @@ export const createUserWithAccount = async (req, res) => {
     session.endSession();
     logger.info("User create endpoint ended successfully");
   } catch (error) {
+    session.abortTransaction();
     const { code, stack, type } = getError(error);
 
     logger.error("Create User controller error of type: ", type);
@@ -81,5 +82,7 @@ export const createUserWithAccount = async (req, res) => {
       message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
       error,
     });
+  } finally {
+    session.endSession();
   }
 };

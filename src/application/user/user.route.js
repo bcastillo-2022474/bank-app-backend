@@ -40,13 +40,12 @@ router.route("/").post(
       }),
 
     body("password")
-      .notEmpty()
-      //   .isStrongPassword({
-      // minLength: 8,
-      // minLowercase: 1,
-      // minUppercase: 1,
-      // minNumbers: 1,
-      //   })
+      .isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+      })
       .withMessage(message((LL) => LL.USER.ROUTES.INVALID_PASSWORD())),
 
     body("name")
