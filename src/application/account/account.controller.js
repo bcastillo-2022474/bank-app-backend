@@ -118,7 +118,7 @@ export const deleteAccountById = async (req, res = response) => {
     logger.info("Starting delete account by id");
 
     const { id } = req.params;
-    const account = await Account.findByIdAndDelete(
+    const account = await Account.findByIdAndUpdate(
       id,
       { tp_status: INACTIVE },
       { new: true },
