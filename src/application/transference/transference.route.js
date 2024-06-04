@@ -10,6 +10,7 @@ import { getTranslationFunctions } from "../../utils/get-translations-locale.js"
 const router = Router();
 
 router.route("/").post([
+  // ------------------------ VALIDAR JWT ------------------------- //
   body("account_given")
     .isMongoId()
     .withMessage(message((LL) => LL.TRANSFERENCE.ROUTES.WHATEVER()))
@@ -17,7 +18,7 @@ router.route("/").post([
       const LL = getTranslationFunctions(req.locale);
       const account = await Account.findById(accountId);
       if (!account) {
-        throw new AccountNotFound(LL.ACCOUNT.ERROR.ACOUNT_NOT_FOUND());
+        throw new CurrencyNotFound(LL.ACCOUNT.ERROR.ACOUNT_NOT_FOUND());
       }
 
       return true;
@@ -34,6 +35,9 @@ router.route("/").post([
 
       return true;
     }),
+  body("quantity")
+    .isNumeric()
+    .withMessage(message((LL) => LL.TRANSFERENCE.ROUTES.WHATEVER())),
   body("currency")
     .isMongoId()
     .withMessage(message((LL) => LL.TRANSFERENCE.ROUTES.WHATEVER()))
@@ -46,6 +50,7 @@ router.route("/").post([
 
       return true;
     }),
+  // ------------------------ AQUI IRIA EL METODO ------------------------- //
 ]);
 
 // TODAS LAS TRANSFERENCIAS DE ESA CUENTA
