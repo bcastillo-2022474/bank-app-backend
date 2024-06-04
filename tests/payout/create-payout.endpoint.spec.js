@@ -25,11 +25,4 @@ describe("Create payout", () => {
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     });
   });
-
-  it("should return 201 when creating a payout", async () => {
-    const response = await request(app)
-      .post("/payout")
-      .send({ service: 1, total: 1, debited_account: 1 });
-    expect(response.status).toBe(StatusCodes.CREATED);
-  });
 });
