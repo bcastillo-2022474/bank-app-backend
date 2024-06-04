@@ -6,6 +6,8 @@ import { getTranslationFunctions } from "../../utils/get-translations-locale.js"
 import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { getError } from "../currency/currency.error.js";
+import { response } from "express";
+import { UserNotFound } from "./user.error.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
@@ -84,5 +86,74 @@ export const createUserWithAccount = async (req, res) => {
     });
   } finally {
     session.endSession();
+  }
+};
+
+export const getAllUsers = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all users with accounts");
+
+    const { limit = 0, page = 0 } = req.query;
+    const [total, users] = await Promise.all([
+      User.countDocuments(),
+      User.find()
+        .limit(limit)
+        .skip(limit * page),
+    ]);
+    logger.info("no jalo");
+    res.status(StatusCodes.OK).json({
+      message: LL.USER.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: users,
+      total,
+    });
+
+    logger.info("Users with accounts retrieved successfully");
+  } catch (error) {
+    const { code, stack, type } = getError(error);
+
+    logger.error(
+      "Get all users with accounts controller error of type: ",
+      type,
+    );
+    logger.error(stack);
+
+    res.status(code).json({
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
+      error,
+    });
+  }
+};
+
+export const getUserAccountsById = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get user accounts by ID");
+
+    const userId = req.params.id; // Obtiene el ID del usuario de los parámetros de la solicitud
+
+    // Busca el usuario por su ID y poblamos las cuentas asociadas
+    const user = await User.findById(userId).populate("main_account accounts");
+
+    if (!user) {
+      throw new UserNotFound(LL.USER.CONTROLLER.USER_NOT_FOUND);
+    }
+
+    res.status(StatusCodes.OK).json({
+      message: LL.USER.CONTROLLER.USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY(),
+      data: user,
+    });
+
+    logger.info("User accounts retrieved successfully");
+  } catch (error) {
+    const { code, stack, type } = getError(error);
+
+    logger.error("Get user accounts by ID controller error of type: ", type);
+    logger.error(stack);
+
+    res.status(code).json({
+      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
+      error,
+    });
   }
 };

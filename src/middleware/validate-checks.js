@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 export const validateChecks = async (req, res, next) => {
   const result = validationResult(req);
   // console.log({ errors: result.array() });
+
   if (!result.isEmpty()) {
     // eslint-disable-next-line @joao-cst/enforce-consistent-return-express
     return res

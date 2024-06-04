@@ -156,7 +156,10 @@ const en = {
       MAIN_ACCOUNT_REQUIRED: "The main account is required",
     },
     CONTROLLER: {
-      USER_CREATED: "User has been successfully created!"
+      USER_CREATED: "User has been successfully created!",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
+      USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
+      USER_NOT_FOUND: "User has not found in the db"
     },
     ROUTES: {
       USER_EMAIL: "The email must be a valid email",
