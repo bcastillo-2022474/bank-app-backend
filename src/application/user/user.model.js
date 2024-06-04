@@ -51,13 +51,13 @@ const UserSchema = new Schema({
   },
   main_account: {
     type: Schema.Types.ObjectId,
-    ref: "Acount",
+    ref: "Account",
     required: [true, L.en.USER.DB.MAIN_ACCOUNT_REQUIRED()],
   },
   accounts: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Acount",
+      ref: "Account",
       default: [],
     },
   ],
