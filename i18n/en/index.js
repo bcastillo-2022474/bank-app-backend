@@ -59,6 +59,9 @@ const en = {
     ERROR: {
       NOT_FOUND: "Payout not found",
       PAYOUT_NOT_FOUND: "Payout not found",
+      SERVICE_ALREADY_EXISTS: "A Payout with this service already exists",
+      TOTAL_ALREADY_EXISTS: "A Payout with this total already exists",
+      DEBITED_ACCOUNT_ALREADY_EXISTS: "A Payout with this debited account already exists",
     },
     DB: {
       SERVICE_REQUIRED: "The service is required",
@@ -66,7 +69,11 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-
+      INVALID_SERVICE: "Service is invalid because not is a mongo id",
+      INVALID_TOTAL: "Total is invalid because not is a mongo id",
+      INVALID_DEBITED_ACCOUNT: "Debited account is invalid because not is a mongo id",
+      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid",
+      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid",
     },
     CONTROLLER: {
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payout retrieved successfully",
@@ -111,6 +118,9 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The account is invalid",
     }
   },
   PRODUCT: {
@@ -135,6 +145,9 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
       PRICE_REQUIRED: "The price is required",
       CURRENCY_REQUIRED: "The currency is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The service is invalid",
     }
   },
   TRANSACTION: {

@@ -12,6 +12,10 @@ import {
 import { PayoutAlreadyExist } from "./payout.error.js";
 import Payout, { ACTIVE } from "./payout.model.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
+import Service from "../service/service.model.js";
+import { ServiceNotFound } from "../service/service.error.js";
+import { AccountNotFound } from "../account/account.error.js";
+import Account from "../account/account.model.js";
 
 const router = Router();
 
@@ -38,56 +42,41 @@ router
   )
   .post(
     [
-      body("symbol")
-        .isString()
-        .isLength({ max: 3 })
-        .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_SYMBOL()))
-        .custom(async (symbol, { req }) => {
+      body("service")
+        .isMongoId()
+        .withMessage(message((LL) => LL.PAYOUT.ROUTES.INVALID_SERVICE()))
+        .custom(async (service, { req }) => {
           const LL = getTranslationFunctions(req.locale);
-          // Check if the symbol already exists in the database
-          const currency = await Payout.findOne({
-            symbol,
+          // Check if the service already exists in the database
+          const serviceFound = await Service.findOne({
+            _id: service,
             tp_status: ACTIVE,
           });
-          if (currency) {
-            throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.SYMBOL_ALREADY_EXISTS(),
-            );
+          if (!serviceFound) {
+            throw new ServiceNotFound(LL.SERVICE.ERROR.NOT_FOUND());
           }
 
           // NECESSARY TO RETURN BOOLEAN
           return true;
         }), // If last check fails, this message will be shown
 
-      body("name")
-        .isString()
-        .isLength({ min: 3, max: 255 })
-        .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_NAME()))
-        .custom(async (name, { req }) => {
+      body("total")
+        .isNumeric()
+        .withMessage(message((LL) => LL.PAYOUT.ROUTES.INVALID_TOTAL())),
+      body("debited_account")
+        .isMongoId()
+        .withMessage(
+          message((LL) => LL.PAYOUT.ROUTES.INVALID_DEBITED_ACCOUNT()),
+        ) // If last check fails, this message will be shown
+        .custom(async (debited_account, { req }) => {
           const LL = getTranslationFunctions(req.locale);
-          // Check if the name already exists in the database
-          const currency = await Payout.findOne({ name, tp_status: ACTIVE });
-          if (currency) {
-            throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.NAME_ALREADY_EXISTS(),
-            );
-          }
-
-          // NECESSARY TO RETURN BOOLEAN
-          return true;
-        }),
-      body("key")
-        .isString()
-        .isLength({ max: 3 })
-        .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_KEY())) // If last check fails, this message will be shown
-        .custom(async (key, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          // Check if the key already exists in the database
-          const currency = await Payout.findOne({ key, tp_status: ACTIVE });
-          if (currency) {
-            throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.KEY_ALREADY_EXISTS(),
-            );
+          // Check if the debited_account already exists in the database
+          const accountFound = await Account.findOne({
+            _id: debited_account,
+            tp_status: ACTIVE,
+          });
+          if (!accountFound) {
+            throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
           }
 
           // NECESSARY TO RETURN BOOLEAN
@@ -104,67 +93,64 @@ router
     [
       retrieveLocale,
       param("id").isMongoId(),
-      body("symbol")
+      body("service")
         .optional()
-        .isString()
-        .isLength({ max: 3 })
-        .custom(async (symbol, { req }) => {
+        .isMongoId()
+        .custom(async (service, { req }) => {
           const LL = getTranslationFunctions(req.locale);
-          // Check if the symbol already exists in another currency except itself
-          const currency = await Payout.findOne({
+          // Check if the service already exists in another payout except itself
+          const payout = await Payout.findOne({
             _id: { $ne: req.params.id },
-            symbol,
+            service,
             tp_status: ACTIVE,
           });
-          if (currency) {
+          if (payout) {
             throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.SYMBOL_ALREADY_EXISTS(),
+              LL.PAYOUT.ERROR.SERVICE_ALREADY_EXISTS(),
             );
           }
 
           // NECESSARY TO RETURN BOOLEAN
           return true;
         }),
-      body("name")
+      body("total")
         .optional()
-        .isString()
-        .isLength({ min: 3, max: 255 })
+        .isMongoId()
+        .withMessage(message((LL) => LL.PAYOUT.ROUTES.INVALID_OPTIONAL_TOTAL()))
+        .custom(async (total, { req }) => {
+          const LL = getTranslationFunctions(req.locale);
+          // Check if the total already exists in another payout except itself
+          const payout = await Payout.findOne({
+            _id: { $ne: req.params.id },
+            total,
+            tp_status: ACTIVE,
+          });
+          if (payout) {
+            throw new PayoutAlreadyExist(
+              LL.PAYOUT.ERROR.TOTAL_ALREADY_EXISTS(),
+            );
+          }
+
+          // NECESSARY TO RETURN BOOLEAN
+          return true;
+        }),
+      body("debited_account")
+        .optional()
+        .isMongoId()
         .withMessage(
-          message((LL) => LL.CURRENCY.ROUTES.INVALID_OPTIONAL_NAME()),
+          message((LL) => LL.PAYOUT.ROUTES.INVALID_OPTIONAL_DEBITED_ACCOUNT()),
         )
-        .custom(async (name, { req }) => {
+        .custom(async (debited_account, { req }) => {
           const LL = getTranslationFunctions(req.locale);
-          // Check if the name already exists in another currency except itself
-          const currency = await Payout.findOne({
+          // Check if the debited_account already exists in another payout except itself
+          const payout = await Payout.findOne({
             _id: { $ne: req.params.id },
-            name,
+            debited_account,
             tp_status: ACTIVE,
           });
-          if (currency) {
+          if (payout) {
             throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.NAME_ALREADY_EXISTS(),
-            );
-          }
-
-          // NECESSARY TO RETURN BOOLEAN
-          return true;
-        }),
-      body("key")
-        .optional()
-        .isString()
-        .isLength({ max: 3 })
-        .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_OPTIONAL_KEY()))
-        .custom(async (key, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          // Check if the key already exists in another currency except itself
-          const currency = await Payout.findOne({
-            _id: { $ne: req.params.id },
-            key,
-            tp_status: ACTIVE,
-          });
-          if (currency) {
-            throw new PayoutAlreadyExist(
-              LL.CURRENCY.ERROR.KEY_ALREADY_EXISTS(),
+              LL.PAYOUT.ERROR.DEBITED_ACCOUNT_ALREADY_EXISTS(),
             );
           }
 

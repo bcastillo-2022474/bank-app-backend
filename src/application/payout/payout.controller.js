@@ -13,8 +13,8 @@ export const getAllPayout = async (req, res = response) => {
 
     const { limit = 0, page = 0 } = req.query;
     const [total, payout] = await Promise.all([
-        Payout.countDocuments(),
-        Payout.find()
+      Payout.countDocuments(),
+      Payout.find()
         .limit(limit)
         .skip(limit * page),
     ]);
