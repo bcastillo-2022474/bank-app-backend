@@ -6,6 +6,6 @@
         "outDir": "./dist",
         "moduleResolution": "nodenext",
     },
-    "include": ["./src/**/*", "./test/**/*", "tests/account"],
+    "include": ["./src/**/*", "./test/**/*"],
     "exclude": ["./i18n/**/*", "node_modules", "coverage", "eslint-custom-rules"]
 }

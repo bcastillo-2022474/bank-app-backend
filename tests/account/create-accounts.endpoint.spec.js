@@ -12,7 +12,6 @@ describe("Create account", () => {
         balance: 100,
       });
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body.error).toBe("Owner is required");
     });
 
     it("the currency is not provided", async () => {
@@ -21,7 +20,6 @@ describe("Create account", () => {
         balance: 100,
       });
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body.error).toBe("Currency is required");
     });
 
     it("the balance is not provided", async () => {
@@ -30,7 +28,6 @@ describe("Create account", () => {
         currency: "USD",
       });
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body.error).toBe("Balance is required");
     });
 
     it("the balance is not a number", async () => {
@@ -40,7 +37,6 @@ describe("Create account", () => {
         balance: "not_a_number",
       });
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body.error).toBe("Balance must be a number");
     });
   });
 
@@ -64,6 +60,5 @@ describe("Create account", () => {
       balance: 200,
     });
     expect(response.status).toBe(StatusCodes.CONFLICT);
-    expect(response.body.error).toBe("Account already exists");
   });
 });

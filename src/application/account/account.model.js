@@ -24,6 +24,14 @@ const AccountSchema = new Schema({
     default: ACTIVE,
     required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
+  },
+  updated_at: {
+    type: Date,
+  },
 });
 
 AccountSchema.index(

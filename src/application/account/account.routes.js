@@ -59,7 +59,6 @@ router
 
       body("currency")
         .isMongoId()
-        .isLength({ min: 3, max: 255 })
         .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_CURRENCY()))
         .custom(async (name, { req }) => {
           const LL = getTranslationFunctions(req.locale);
@@ -75,19 +74,7 @@ router
 
       body("balance")
         .isNumeric()
-        .isLength({ min: 2 })
-        .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_BALANCE()))
-        .custom(async (balance, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({ balance, tp_status: ACTIVE });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.BALANCE_ALREADY_EXISTS(),
-            );
-          }
-
-          return true;
-        }),
+        .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_BALANCE())),
       validateChecks,
     ],
     createAccount,
@@ -99,24 +86,6 @@ router
     [
       retrieveLocale,
       param("id").isMongoId(),
-      body("owner")
-        .optional()
-        .isMongoId()
-        .custom(async (owner, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({
-            _id: { $ne: req.params.id },
-            owner,
-            tp_status: ACTIVE,
-          });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.OWNER_ALREADY_EXISTS(),
-            );
-          }
-
-          return true;
-        }),
       body("currency")
         .optional()
         .isMongoId()
@@ -133,27 +102,6 @@ router
           if (account) {
             throw new AccountAlreadyExist(
               LL.ACCOUNT.ERROR.CURRENCY_ALREADY_EXISTS(),
-            );
-          }
-
-          return true;
-        }),
-      body("balance")
-        .optional()
-        .isNumeric()
-        .withMessage(
-          message((LL) => LL.ACCOUNT.ROUTES.INVALID_OPTIONAL_BALANCE()),
-        )
-        .custom(async (balance, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({
-            _id: { $ne: req.params.id },
-            balance,
-            tp_status: ACTIVE,
-          });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.BALANCE_ALREADY_EXISTS(),
             );
           }
 

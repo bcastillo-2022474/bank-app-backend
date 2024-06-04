@@ -83,11 +83,16 @@ export const updateAccount = async (req, res) => {
     const { id } = req.params;
     const { owner, currency, balance } = req.body;
 
-    const account = await Account.findByIdAndUpdate(
-      id,
-      cleanObject({ owner, currency, balance }),
-      { new: true },
-    );
+    const updateData = cleanObject({
+      owner,
+      currency,
+      balance,
+      updated_at: new Date(),
+    });
+
+    const account = await Account.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     if (!account) {
       throw new AccountNotFound(LL.ACCOUNT.ERROR.ACCOUNT_NOT_FOUND());
