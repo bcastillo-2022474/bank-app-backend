@@ -12,8 +12,8 @@ const en = {
         ENDPOINT_NOT_FOUND: "Endpoint not found",
         INVALID_OPTIONAL_LIMIT: "If provided, limit must be a valid positive integer",
         INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
-        INVALID_MONGO_ID: "Invalid mongo id",
         INTERNAL_SERVER_ERROR: "Internal server error",
+        INVALID_REQUEST: "Invalid request",
     },
     DB: {
         TP_STATUS_REQUIRED: "The tp_status is required",
@@ -65,9 +65,20 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-
+      INVALID_SERVICE: "service must be a MongoID",
+      INVALID_TOTAL: "total must be a positive number",
+      INVALID_DEBITED_ACCOUNT: "debited_account must be a valid MongoID",
+      INVALID_OPTIONAL_SERVICE: "If provided, service must be a valid MongoID",
+      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid positive number",
+      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid MongoID",
+      INVALID_PAYOUT_ID: "Payout param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payouts retrieved successfully",
+      CREATED: "Payout created successfully",
+      UPDATED: "Payout update successfully",
+      DELETED: "Payout deleted successfully",
 
     }
   },
@@ -93,6 +104,8 @@ const en = {
           INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
           INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
           INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+          INVALID_CURRENCY_ID: "Currency param url id must be a valid mongo id",
+
       },
       CONTROLLER: {
           MULTIPLE_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",
@@ -119,6 +132,7 @@ const en = {
       OWNER_ALREADY_EXISTS: "Owner Already Exists",
       CURRENCY_ALREADY_EXISTS: "Currency Already Exists",
       BALANCE_ALREADY_EXISTS: "Balance Already Exists",
+      NOT_FOUND: "The account is invalid",
     },
     ROUTES: {
       INVALID_OWNER: "Invalid Owner",
@@ -126,7 +140,7 @@ const en = {
       INVALID_BALANCE: "Invalid Balance",
       INVALID_OPTIONAL_CURRENCY: "Invalid Optional Currency",
       INVALID_OPTIONAL_BALANCE: "Invalid Optional Balance",
-    }
+    },
   },
   PRODUCT: {
     DB: {
@@ -150,6 +164,9 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
       PRICE_REQUIRED: "The price is required",
       CURRENCY_REQUIRED: "The currency is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The service was not found",
     }
   },
   TRANSACTION: {
@@ -174,6 +191,26 @@ const en = {
       MONTHLY_INCOME_REQUIRED: "The monthly income is required",
       CURRENCY_INCOME_REQUIRED: "The currency income is required",
       MAIN_ACCOUNT_REQUIRED: "The main account is required",
+    },
+    CONTROLLER: {
+      USER_CREATED: "User has been successfully created!"
+    },
+    ROUTES: {
+      USER_EMAIL: "The email must be a valid email",
+      INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
+      INVALID_USERNAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_ADDRESS: "The address must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_DPI: "The DPI must be only 13 characters long and only numbers ",
+      INVALID_PHONE_NUMBER: "The phone number must be 8 characters and only numbers",
+      INVALID_JOB_NAME: "The must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_MONTHLY_INCOME: "The monthly income only positive numbers",
+      INVALID_CURRENCY_INCOME: "The invalid currency income must be valid"
+    },
+    ERROR: {
+      USERNAME_ALREADY_EXIST: "The username is already in use",
+      EMAIL_ALREADY_EXIST: "The email is already in use"
     }
   }
 };

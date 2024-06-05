@@ -1,25 +1,25 @@
 import { StatusCodes } from "http-status-codes";
 
-export class AccountAlreadyExist extends Error {
+export class UserAlreadyExist extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.CONFLICT;
-    this.name = "AccountAlreadyExist";
+    this.name = "UserAlreadyExist";
   }
 }
 
-export class AccountNotFound extends Error {
+export class UserNotFound extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.NOT_FOUND;
-    this.name = "AccountNotFound";
+    this.name = "UserNotFound";
   }
 }
 
-export class AccountInvalidValue extends Error {
+export class UserInvalidValue extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.BAD_REQUEST;
-    this.name = "AccountInvalidValue";
+    this.name = "UserInvalidValue";
   }
 }

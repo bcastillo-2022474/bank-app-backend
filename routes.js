@@ -9,6 +9,8 @@ import { retrieveLocale } from "./src/middleware/retrieve-locale.js";
 import { logger } from "./src/utils/logger.js";
 import currencyRoutes from "./src/application/currency/currency.route.js";
 import accountRoutes from "./src/application/account/account.routes.js";
+import payoutRoutes from "./src//application/payout/payout.route.js";
+import userRoutes from "./src/application/user/user.route.js";
 
 if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   config({
@@ -52,6 +54,8 @@ app.use(printLanguage);
 
 app.use("/currency", currencyRoutes);
 app.use("/account", accountRoutes);
+app.use("/user", userRoutes);
+app.use("/payout", payoutRoutes);
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);

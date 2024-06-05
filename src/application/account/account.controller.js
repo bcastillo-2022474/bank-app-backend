@@ -3,8 +3,9 @@ import Account, { ACTIVE, INACTIVE } from "./account.model.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { StatusCodes } from "http-status-codes";
-import { AccountNotFound, getAccountError } from "./account.error.js";
+import { AccountNotFound } from "./account.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
+import { handleResponse } from "../../utils/handle-reponse.js";
 
 export const getAllAccounts = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -15,7 +16,7 @@ export const getAllAccounts = async (req, res = response) => {
     const query = { tp_status: ACTIVE };
     const [total, accounts] = await Promise.all([
       Account.countDocuments(query),
-      // eslint-disable-next-line unicorn/no-array-callback-reference
+
       Account.find(query)
         .limit(limit)
         .skip(limit * page),
@@ -29,15 +30,8 @@ export const getAllAccounts = async (req, res = response) => {
 
     logger.info("Accounts retrieved successfully");
   } catch (error) {
-    const { code, stack, type } = getAccountError(error);
-
-    logger.error("Get all accounts controller error of type: ", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Get all accounts controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -63,15 +57,8 @@ export const createAccount = async (req, res) => {
 
     logger.info("Account created successfully", account);
   } catch (error) {
-    const { code, stack, type } = getAccountError(error);
-
-    logger.error("Create account controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Create account controller error of type:", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -105,15 +92,8 @@ export const updateAccount = async (req, res) => {
 
     logger.info("Account updated successfully", account);
   } catch (error) {
-    const { code, stack, type } = getAccountError(error);
-
-    logger.error("Update account controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Update account controller error of type:", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -135,14 +115,7 @@ export const deleteAccountById = async (req, res = response) => {
 
     logger.info("Account deleted successfully", account);
   } catch (error) {
-    const { code, stack, type } = getAccountError(error);
-
-    logger.error("Delete account controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Delete account controller error of type:", error.name);
+    handleResponse(res, error, LL);
   }
 };
