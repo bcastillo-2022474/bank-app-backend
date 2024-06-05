@@ -104,6 +104,8 @@ const en = {
           INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
           INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
           INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+          INVALID_CURRENCY_ID: "Currency param url id must be a valid mongo id",
+
       },
       CONTROLLER: {
           MULTIPLE_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",

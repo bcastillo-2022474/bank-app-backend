@@ -1,4 +1,3 @@
-import { getErrorFromErrors } from "../../utils/http-errors.js";
 import { StatusCodes } from "http-status-codes";
 
 export class ServiceAlreadyExist extends Error {
@@ -24,20 +23,3 @@ export class ServiceInvalidValue extends Error {
     this.name = "ServiceInvalidValue";
   }
 }
-
-const errors = [
-  {
-    code: StatusCodes.NOT_FOUND,
-    classes: [ServiceNotFound],
-  },
-  {
-    code: StatusCodes.CONFLICT,
-    classes: [ServiceAlreadyExist],
-  },
-  {
-    code: StatusCodes.BAD_REQUEST,
-    classes: [ServiceInvalidValue],
-  },
-];
-
-export const getError = (error) => getErrorFromErrors(error, errors);
