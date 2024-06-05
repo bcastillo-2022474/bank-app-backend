@@ -14,6 +14,7 @@ const en = {
         INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
         INVALID_MONGO_ID: "Invalid mongo id",
         INTERNAL_SERVER_ERROR: "Internal server error",
+        INVALID_REQUEST: "Invalid request",
     },
     DB: {
         TP_STATUS_REQUIRED: "The tp_status is required",
@@ -154,6 +155,26 @@ const en = {
       MONTHLY_INCOME_REQUIRED: "The monthly income is required",
       CURRENCY_INCOME_REQUIRED: "The currency income is required",
       MAIN_ACCOUNT_REQUIRED: "The main account is required",
+    },
+    CONTROLLER: {
+      USER_CREATED: "User has been successfully created!"
+    },
+    ROUTES: {
+      USER_EMAIL: "The email must be a valid email",
+      INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
+      INVALID_USERNAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_ADDRESS: "The address must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_DPI: "The DPI must be only 13 characters long and only numbers ",
+      INVALID_PHONE_NUMBER: "The phone number must be 8 characters and only numbers",
+      INVALID_JOB_NAME: "The must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_MONTHLY_INCOME: "The monthly income only positive numbers",
+      INVALID_CURRENCY_INCOME: "The invalid currency income must be valid"
+    },
+    ERROR: {
+      USERNAME_ALREADY_EXIST: "The username is already in use",
+      EMAIL_ALREADY_EXIST: "The email is already in use"
     }
   }
 };
