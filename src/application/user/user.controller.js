@@ -2,10 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import User from "../user/user.model.js";
 import Account from "../account/account.model.js";
 import mongoose from "mongoose";
-import { getTranslationFunctions } from "../../utils/get-translations-locale.js"; // Ajusta la ruta según sea necesario
+import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
-import { getError } from "../currency/currency.error.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
@@ -73,14 +72,16 @@ export const createUserWithAccount = async (req, res) => {
     logger.info("User create endpoint ended successfully");
   } catch (error) {
     session.abortTransaction();
-    const { code, stack, type } = getError(error);
+    logger.error("Create User controller error of type: ", error.name);
+    logger.error(error.stack);
 
-    logger.error("Create User controller error of type: ", type);
-    logger.error(stack);
+    const isCustom = error.name !== "Error";
+    const message = isCustom
+      ? error.message
+      : LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR();
 
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
+    res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message,
     });
   } finally {
     session.endSession();
