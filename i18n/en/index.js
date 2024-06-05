@@ -12,7 +12,6 @@ const en = {
         ENDPOINT_NOT_FOUND: "Endpoint not found",
         INVALID_OPTIONAL_LIMIT: "If provided, limit must be a valid positive integer",
         INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
-        INVALID_MONGO_ID: "Invalid mongo id",
         INTERNAL_SERVER_ERROR: "Internal server error",
         INVALID_REQUEST: "Invalid request",
     },
@@ -59,10 +58,6 @@ const en = {
   PAYOUT:{
     ERROR: {
       NOT_FOUND: "Payout not found",
-      PAYOUT_NOT_FOUND: "Payout not found",
-      SERVICE_ALREADY_EXISTS: "A Payout with this service already exists",
-      TOTAL_ALREADY_EXISTS: "A Payout with this total already exists",
-      DEBITED_ACCOUNT_ALREADY_EXISTS: "A Payout with this debited account already exists",
     },
     DB: {
       SERVICE_REQUIRED: "The service is required",
@@ -70,14 +65,17 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-      INVALID_SERVICE: "Service is invalid because not is a mongo id",
-      INVALID_TOTAL: "Total is invalid because not is a mongo id",
-      INVALID_DEBITED_ACCOUNT: "Debited account is invalid because not is a mongo id",
-      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid",
-      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid",
+      INVALID_SERVICE: "service must be a MongoID",
+      INVALID_TOTAL: "total must be a positive number",
+      INVALID_DEBITED_ACCOUNT: "debited_account must be a valid MongoID",
+      INVALID_OPTIONAL_SERVICE: "If provided, service must be a valid MongoID",
+      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid positive number",
+      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid MongoID",
+      INVALID_PAYOUT_ID: "Payout param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
-      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payout retrieved successfully",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payouts retrieved successfully",
       CREATED: "Payout created successfully",
       UPDATED: "Payout update successfully",
       DELETED: "Payout deleted successfully",
@@ -148,7 +146,7 @@ const en = {
       CURRENCY_REQUIRED: "The currency is required",
     },
     ERROR: {
-      NOT_FOUND: "The service is invalid",
+      NOT_FOUND: "The service was not found",
     }
   },
   TRANSACTION: {

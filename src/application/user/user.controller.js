@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
+import { handleResponse } from "../../utils/handle-reponse.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
@@ -73,16 +74,7 @@ export const createUserWithAccount = async (req, res) => {
   } catch (error) {
     session.abortTransaction();
     logger.error("Create User controller error of type: ", error.name);
-    logger.error(error.stack);
-
-    const isCustom = error.name !== "Error";
-    const message = isCustom
-      ? error.message
-      : LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR();
-
-    res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message,
-    });
+    handleResponse(res, error, LL);
   } finally {
     session.endSession();
   }
