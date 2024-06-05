@@ -6,6 +6,7 @@ export const validateChecks = async (req, res, next) => {
   const LL = getTranslationFunctions(req.locale);
   const result = validationResult.withDefaults({
     formatter(error) {
+      // @ts-ignore
       return `${error.location}[${error.path}]: ${error.msg}`;
     },
   })(req);
