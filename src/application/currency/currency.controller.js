@@ -28,7 +28,7 @@ export const getAllCurrencies = async (req, res = response) => {
 
     logger.info("Currencies retrieved successfully");
   } catch (error) {
-    logger.error("Get all currencies controller error of type: ", type);
+    logger.error("Get all currencies controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };
@@ -57,7 +57,7 @@ export const createCurrency = async (req, res) => {
 
     logger.info("Currency created successfully", currency);
   } catch (error) {
-    logger.error("Create currency controller error of type:", type);
+    logger.error("Create currency controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };
@@ -87,7 +87,7 @@ export const updateCurrency = async (req, res) => {
 
     logger.info("Currency created successfully", currency);
   } catch (error) {
-    logger.error("Update currency controller error of type:", type);
+    logger.error("Update currency controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };
@@ -110,7 +110,7 @@ export const deleteCurrencyById = async (req, res) => {
 
     logger.info("Currency deleted successfully", currency);
   } catch (error) {
-    logger.error("Delete currency controller error of type:", type);
+    logger.error("Delete currency controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };
