@@ -12,7 +12,6 @@ const en = {
         ENDPOINT_NOT_FOUND: "Endpoint not found",
         INVALID_OPTIONAL_LIMIT: "If provided, limit must be a valid positive integer",
         INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
-        INVALID_MONGO_ID: "Invalid mongo id",
         INTERNAL_SERVER_ERROR: "Internal server error",
         INVALID_REQUEST: "Invalid request",
     },
@@ -66,9 +65,20 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-
+      INVALID_SERVICE: "service must be a MongoID",
+      INVALID_TOTAL: "total must be a positive number",
+      INVALID_DEBITED_ACCOUNT: "debited_account must be a valid MongoID",
+      INVALID_OPTIONAL_SERVICE: "If provided, service must be a valid MongoID",
+      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid positive number",
+      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid MongoID",
+      INVALID_PAYOUT_ID: "Payout param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payouts retrieved successfully",
+      CREATED: "Payout created successfully",
+      UPDATED: "Payout update successfully",
+      DELETED: "Payout deleted successfully",
 
     }
   },
@@ -94,6 +104,8 @@ const en = {
           INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
           INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
           INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+          INVALID_CURRENCY_ID: "Currency param url id must be a valid mongo id",
+
       },
       CONTROLLER: {
           MULTIPLE_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",
@@ -107,6 +119,9 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The account is invalid",
     }
   },
   PRODUCT: {
@@ -131,6 +146,9 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
       PRICE_REQUIRED: "The price is required",
       CURRENCY_REQUIRED: "The currency is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The service was not found",
     }
   },
   TRANSACTION: {

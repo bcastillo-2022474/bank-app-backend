@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import { app } from "../../routes.js";
 import request from "supertest";
 import { faker } from "@faker-js/faker";
+
+const userRoute = "/user";
 const currencyRequest = () =>
   request(app)
     .post("/currency")
@@ -53,7 +55,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           email: false,
@@ -71,7 +73,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           username: 3000,
@@ -90,7 +92,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           password: faker.internet.password({
@@ -113,7 +115,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           name: "a",
@@ -132,7 +134,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           last_name: "a",
@@ -151,7 +153,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           address: "a",
@@ -170,7 +172,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           DPI: "123456789012",
@@ -189,7 +191,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           phone_number: "1234567",
@@ -208,7 +210,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           job_name: "a",
@@ -227,7 +229,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           monthly_income: Number.NaN,
@@ -243,7 +245,7 @@ describe("Create user with account endpoint", () => {
 
     it("the currency_income is invalid", async () => {
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           email: "ajklsdas",
@@ -263,11 +265,11 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({ ...validPayload, currency_income: currency._id });
 
       const response2 = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           username: faker.internet
@@ -289,11 +291,11 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({ ...validPayload, currency_income: currency._id });
 
       const response2 = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({
           ...validPayload,
           email: faker.internet.email({
@@ -315,7 +317,7 @@ describe("Create user with account endpoint", () => {
       const currency = responseCurrency.body.data;
 
       const response = await request(app)
-        .post("/user")
+        .post(userRoute)
         .send({ ...validPayload, currency_income: currency._id });
 
       expect(responseCurrency.status).toBe(StatusCodes.CREATED);

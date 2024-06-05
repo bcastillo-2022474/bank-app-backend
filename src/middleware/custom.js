@@ -2,6 +2,13 @@ import { logger } from "../utils/logger.js";
 import { getTranslationFunctions } from "../utils/get-translations-locale.js";
 import { StatusCodes } from "http-status-codes";
 
+/**
+ * @typedef {import('../../i18n/i18n-types.js').TranslationFunctions} TranslationFunctions
+ */
+
+/**
+ * @param {function(any, TranslationFunctions): void} fn
+ */
 export const custom = (fn) => {
   return async (req, res, next) => {
     const LL = getTranslationFunctions(req.locale);
