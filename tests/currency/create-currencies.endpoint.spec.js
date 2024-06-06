@@ -3,7 +3,7 @@ import request from "supertest";
 import { app } from "../../routes.js";
 
 describe("Create currency", () => {
-  describe(`should return ${StatusCodes.BAD_REQUEST} when`, () => {
+  describe(`should return ${StatusCodes.BAD_REQUEST} code when`, () => {
     it(`the name is not a string`, async () => {
       const response = await request(app)
         .post("/currency")

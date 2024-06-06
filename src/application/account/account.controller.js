@@ -42,11 +42,13 @@ export const createAccount = async (req, res) => {
 
     const { owner, currency, balance } = req.body;
 
-    const account = new Account({
-      owner,
-      currency,
-      balance,
-    });
+    const account = new Account(
+      cleanObject({
+        owner,
+        currency,
+        balance,
+      }),
+    );
 
     await account.save();
 
@@ -62,18 +64,16 @@ export const createAccount = async (req, res) => {
   }
 };
 
-export const updateAccount = async (req, res) => {
+export const updateAccountCurrency = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Starting update account");
 
     const { id } = req.params;
-    const { owner, currency, balance } = req.body;
+    const { currency } = req.body;
 
     const updateData = cleanObject({
-      owner,
       currency,
-      balance,
       updated_at: new Date(),
     });
 

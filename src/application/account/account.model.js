@@ -33,20 +33,4 @@ const AccountSchema = new Schema({
     type: Date,
   },
 });
-
-AccountSchema.index(
-  { owner: 1, tp_status: 1 },
-  { unique: true, partialFilterExpression: { tp_status: ACTIVE } },
-);
-
-AccountSchema.index(
-  { currency: 1, tp_status: 1 },
-  { unique: true, partialFilterExpression: { tp_status: ACTIVE } },
-);
-
-AccountSchema.index(
-  { balance: 1, tp_status: 1 },
-  { partialFilterExpression: { tp_status: ACTIVE } },
-);
-
 export default model("Account", AccountSchema);

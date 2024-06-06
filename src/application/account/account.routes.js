@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { retrieveLocale } from "../../middleware/retrieve-locale.js";
 import { body, param, query } from "express-validator";
 import { message } from "../../utils/message.js";
 import { validateChecks } from "../../middleware/validate-checks.js";
@@ -7,11 +6,15 @@ import {
   createAccount,
   getAllAccounts,
   deleteAccountById,
-  updateAccount,
+  updateAccountCurrency,
 } from "./account.controller.js";
 import Account, { ACTIVE } from "./account.model.js";
-import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
-import { AccountAlreadyExist } from "./account.error.js";
+import { AccountNotFound } from "./account.error.js";
+import { custom } from "../../middleware/custom.js";
+import User from "../user/user.model.js";
+import { UserNotFound } from "../user/user.error.js";
+import Currency from "../currency/currency.model.js";
+import { CurrencyNotFound } from "../currency/currency.error.js";
 
 const router = Router();
 
@@ -19,7 +22,6 @@ router
   .route("/")
   .get(
     [
-      retrieveLocale,
       query("limit")
         .optional()
         .isInt({ min: 0 })
@@ -36,46 +38,43 @@ router
     ],
     getAllAccounts,
   )
-
   .post(
     [
-      body("owner")
-        .isMongoId()
-        .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_OWNER()))
-        .custom(async (owner, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({
-            owner,
-            tp_status: ACTIVE,
-          });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.OWNER_ALREADY_EXISTS(),
-            );
-          }
-
-          return true;
-        }),
-
-      body("currency")
-        .isMongoId()
-        .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_CURRENCY()))
-        .custom(async (name, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({ name, tp_status: ACTIVE });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.CURRENCY_ALREADY_EXISTS(),
-            );
-          }
-
-          return true;
-        }),
-
-      body("balance")
-        .isNumeric()
-        .withMessage(message((LL) => LL.ACCOUNT.ROUTES.INVALID_BALANCE())),
+      body(
+        "owner",
+        message((LL) => LL.ACCOUNT.ROUTES.INVALID_OWNER()),
+      ).isMongoId(),
+      body(
+        "currency",
+        message((LL) => LL.ACCOUNT.ROUTES.INVALID_CURRENCY()),
+      ).isMongoId(),
+      body(
+        "balance",
+        message((LL) => LL.ACCOUNT.ROUTES.INVALID_BALANCE()),
+      ).isFloat({ min: 0 }),
       validateChecks,
+      custom(async (req, LL) => {
+        const { owner } = req.body;
+        // Check if the owner exist
+        const user = await User.findOne({
+          _id: owner,
+          tp_status: ACTIVE,
+        });
+        if (!user) {
+          throw new UserNotFound(LL.USER.ERROR.NOT_FOUND());
+        }
+      }),
+      custom(async (req, LL) => {
+        const { currency } = req.body;
+        // Check if the currency exist
+        const currencyFound = await Currency.findOne({
+          _id: currency,
+          tp_status: ACTIVE,
+        });
+        if (!currencyFound) {
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+        }
+      }),
     ],
     createAccount,
   );
@@ -84,40 +83,54 @@ router
   .route("/:id")
   .put(
     [
-      retrieveLocale,
       param("id").isMongoId(),
-      body("currency")
+      body(
+        "currency",
+        message((LL) => LL.ACCOUNT.ROUTES.INVALID_OPTIONAL_CURRENCY()),
+      )
         .optional()
-        .isMongoId()
-        .withMessage(
-          message((LL) => LL.ACCOUNT.ROUTES.INVALID_OPTIONAL_CURRENCY()),
-        )
-        .custom(async (currency, { req }) => {
-          const LL = getTranslationFunctions(req.locale);
-          const account = await Account.findOne({
-            _id: { $ne: req.params.id },
-            currency,
+        .isMongoId(),
+      validateChecks,
+      custom(async (req, LL) => {
+        const account = await Account.findOne({
+          _id: req.params.id,
+          tp_status: ACTIVE,
+        });
+        if (!account) {
+          throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
+        }
+      }),
+      custom(async (req, LL) => {
+        const { currency } = req.body;
+        if (currency) {
+          const currencyFound = await Currency.findOne({
+            _id: currency,
             tp_status: ACTIVE,
           });
-          if (account) {
-            throw new AccountAlreadyExist(
-              LL.ACCOUNT.ERROR.CURRENCY_ALREADY_EXISTS(),
-            );
+          if (!currencyFound) {
+            throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
           }
-
-          return true;
-        }),
-      validateChecks,
+        }
+      }),
     ],
-    updateAccount,
+    updateAccountCurrency,
   )
   .delete(
     [
-      retrieveLocale,
-      param("id")
-        .isMongoId()
-        .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_MONGO_ID())),
+      param(
+        "id",
+        message((LL) => LL.ACCOUNT.ROUTES.INVALID_ACCOUNT_ID()),
+      ).isMongoId(),
       validateChecks,
+      custom(async (req, LL) => {
+        const account = await Account.findOne({
+          _id: req.params.id,
+          tp_status: ACTIVE,
+        });
+        if (!account) {
+          throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
+        }
+      }),
     ],
     deleteAccountById,
   );
