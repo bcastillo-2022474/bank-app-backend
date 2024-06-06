@@ -1,9 +1,9 @@
-import { getErrorFromErrors } from "../../utils/http-errors.js";
 import { StatusCodes } from "http-status-codes";
 
 export class AccountAlreadyExist extends Error {
   constructor(message) {
     super(message);
+    this.statusCode = StatusCodes.CONFLICT;
     this.name = "AccountAlreadyExist";
   }
 }
@@ -11,6 +11,7 @@ export class AccountAlreadyExist extends Error {
 export class AccountNotFound extends Error {
   constructor(message) {
     super(message);
+    this.statusCode = StatusCodes.NOT_FOUND;
     this.name = "AccountNotFound";
   }
 }
@@ -18,23 +19,7 @@ export class AccountNotFound extends Error {
 export class AccountInvalidValue extends Error {
   constructor(message) {
     super(message);
+    this.statusCode = StatusCodes.BAD_REQUEST;
     this.name = "AccountInvalidValue";
   }
 }
-
-const errors = [
-  {
-    code: StatusCodes.NOT_FOUND,
-    classes: [AccountNotFound],
-  },
-  {
-    code: StatusCodes.CONFLICT,
-    classes: [AccountAlreadyExist],
-  },
-  {
-    code: StatusCodes.BAD_REQUEST,
-    classes: [AccountInvalidValue],
-  },
-];
-
-export const getError = (error) => getErrorFromErrors(error, errors);

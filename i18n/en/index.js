@@ -79,7 +79,6 @@ const en = {
       CREATED: "Payout created successfully",
       UPDATED: "Payout update successfully",
       DELETED: "Payout deleted successfully",
-
     }
   },
   CURRENCY:{
@@ -119,10 +118,27 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
+      TP_STATUS_REQUIRED: "The tp_status is required",
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple Retrieved successfully",
+      CREATED: "Account Created successfully",
+      UPDATED: "Account Updated successfully",
+      DELETED: "Account Deleted successfully",
     },
     ERROR: {
-      NOT_FOUND: "The account is invalid",
-    }
+      NOT_FOUND: "Account was not found",
+      OWNER_ALREADY_EXISTS: "Owner Already Exists",
+      CURRENCY_ALREADY_EXISTS: "Currency Already Exists",
+      BALANCE_ALREADY_EXISTS: "Balance Already Exists",
+    },
+    ROUTES: {
+      INVALID_OWNER: "owner must be a MongoID",
+      INVALID_CURRENCY: "currency must be a MongoID",
+      INVALID_BALANCE: "balnace must be a positive number",
+      INVALID_OPTIONAL_CURRENCY: "If provided, currency must be a valid MongoID",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
+    },
   },
   PRODUCT: {
     DB: {
@@ -192,7 +208,8 @@ const en = {
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",
-      EMAIL_ALREADY_EXIST: "The email is already in use"
+      EMAIL_ALREADY_EXIST: "The email is already in use",
+      NOT_FOUND: "The user was not found",
     }
   }
 };
