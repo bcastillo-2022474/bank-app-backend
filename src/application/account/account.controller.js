@@ -82,7 +82,7 @@ export const updateAccountCurrency = async (req, res) => {
     });
 
     if (!account) {
-      throw new AccountNotFound(LL.ACCOUNT.ERROR.ACCOUNT_NOT_FOUND());
+      throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
     }
 
     res.status(StatusCodes.OK).json({
