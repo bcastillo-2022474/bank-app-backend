@@ -9,7 +9,7 @@ import {
   deleteCurrencyById,
   updateCurrency,
 } from "./currency.controller.js";
-import { CurrencyAlreadyExist } from "./currency.error.js";
+import { CurrencyAlreadyExist, CurrencyNotFound } from "./currency.error.js";
 import Currency, { ACTIVE } from "./currency.model.js";
 import { custom } from "../../middleware/custom.js";
 
@@ -169,6 +169,17 @@ router
         .isMongoId()
         .withMessage(message((LL) => LL.CURRENCY.ROUTES.INVALID_CURRENCY_ID())),
       validateChecks,
+      custom(async (req, LL) => {
+        const { id } = req.params;
+        const currency = await Currency.findOne({
+          _id: id,
+          tp_status: ACTIVE,
+        });
+
+        if (!currency) {
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+        }
+      }),
     ],
     deleteCurrencyById,
   );

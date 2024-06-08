@@ -10,12 +10,13 @@ import {
   getAllPayoutsByAccount,
   getAllPayoutsByServiceId,
 } from "./payout.controller.js";
-import { ACTIVE } from "./payout.model.js";
+import Payout, { ACTIVE } from "./payout.model.js";
 import Service from "../service/service.model.js";
 import { ServiceNotFound } from "../service/service.error.js";
 import { AccountNotFound } from "../account/account.error.js";
 import Account from "../account/account.model.js";
 import { custom } from "../../middleware/custom.js";
+import { PayoutNotFound } from "./payout.error.js";
 
 const router = Router();
 
@@ -136,6 +137,17 @@ router.route("/:id").delete(
       message((LL) => LL.PAYOUT.ROUTES.INVALID_PAYOUT_ID()),
     ).isMongoId(),
     validateChecks,
+    custom(async (req, LL) => {
+      const { id } = req.params;
+      // Check if the payout exists in the database
+      const payoutFound = await Payout.findOne({
+        _id: id,
+        tp_status: ACTIVE,
+      });
+      if (!payoutFound) {
+        throw new PayoutNotFound(LL.PAYOUT.ERROR.NOT_FOUND());
+      }
+    }),
   ],
   deletePayoutById,
 );

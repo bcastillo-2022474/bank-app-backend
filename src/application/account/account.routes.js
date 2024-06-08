@@ -72,7 +72,7 @@ router
           tp_status: ACTIVE,
         });
         if (!currencyFound) {
-          throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
         }
       }),
     ],
@@ -108,7 +108,7 @@ router
             tp_status: ACTIVE,
           });
           if (!currencyFound) {
-            throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+            throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
           }
         }
       }),

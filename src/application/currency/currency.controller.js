@@ -77,7 +77,7 @@ export const updateCurrency = async (req, res) => {
     );
 
     if (!currency) {
-      throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+      throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
     }
 
     res.status(StatusCodes.OK).json({

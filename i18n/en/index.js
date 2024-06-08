@@ -29,9 +29,9 @@ const en = {
       ACCOUNT_RECIVER_REQUIRED: "The account reciver is required",
       QUANTITY_REQUIRED: "The quantity is required",
       CURRENCY_REQUIRED: "Te currency is required",
+      DESCRIPTION_REQUIRED: "The description is required",
     },
     ROUTES: {
-
     },
     CONTROLLER: {
 
@@ -83,8 +83,8 @@ const en = {
   },
   CURRENCY:{
       ERROR: {
-          CURRENCY_ALREADY_EXIST: "Currency already exists",
-          CURRENCY_NOT_FOUND: "Currency not found",
+          ALREADY_EXIST: "Currency already exists",
+          NOT_FOUND: "Currency not found",
           SYMBOL_ALREADY_EXISTS: "A Currency with this symbol already exists",
           NAME_ALREADY_EXISTS: "A Currency with this name already exists",
           KEY_ALREADY_EXISTS: "A Currency with this key already exists",
@@ -170,10 +170,24 @@ const en = {
   TRANSACTION: {
     DB: {
       TYPE_REQUIRED: "The type is required",
-      QUANTITY_REQUIRED: "The quantity is required",
+      AMOUNT_REQUIRED: "The amount is required",
       CURRENCY_REQUIRED: "The currency is required",
       ACCOUNT_REQUIRED: "The account is required",
-    }
+    },
+    ROUTES: {
+      INVALID_ACCOUNT: "Account must be a MongoID",
+      INVALID_AMOUNT: "Amount must be a positive number",
+      INVALID_TYPE: "Type must be either 'DEPOSIT' or 'WITHDRAWAL'",
+      INVALID_CURRENCY: "Currency must be a MongoID",
+      INVALID_USER_ID: "User param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
+      INVALID_OPTIONAL_TYPE_PARAM: "If provided, type must be either 'DEPOSIT' or 'WITHDRAWAL'",
+      INVALID_OPTIONAL_CURRENCY_PARAM: "If provided, currency must be a valid MongoID",
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Transactions retrieved successfully",
+      CREATED: "Transaction created successfully",
+    },
   },
   USER: {
     DB: {
