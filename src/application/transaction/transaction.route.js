@@ -10,6 +10,7 @@ import Currency from "../currency/currency.model.js";
 import { CurrencyNotFound } from "../currency/currency.error.js";
 import User from "../user/user.model.js";
 import {
+  createTransaction,
   getAllTransactionsByAccount,
   getAllTransactionsByUser,
 } from "./transaction.controller.js";
@@ -29,11 +30,11 @@ router.route("/").post([
     .isIn([DEPOSIT, WITHDRAWAL]),
   body(
     "amount",
-    message((LL) => LL.TRANSACTION.ROUTES.INVALID_CURRENCY()),
+    message((LL) => LL.TRANSACTION.ROUTES.INVALID_AMOUNT()),
   ).isFloat({ min: 0 }),
   body(
     "currency",
-    message((LL) => LL.TRANSACTION.ROUTES.INVALID_QUANTITY()),
+    message((LL) => LL.TRANSACTION.ROUTES.INVALID_CURRENCY()),
   ).isMongoId(),
   validateChecks,
   custom(async (req, LL) => {
@@ -60,6 +61,7 @@ router.route("/").post([
       throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
     }
   }),
+  createTransaction,
 ]);
 
 router.route("/account/:accountId").get([
@@ -145,3 +147,5 @@ router.route("/user/:userId").get(
   ],
   getAllTransactionsByUser,
 );
+
+export default router;

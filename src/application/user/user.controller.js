@@ -26,13 +26,14 @@ export const createUserWithAccount = async (req, res) => {
       job_name,
       monthly_income,
       currency_income,
+      initial_balance,
     } = req.body;
 
     // Crear la cuenta
     const accountData = {
       owner: undefined, // Se asignará después de crear el usuario
       currency: currency_income,
-      balance: 0,
+      balance: initial_balance,
       tp_status: "ACTIVE",
     };
 

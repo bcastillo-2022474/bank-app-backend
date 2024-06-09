@@ -2,23 +2,44 @@ import { logger } from "../../utils/logger.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import User, { ACTIVE } from "../user/user.model.js";
-import Transaction from "./transaction.model.js";
+import Transaction, { DEPOSIT } from "./transaction.model.js";
 import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
+import Account from "../account/account.model.js";
 
 export const createTransaction = async (req, res) => {
+  const session = await Transaction.startSession();
+  session.startTransaction();
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Start create transaction");
-    const { amount, account, type } = req.body;
+    const { amount, account, type, currency } = req.body;
 
     const transaction = new Transaction({
       amount,
       account,
       type,
+      currency,
     });
 
+    await Account.findOneAndUpdate(
+      {
+        _id: account,
+        tp_status: ACTIVE,
+      },
+      {
+        $inc: {
+          balance: type === DEPOSIT ? amount : -amount,
+        },
+      },
+      {
+        session,
+        new: true,
+      },
+    );
+
     await transaction.save();
+    await session.commitTransaction();
 
     res.status(StatusCodes.CREATED).json({
       data: transaction,
@@ -27,8 +48,11 @@ export const createTransaction = async (req, res) => {
 
     logger.info("Transaction created successfully");
   } catch (error) {
+    await session.abortTransaction();
     logger.error("Create transaction controller error of type: ", error.name);
     handleResponse(res, error, LL);
+  } finally {
+    session.endSession();
   }
 };
 

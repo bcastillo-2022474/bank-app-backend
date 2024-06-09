@@ -74,8 +74,12 @@ router.route("/").post(
     ).isFloat({ min: 0 }),
     body(
       "currency_income",
-      message((LL) => LL.USER.ROUTES.INVALID_CURRENCY_INCOME()),
+      message((LL) => LL.USER.ROUTES.INVALID_CURRENCY()),
     ).isMongoId(),
+    body(
+      "initial_balance",
+      message((LL) => LL.USER.ROUTES.INVALID_INITIAL_BALANCE()),
+    ).isFloat({ min: 0 }),
     validateChecks,
 
     // CUSTOM MIDDLEWARES
