@@ -35,7 +35,7 @@ export class AccountInsufficientFundsError extends Error {
 export class AccountDailyQuotaExceededError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = StatusCodes.PAYMENT_REQUIRED;
+    this.statusCode = StatusCodes.FORBIDDEN;
     this.name = "AccountDailyQuotaExceededError";
   }
 }

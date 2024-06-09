@@ -22,6 +22,7 @@ import {
   getAllTransactionsByUser,
 } from "./transaction.controller.js";
 import { TransactionExceedsMaxWithdrawalError } from "./transaction.error.js";
+import { Types } from "mongoose";
 
 const router = Router();
 
@@ -86,7 +87,9 @@ router.route("/").post([
       // filters all WITHDRAWAL transactions of the day made by the account
       {
         $match: {
-          account: account._id,
+          // Is necessary to convert the string account mongoID to ObjectId
+          // for aggregation to work
+          account: new Types.ObjectId(account),
           type: WITHDRAWAL,
           created_at: {
             $gte: new Date(new Date().setHours(0, 0, 0, 0)),
@@ -107,13 +110,12 @@ router.route("/").post([
       // projects only the total sum
       {
         $project: {
+          _id: 0,
           total: 1,
         },
       },
       // SUMS THE AMOUNT OF THE NEW TRANSACTION TO THE DAILY QUOTA
-    ]).then((result) => (result[0]?.total || 0) + amount);
-
-    console.log({ dailyQuota });
+    ]).then(([result]) => (result?.total ?? 0) + amount);
 
     if (dailyQuota > MAX_DAILY_QUOTA) {
       throw new AccountDailyQuotaExceededError(
