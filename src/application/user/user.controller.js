@@ -1,19 +1,17 @@
 import { StatusCodes } from "http-status-codes";
-import User from "../user/user.model.js";
+import User, { ACTIVE } from "../user/user.model.js";
 import Account from "../account/account.model.js";
 import mongoose from "mongoose";
-import { getTranslationFunctions } from "../../utils/get-translations-locale.js"; // Ajusta la ruta según sea necesario
+import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
-import { getError } from "../currency/currency.error.js";
-import { response } from "express";
+import { handleResponse } from "../../utils/handle-reponse.js";
 import { UserNotFound } from "./user.error.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   const session = await mongoose.startSession();
   session.startTransaction();
-
   try {
     logger.info("Start create User account ednpoint");
     const {
@@ -75,21 +73,14 @@ export const createUserWithAccount = async (req, res) => {
     logger.info("User create endpoint ended successfully");
   } catch (error) {
     session.abortTransaction();
-    const { code, stack, type } = getError(error);
-
-    logger.error("Create User controller error of type: ", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Create User controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   } finally {
     session.endSession();
   }
 };
 
-export const getAllUsers = async (req, res = response) => {
+export const getAllUsers = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Starting get all users with accounts");
@@ -110,50 +101,39 @@ export const getAllUsers = async (req, res = response) => {
 
     logger.info("Users with accounts retrieved successfully");
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
     logger.error(
       "Get all users with accounts controller error of type: ",
-      type,
+      error.name,
     );
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    handleResponse(res, error, LL);
   }
 };
 
-export const getUserAccountsById = async (req, res) => {
+export const getUserById = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
-    logger.info("Starting get user accounts by ID");
+    logger.info("Starting get user by ID");
 
-    const userId = req.params.id; // Obtiene el ID del usuario de los parámetros de la solicitud
+    const { id } = req.params; // Obtiene el ID del usuario de los parámetros de la solicitud
 
-    // Busca el usuario por su ID y poblamos las cuentas asociadas
-    const user = await User.findById(userId).populate("main_account accounts");
+    // Busca el usuario por su ID
+    const user = await User.findOne({
+      _id: id,
+      tp_status: ACTIVE,
+    }).populate("accounts main_account");
 
     if (!user) {
       throw new UserNotFound(LL.USER.CONTROLLER.USER_NOT_FOUND);
     }
 
     res.status(StatusCodes.OK).json({
-      message: LL.USER.CONTROLLER.USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY(),
+      message: LL.USER.CONTROLLER.RETRIEVED_SUCCESSFULLY(),
       data: user,
     });
 
-    logger.info("User accounts retrieved successfully");
+    logger.info("User retrieved successfully");
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
-    logger.error("Get user accounts by ID controller error of type: ", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Get user by ID controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };

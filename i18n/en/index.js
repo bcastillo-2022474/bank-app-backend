@@ -12,8 +12,8 @@ const en = {
         ENDPOINT_NOT_FOUND: "Endpoint not found",
         INVALID_OPTIONAL_LIMIT: "If provided, limit must be a valid positive integer",
         INVALID_OPTIONAL_PAGE: "If provided, page must be a valid positive integer",
-        INVALID_MONGO_ID: "Invalid mongo id",
         INTERNAL_SERVER_ERROR: "Internal server error",
+        INVALID_REQUEST: "Invalid request",
     },
     DB: {
         TP_STATUS_REQUIRED: "The tp_status is required",
@@ -65,10 +65,20 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-
+      INVALID_SERVICE: "service must be a MongoID",
+      INVALID_TOTAL: "total must be a positive number",
+      INVALID_DEBITED_ACCOUNT: "debited_account must be a valid MongoID",
+      INVALID_OPTIONAL_SERVICE: "If provided, service must be a valid MongoID",
+      INVALID_OPTIONAL_TOTAL: "If provided, total must be a valid positive number",
+      INVALID_OPTIONAL_DEBITED_ACCOUNT: "If provided, debited account must be a valid MongoID",
+      INVALID_PAYOUT_ID: "Payout param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
-
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Payouts retrieved successfully",
+      CREATED: "Payout created successfully",
+      UPDATED: "Payout update successfully",
+      DELETED: "Payout deleted successfully",
     }
   },
   CURRENCY:{
@@ -93,6 +103,8 @@ const en = {
           INVALID_OPTIONAL_SYMBOL: "If provided, symbol must be a valid",
           INVALID_OPTIONAL_NAME: "If provided, name must be a valid",
           INVALID_OPTIONAL_KEY: "If provided, key must be a valid",
+          INVALID_CURRENCY_ID: "Currency param url id must be a valid mongo id",
+
       },
       CONTROLLER: {
           MULTIPLE_RETRIEVED_SUCCESSFULLY: "Currencies retrieved successfully",
@@ -106,7 +118,27 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
-    }
+      TP_STATUS_REQUIRED: "The tp_status is required",
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple Retrieved successfully",
+      CREATED: "Account Created successfully",
+      UPDATED: "Account Updated successfully",
+      DELETED: "Account Deleted successfully",
+    },
+    ERROR: {
+      NOT_FOUND: "Account was not found",
+      OWNER_ALREADY_EXISTS: "Owner Already Exists",
+      CURRENCY_ALREADY_EXISTS: "Currency Already Exists",
+      BALANCE_ALREADY_EXISTS: "Balance Already Exists",
+    },
+    ROUTES: {
+      INVALID_OWNER: "owner must be a MongoID",
+      INVALID_CURRENCY: "currency must be a MongoID",
+      INVALID_BALANCE: "balnace must be a positive number",
+      INVALID_OPTIONAL_CURRENCY: "If provided, currency must be a valid MongoID",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
+    },
   },
   PRODUCT: {
     DB: {
@@ -130,6 +162,9 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
       PRICE_REQUIRED: "The price is required",
       CURRENCY_REQUIRED: "The currency is required",
+    },
+    ERROR: {
+      NOT_FOUND: "The service was not found",
     }
   },
   TRANSACTION: {
@@ -159,24 +194,27 @@ const en = {
       USER_CREATED: "User has been successfully created!",
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
       USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
-      USER_NOT_FOUND: "User has not found in the db"
+      USER_NOT_FOUND: "User has not found in the db",
+      RETRIEVED_SUCCESSFULLY: "User retrieved successfully",
     },
     ROUTES: {
       USER_EMAIL: "The email must be a valid email",
-      INVALID_PASSWORD: "The password must have 8 characters, 1 letter LowerCase, 1 letter Uppercase and 1 number",
-      INVALID_USERNAME: "The username must be 3 min characters and max 255 characters",
-      INVALID_NAME: "The username must be 3 min characters and max 255 characters",
-      INVALID_LAST_NAME: "The username must be 3 min characters and max 255 characters",
-      INVALID_ADDRESS: "The address must be 3 min characters and max 255 characters",
+      INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
+      INVALID_USERNAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_ADDRESS: "The address must be a string at least 3 characters long and maximum 255 characters long",
       INVALID_DPI: "The DPI must be only 13 characters long and only numbers ",
       INVALID_PHONE_NUMBER: "The phone number must be 8 characters and only numbers",
-      INVALID_JOB_NAME: "The must be 3 min characters and max 255 characters",
+      INVALID_JOB_NAME: "The must be a string at least 3 characters long and maximum 255 characters long",
       INVALID_MONTHLY_INCOME: "The monthly income only positive numbers",
-      INVALID_CURRENCY_INCOME: "The invalid currency income must be valid"
+      INVALID_CURRENCY_INCOME: "The invalid currency income must be valid",
+      INVALID_USER_ID: "User param url id must be a valid mongo id",
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",
-      EMAIL_ALREADY_EXIST: "The email is already in use"
+      EMAIL_ALREADY_EXIST: "The email is already in use",
+      NOT_FOUND: "The user was not found",
     }
   }
 };
