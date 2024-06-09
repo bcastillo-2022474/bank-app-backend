@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
 
 export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const MAX_DAILY_QUOTA = 10_000;
 
 const UserSchema = new Schema({
   email: {

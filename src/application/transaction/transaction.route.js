@@ -1,19 +1,28 @@
 import { Router } from "express";
 import { body, param, query } from "express-validator";
-import { DEPOSIT, WITHDRAWAL } from "./transaction.model.js";
+import Transaction, {
+  DEPOSIT,
+  MAX_WITHDRAWAL_PER_TRANSACTION,
+  WITHDRAWAL,
+} from "./transaction.model.js";
 import { message } from "../../utils/message.js";
 import { validateChecks } from "../../middleware/validate-checks.js";
 import { custom } from "../../middleware/custom.js";
-import { AccountNotFound } from "../account/account.error.js";
+import {
+  AccountDailyQuotaExceededError,
+  AccountNotFound,
+} from "../account/account.error.js";
 import Account, { ACTIVE } from "../account/account.model.js";
 import Currency from "../currency/currency.model.js";
 import { CurrencyNotFound } from "../currency/currency.error.js";
-import User from "../user/user.model.js";
+import User, { MAX_DAILY_QUOTA } from "../user/user.model.js";
 import {
   createTransaction,
   getAllTransactionsByAccount,
   getAllTransactionsByUser,
 } from "./transaction.controller.js";
+import { TransactionExceedsMaxWithdrawalError } from "./transaction.error.js";
+import { Types } from "mongoose";
 
 const router = Router();
 
@@ -59,6 +68,59 @@ router.route("/").post([
 
     if (!currencyFound) {
       throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+    }
+  }),
+  custom(async (req, LL) => {
+    const { amount, type } = req.body;
+    if (type === WITHDRAWAL && amount > MAX_WITHDRAWAL_PER_TRANSACTION) {
+      throw new TransactionExceedsMaxWithdrawalError(
+        LL.TRANSACTION.ERROR.EXCEEDED_MAX_WITHDRAWAL_PER_TRANSACTION(),
+      );
+    }
+  }),
+  custom(async (req, LL) => {
+    const { account, amount, type } = req.body;
+    // if its not a withdrawal, skip
+    if (type !== WITHDRAWAL) return;
+
+    const dailyQuota = await Transaction.aggregate([
+      // filters all WITHDRAWAL transactions of the day made by the account
+      {
+        $match: {
+          // Is necessary to convert the string account mongoID to ObjectId
+          // for aggregation to work
+          account: new Types.ObjectId(account),
+          type: WITHDRAWAL,
+          created_at: {
+            $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          },
+        },
+      },
+      // groups and sums all WITHDRAWAL transactions
+      {
+        $group: {
+          // MUST USE `_id: null` TO GROUP ALL DOCUMENTS
+          // eslint-disable-next-line unicorn/no-null
+          _id: null,
+          total: {
+            $sum: "$amount",
+          },
+        },
+      },
+      // projects only the total sum
+      {
+        $project: {
+          _id: 0,
+          total: 1,
+        },
+      },
+      // SUMS THE AMOUNT OF THE NEW TRANSACTION TO THE DAILY QUOTA
+    ]).then(([result]) => (result?.total ?? 0) + amount);
+
+    if (dailyQuota > MAX_DAILY_QUOTA) {
+      throw new AccountDailyQuotaExceededError(
+        LL.ACCOUNT.ERROR.DAILY_QUOTA_EXCEEDED(),
+      );
     }
   }),
   createTransaction,
