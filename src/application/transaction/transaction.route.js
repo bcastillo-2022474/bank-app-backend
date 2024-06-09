@@ -74,7 +74,9 @@ router.route("/account/:accountId").get([
   query(
     "currency",
     message((LL) => LL.TRANSACTION.ROUTES.INVALID_OPTIONAL_CURRENCY_PARAM()),
-  ),
+  )
+    .optional()
+    .isMongoId(),
   query("limit")
     .optional()
     .isInt({ min: 0 })
@@ -102,6 +104,21 @@ router.route("/account/:accountId").get([
       throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
     }
   }),
+  custom(async (req, LL) => {
+    const { currency } = req.query;
+    // if not currency provided, skip
+    if (currency === undefined || currency === null) return;
+
+    // check if currency exists
+    const currencyFound = await Currency.findOne({
+      _id: currency,
+      tp_status: ACTIVE,
+    });
+
+    if (!currencyFound) {
+      throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+    }
+  }),
   getAllTransactionsByAccount,
 ]);
 
@@ -116,7 +133,9 @@ router.route("/user/:userId").get(
     query(
       "currency",
       message((LL) => LL.TRANSACTION.ROUTES.INVALID_OPTIONAL_CURRENCY_PARAM()),
-    ),
+    )
+      .optional()
+      .isMongoId(),
     query("limit")
       .optional()
       .isInt({ min: 0 })
@@ -132,6 +151,7 @@ router.route("/user/:userId").get(
       message((LL) => LL.TRANSACTION.ROUTES.INVALID_USER_ID()),
     ).isMongoId(),
     validateChecks,
+
     custom(async (req, LL) => {
       const { userId } = req.params;
       // check if account exists
@@ -142,6 +162,21 @@ router.route("/user/:userId").get(
 
       if (!userFound) {
         throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
+      }
+    }),
+    custom(async (req, LL) => {
+      const { currency } = req.query;
+      // if not currency provided, skip
+      if (currency === undefined || currency === null) return;
+
+      // check if currency exists
+      const currencyFound = await Currency.findOne({
+        _id: currency,
+        tp_status: ACTIVE,
+      });
+
+      if (!currencyFound) {
+        throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
       }
     }),
   ],

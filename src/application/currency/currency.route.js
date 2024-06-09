@@ -99,7 +99,6 @@ router
   .route("/:id")
   .put(
     [
-      retrieveLocale,
       param("id").isMongoId(),
       body("symbol").optional().isString().isLength({ max: 3 }),
       body(
@@ -119,6 +118,9 @@ router
       validateChecks,
       custom(async (req, LL) => {
         const { symbol } = req.body;
+        // if symbol not provided, skip
+        if (symbol === undefined || symbol === null) return;
+
         // Check if the symbol already exists in another currency except itself
         const currency = await Currency.findOne({
           _id: { $ne: req.params.id },
@@ -133,6 +135,9 @@ router
       }),
       custom(async (req, LL) => {
         const { name } = req.body;
+        // if name not provided, skip
+        if (name === undefined || name === null) return;
+
         // Check if the name already exists in another currency except itself
         const currency = await Currency.findOne({
           _id: { $ne: req.params.id },
@@ -147,6 +152,9 @@ router
       }),
       custom(async (req, LL) => {
         const { key } = req.body;
+        // if key not provided, skip
+        if (key === undefined || key === null) return;
+
         // Check if the key already exists in another currency except itself
         const currency = await Currency.findOne({
           _id: { $ne: req.params.id },

@@ -7,6 +7,8 @@ import {
 import { app } from "../../routes.js";
 import { getCurrency, getUser } from "../utils/valid-payloads.js";
 
+const transactionRoute = "/transaction";
+
 describe("create transaction endpoint", () => {
   describe(`Should return ${StatusCodes.BAD_REQUEST} code when `, () => {
     it("the amount is a negative number", async () => {
@@ -15,24 +17,26 @@ describe("create transaction endpoint", () => {
       const userResponse = await getUser({
         currency_income: currencyResponse.body.data._id,
       });
-      console.log(userResponse.body);
+
       const transaction = {
         currency: currencyResponse.body.data._id,
         type: Math.random() > 0.5 ? DEPOSIT : WITHDRAWAL,
         amount: -100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(
+        response.body.errors.some((str) => str.startsWith("body[amount]")),
+      );
     });
 
     it("the amount is not a number", async () => {
@@ -45,19 +49,21 @@ describe("create transaction endpoint", () => {
         currency: currencyResponse.body.data._id,
         type: Math.random() > 0.5 ? DEPOSIT : WITHDRAWAL,
         amount: "not a number",
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(
+        response.body.errors.some((str) => str.startsWith("body[amount]")),
+      );
     });
 
     it("the user is not a mongoID", async () => {
@@ -72,13 +78,15 @@ describe("create transaction endpoint", () => {
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(
+        response.body.errors.some((str) => str.startsWith("body[account]")),
+      );
     });
 
     it("the currency is not a mongoID", async () => {
@@ -92,18 +100,20 @@ describe("create transaction endpoint", () => {
         currency: "not a mongoID",
         type: Math.random() > 0.5 ? DEPOSIT : WITHDRAWAL,
         amount: 100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(
+        response.body.errors.some((str) => str.startsWith("body[currency]")),
+      );
     });
 
     it("the type is not a valid type", async () => {
@@ -116,19 +126,19 @@ describe("create transaction endpoint", () => {
         currency: currencyResponse.body.data._id,
         type: "not a valid type",
         amount: 100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body.errors.some((str) => str.startsWith("body[type]")));
     });
   });
 
@@ -145,12 +155,11 @@ describe("create transaction endpoint", () => {
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
     });
 
@@ -164,17 +173,16 @@ describe("create transaction endpoint", () => {
         currency: "60f3f1f4e1e3c8b6a9e4b0b6",
         type: Math.random() > 0.5 ? DEPOSIT : WITHDRAWAL,
         amount: 100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
     });
   });
@@ -190,12 +198,12 @@ describe("create transaction endpoint", () => {
         currency: currencyResponse.body.data._id,
         type: DEPOSIT,
         amount: 100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
       const userResponseAfter = await request(app).get(
         `/user/${userResponse.body.data._id}`,
@@ -204,11 +212,10 @@ describe("create transaction endpoint", () => {
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(userResponseAfter.status).toBe(StatusCodes.OK);
 
-      expect(userResponseAfter.data.main_account.balance).toBe(
+      expect(userResponseAfter.body.data.main_account.balance).toBe(
         userResponse.body.data.main_account.balance + transaction.amount,
       );
     });
@@ -223,12 +230,12 @@ describe("create transaction endpoint", () => {
         currency: currencyResponse.body.data._id,
         type: WITHDRAWAL,
         amount: 100,
-        account: userResponse.body.data.main_account,
+        account: userResponse.body.data.main_account._id,
       };
 
       // Act
       const response = await request(app)
-        .post("/transaction")
+        .post(transactionRoute)
         .send(transaction);
 
       const userResponseAfter = await request(app).get(
@@ -238,11 +245,10 @@ describe("create transaction endpoint", () => {
       // Assert
       expect(userResponse.status).toBe(StatusCodes.CREATED);
       expect(currencyResponse.status).toBe(StatusCodes.CREATED);
-      console.log(response.body);
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(userResponseAfter.status).toBe(StatusCodes.OK);
 
-      expect(userResponseAfter.data.main_account.balance).toBe(
+      expect(userResponseAfter.body.data.main_account.balance).toBe(
         userResponse.body.data.main_account.balance - transaction.amount,
       );
     });

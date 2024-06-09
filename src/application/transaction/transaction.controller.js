@@ -60,8 +60,8 @@ export const getAllTransactionsByUser = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Start get all transactions by user");
-    const { userId, currency, type } = req.params;
-    const { limit, page } = req.query;
+    const { userId } = req.params;
+    const { limit = 0, page = 0, currency, type } = req.query;
 
     const user = await User.findOne({
       _id: userId,
@@ -69,14 +69,13 @@ export const getAllTransactionsByUser = async (req, res) => {
     });
 
     const query = cleanObject({
-      tp_status: ACTIVE,
       account: { $in: user.accounts },
       currency,
       type,
     });
 
     const [total, transactions] = await Promise.all([
-      Transaction.countDocuments(query),
+      Transaction.countDocuments({ account: query.account }),
       Transaction.find(query)
         .limit(limit)
         .skip(limit * page),
@@ -102,18 +101,17 @@ export const getAllTransactionsByAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Start get all transactions by account");
-    const { accountId, currency, type } = req.params;
-    const { limit, page } = req.query;
+    const { accountId } = req.params;
+    const { limit = 0, page = 0, currency, type } = req.query;
 
     const query = cleanObject({
-      tp_status: ACTIVE,
       account: accountId,
       currency,
       type,
     });
 
     const [total, transactions] = await Promise.all([
-      Transaction.countDocuments(query),
+      Transaction.countDocuments({ account: query.account }),
       Transaction.find(query)
         .limit(limit)
         .skip(limit * page),

@@ -34,7 +34,7 @@ export const createUserWithAccount = async (req, res) => {
       owner: undefined, // Se asignará después de crear el usuario
       currency: currency_income,
       balance: initial_balance,
-      tp_status: "ACTIVE",
+      tp_status: ACTIVE,
     };
 
     logger.info("Creating Account model");
@@ -58,19 +58,22 @@ export const createUserWithAccount = async (req, res) => {
     };
 
     const newUser = new User(cleanObject(userDataWithMainAccount));
+
+    logger.info("Saving user");
     await newUser.save({ session });
     newAccount.owner = newUser._id;
 
     logger.info("Saving account");
     await newAccount.save({ session });
 
+    await newUser.populate("main_account");
+
+    await session.commitTransaction();
     res.status(StatusCodes.CREATED).json({
       message: LL.USER.CONTROLLER.USER_CREATED(),
       data: newUser,
     });
 
-    await session.commitTransaction();
-    session.endSession();
     logger.info("User create endpoint ended successfully");
   } catch (error) {
     session.abortTransaction();
