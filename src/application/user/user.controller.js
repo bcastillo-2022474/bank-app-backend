@@ -1,17 +1,17 @@
 import { StatusCodes } from "http-status-codes";
-import User from "../user/user.model.js";
+import User, { ACTIVE } from "../user/user.model.js";
 import Account from "../account/account.model.js";
 import mongoose from "mongoose";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import { UserNotFound } from "./user.error.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   const session = await mongoose.startSession();
   session.startTransaction();
-
   try {
     logger.info("Start create User account ednpoint");
     const {
@@ -77,5 +77,63 @@ export const createUserWithAccount = async (req, res) => {
     handleResponse(res, error, LL);
   } finally {
     session.endSession();
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all users with accounts");
+
+    const { limit = 0, page = 0 } = req.query;
+    const [total, users] = await Promise.all([
+      User.countDocuments(),
+      User.find()
+        .limit(limit)
+        .skip(limit * page),
+    ]);
+    logger.info("no jalo");
+    res.status(StatusCodes.OK).json({
+      message: LL.USER.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: users,
+      total,
+    });
+
+    logger.info("Users with accounts retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all users with accounts controller error of type: ",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
+
+export const getUserById = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get user by ID");
+
+    const { id } = req.params; // Obtiene el ID del usuario de los parámetros de la solicitud
+
+    // Busca el usuario por su ID
+    const user = await User.findOne({
+      _id: id,
+      tp_status: ACTIVE,
+    }).populate("accounts main_account");
+
+    if (!user) {
+      throw new UserNotFound(LL.USER.CONTROLLER.USER_NOT_FOUND);
+    }
+
+    res.status(StatusCodes.OK).json({
+      message: LL.USER.CONTROLLER.RETRIEVED_SUCCESSFULLY(),
+      data: user,
+    });
+
+    logger.info("User retrieved successfully");
+  } catch (error) {
+    logger.error("Get user by ID controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };
