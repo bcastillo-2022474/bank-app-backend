@@ -131,6 +131,8 @@ const en = {
       OWNER_ALREADY_EXISTS: "Owner Already Exists",
       CURRENCY_ALREADY_EXISTS: "Currency Already Exists",
       BALANCE_ALREADY_EXISTS: "Balance Already Exists",
+      INSUFFICIENT_BALANCE: "Not enough funds to complete the transaction",
+      DAILY_QUOTA_EXCEEDED: "You have exceeded the daily quota",
     },
     ROUTES: {
       INVALID_OWNER: "owner must be a MongoID",
@@ -188,6 +190,9 @@ const en = {
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Transactions retrieved successfully",
       CREATED: "Transaction created successfully",
     },
+    ERROR: {
+      EXCEEDED_MAX_WITHDRAWAL_PER_TRANSACTION: "The amount exceeds the maximum withdrawal per transaction",
+    }
   },
   USER: {
     DB: {

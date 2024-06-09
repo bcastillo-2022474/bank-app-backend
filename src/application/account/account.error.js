@@ -23,3 +23,19 @@ export class AccountInvalidValue extends Error {
     this.name = "AccountInvalidValue";
   }
 }
+
+export class AccountInsufficientFundsError extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.PAYMENT_REQUIRED;
+    this.name = "AccountInsufficientFundsError";
+  }
+}
+
+export class AccountDailyQuotaExceededError extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.PAYMENT_REQUIRED;
+    this.name = "AccountDailyQuotaExceededError";
+  }
+}

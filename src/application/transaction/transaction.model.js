@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
 export const [DEPOSIT, WITHDRAWAL] = ["DEPOSIT", "WITHDRAWAL"];
+export const MAX_WITHDRAWAL_PER_TRANSACTION = 2000;
 
 const transactionSchema = new Schema({
   type: {

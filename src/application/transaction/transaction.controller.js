@@ -6,6 +6,7 @@ import Transaction, { DEPOSIT } from "./transaction.model.js";
 import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import Account from "../account/account.model.js";
+import { AccountInsufficientFundsError } from "../account/account.error.js";
 
 export const createTransaction = async (req, res) => {
   const session = await Transaction.startSession();
@@ -22,7 +23,7 @@ export const createTransaction = async (req, res) => {
       currency,
     });
 
-    await Account.findOneAndUpdate(
+    const updatedAccount = await Account.findOneAndUpdate(
       {
         _id: account,
         tp_status: ACTIVE,
@@ -37,6 +38,12 @@ export const createTransaction = async (req, res) => {
         new: true,
       },
     );
+
+    if (updatedAccount.balance < 0) {
+      throw new AccountInsufficientFundsError(
+        LL.ACCOUNT.ERROR.INSUFFICIENT_BALANCE(),
+      );
+    }
 
     await transaction.save();
     await session.commitTransaction();
@@ -78,7 +85,11 @@ export const getAllTransactionsByUser = async (req, res) => {
       Transaction.countDocuments({ account: query.account }),
       Transaction.find(query)
         .limit(limit)
-        .skip(limit * page),
+        .skip(limit * page)
+        // get recents first
+        .sort({
+          created_at: -1,
+        }),
     ]);
 
     res.status(StatusCodes.OK).json({
@@ -114,7 +125,11 @@ export const getAllTransactionsByAccount = async (req, res) => {
       Transaction.countDocuments({ account: query.account }),
       Transaction.find(query)
         .limit(limit)
-        .skip(limit * page),
+        .skip(limit * page)
+        // get recents first
+        .sort({
+          created_at: -1,
+        }),
     ]);
 
     res.status(StatusCodes.OK).json({
