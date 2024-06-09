@@ -205,7 +205,11 @@ const en = {
       MAIN_ACCOUNT_REQUIRED: "The main account is required",
     },
     CONTROLLER: {
-      USER_CREATED: "User has been successfully created!"
+      USER_CREATED: "User has been successfully created!",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
+      USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
+      USER_NOT_FOUND: "User has not found in the db",
+      RETRIEVED_SUCCESSFULLY: "User retrieved successfully",
     },
     ROUTES: {
       USER_EMAIL: "The email must be a valid email",
@@ -218,8 +222,9 @@ const en = {
       INVALID_PHONE_NUMBER: "The phone number must be 8 characters and only numbers",
       INVALID_JOB_NAME: "The must be a string at least 3 characters long and maximum 255 characters long",
       INVALID_MONTHLY_INCOME: "The monthly income only positive numbers",
-      INVALID_CURRENCY: "The invalid currency income must be a valid MongoID",
       INVALID_INITIAL_BALANCE: "The initial balance must be a positive number",
+      INVALID_CURRENCY_INCOME: "The invalid currency income must be valid",
+      INVALID_USER_ID: "User param url id must be a valid mongo id",
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",
