@@ -2,13 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import request from "supertest";
 import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
+import { getCurrency } from "../utils/valid-payloads.js";
 
 const userRoute = "/user";
-
-const currencyRequest = () =>
-  request(app)
-    .post("/currency")
-    .send({ symbol: "USD", name: "United States Dollar", key: "US" });
 
 describe("Create account endpoint", () => {
   const [firstName, lastName] = [
@@ -44,6 +40,11 @@ describe("Create account endpoint", () => {
     phone_number: "12345678",
     job_name: faker.person.jobTitle(),
     monthly_income: faker.finance.amount({
+      min: 1000,
+      max: 10_000,
+      dec: 2,
+    }),
+    initial_balance: faker.finance.amount({
       min: 1000,
       max: 10_000,
       dec: 2,
@@ -103,7 +104,7 @@ describe("Create account endpoint", () => {
 
   describe(`should return ${StatusCodes.NOT_FOUND} code when`, () => {
     it("the owner does not exist", async () => {
-      const currencyResponse = await currencyRequest();
+      const currencyResponse = await getCurrency();
       const currency = currencyResponse.body.data;
 
       const response = await request(app).post("/account").send({
@@ -117,7 +118,7 @@ describe("Create account endpoint", () => {
     });
 
     it("the currency does not exist", async () => {
-      const responseCurrency = await currencyRequest();
+      const responseCurrency = await getCurrency();
       const currency = responseCurrency.body.data;
 
       const responseUser = await request(app)
@@ -137,7 +138,7 @@ describe("Create account endpoint", () => {
   });
 
   it(`should return ${StatusCodes.CREATED} code when creating an account with proper values`, async () => {
-    const responseCurrency = await currencyRequest();
+    const responseCurrency = await getCurrency();
     const currency = responseCurrency.body.data;
 
     const responseUser = await request(app)

@@ -23,6 +23,10 @@ const transferenceSchema = new Schema({
     ref: "Currency",
     required: [true, L.en.TRANSFERENCE.DB.CURRENCY_REQUIRED()],
   },
+  description: {
+    type: String,
+    required: [true, L.en.TRANSFERENCE.DB.DESCRIPTION_REQUIRED()],
+  },
   create_at: {
     type: Date,
     default: Date.now,

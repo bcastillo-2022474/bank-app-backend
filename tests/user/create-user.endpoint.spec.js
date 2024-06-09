@@ -47,9 +47,14 @@ describe("Create user with account endpoint", () => {
       max: 10_000,
       dec: 2,
     }),
+    initial_balance: faker.finance.amount({
+      min: 1000,
+      max: 10_000,
+      dec: 2,
+    }),
   };
 
-  describe(`should return ${StatusCodes.BAD_REQUEST} when`, () => {
+  describe(`should return ${StatusCodes.BAD_REQUEST} code when`, () => {
     it("the email is invalid", async () => {
       const responseCurrency = await currencyRequest();
       const currency = responseCurrency.body.data;
@@ -248,14 +253,30 @@ describe("Create user with account endpoint", () => {
         .post(userRoute)
         .send({
           ...validPayload,
-          email: "ajklsdas",
-          currency_income: "60d0fe4f5311236168a109ca",
+          currency_income: "non-mongo-id",
         });
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
 
       expect(response.body.errors.length).toBe(1);
-      expect(response.body.errors.at(0)).toContain("body[email]");
+      expect(response.body.errors.at(0)).toContain("body[currency_income]");
+    });
+
+    it("the initial_balance is invalid", async () => {
+      const responseCurrency = await currencyRequest();
+      const currency = responseCurrency.body.data;
+      const response = await request(app)
+        .post(userRoute)
+        .send({
+          ...validPayload,
+          initial_balance: Number.NaN,
+          currency_income: currency._id,
+        });
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors.at(0)).toContain("body[initial_balance]");
     });
   });
 
@@ -311,7 +332,7 @@ describe("Create user with account endpoint", () => {
     });
   });
 
-  describe(`should return ${StatusCodes.CREATED} when`, () => {
+  describe(`should return ${StatusCodes.CREATED} code when`, () => {
     it("Everything its right", async () => {
       const responseCurrency = await currencyRequest();
       const currency = responseCurrency.body.data;

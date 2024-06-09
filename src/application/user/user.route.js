@@ -100,6 +100,10 @@ router
         "currency_income",
         message((LL) => LL.USER.ROUTES.INVALID_CURRENCY_INCOME()),
       ).isMongoId(),
+      body(
+        "initial_balance",
+        message((LL) => LL.USER.ROUTES.INVALID_INITIAL_BALANCE()),
+      ).isFloat({ min: 0 }),
       validateChecks,
 
       // CUSTOM MIDDLEWARES
@@ -130,8 +134,9 @@ router.route("/:id").get(
       "id",
       message((LL) => LL.USER.ROUTES.INVALID_USER_ID()),
     ).isMongoId(), // Validación del ID del usuario
+    validateChecks,
   ],
-  getUserById, // Llama al controlador para obtener las cuentas del usuario por su ID
+  getUserById, // Llama al controlador para obtener al usuario y sus cuentas por ID
 );
 
 export default router;

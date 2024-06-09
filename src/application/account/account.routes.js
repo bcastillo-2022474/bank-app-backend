@@ -72,7 +72,7 @@ router
           tp_status: ACTIVE,
         });
         if (!currencyFound) {
-          throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
         }
       }),
     ],
@@ -102,14 +102,16 @@ router
       }),
       custom(async (req, LL) => {
         const { currency } = req.body;
-        if (currency) {
-          const currencyFound = await Currency.findOne({
-            _id: currency,
-            tp_status: ACTIVE,
-          });
-          if (!currencyFound) {
-            throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
-          }
+        // if currency not provided, skip
+        if (currency === undefined || currency === null) return;
+
+        // check if currency exists
+        const currencyFound = await Currency.findOne({
+          _id: currency,
+          tp_status: ACTIVE,
+        });
+        if (!currencyFound) {
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
         }
       }),
     ],
