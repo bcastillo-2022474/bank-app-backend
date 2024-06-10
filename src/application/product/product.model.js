@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
 
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const productSchema = new Schema({
   name: {
