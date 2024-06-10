@@ -37,16 +37,17 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "pino-pretty": "^11.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
     "http-status-codes": "^2.3.0",
     "intl": "^1.2.5",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
     "pino": "^9.1.0",
+    "pino-pretty": "^11.1.0",
     "typesafe-i18n": "^5.26.2"
   }
 }
