@@ -75,3 +75,15 @@ export const getUser = (user) => {
 
   return request(app).post("/user").send(validPayload);
 };
+
+export const getService = (service) => {
+  const validService = {
+    name: faker.lorem.words(3),
+    description: faker.lorem.words(5),
+    price: faker.finance.amount(),
+  };
+
+  return request(app)
+    .post("/service")
+    .send({ ...validService, ...service });
+};

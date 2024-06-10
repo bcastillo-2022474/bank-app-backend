@@ -167,6 +167,19 @@ const en = {
     },
     ERROR: {
       NOT_FOUND: "The service was not found",
+    },
+    ROUTES: {
+      INVALID_NAME: "Name must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_DESCRIPTION: "Description must be a string at least 5 characters long and maximum 255 characters long",
+      INVALID_PRICE: "Price must be a positive number",
+      INVALID_CURRENCY: "Currency must be a MongoID",
+      INVALID_SERVICE_ID: "Service param url id must be a valid mongo id",
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Services retrieved successfully",
+      CREATED: "Service created successfully",
+      UPDATED: "Service updated successfully",
+      DELETED: "Service deleted successfully",
     }
   },
   TRANSACTION: {
