@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import User, { ACTIVE } from "../user/user.model.js";
+import User, { ACTIVE, INACTIVE } from "../user/user.model.js";
 import Account from "../account/account.model.js";
 import mongoose from "mongoose";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
@@ -143,6 +143,35 @@ export const getUserById = async (req, res) => {
     logger.info("User retrieved successfully");
   } catch (error) {
     logger.error("Get user by ID controller error of type: ", error.name);
+    handleResponse(res, error, LL);
+  }
+};
+
+export const deleteUserById = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Start delete user by id");
+
+    const { id } = req.params;
+
+    const userDeleted = await User.findOneAndUpdate(
+      { _id: id, tp_status: ACTIVE },
+      { tp_status: INACTIVE, updated_at: Date.now() },
+      { new: true },
+    );
+
+    if (!userDeleted) {
+      throw new UserNotFound(LL.USER.ERROR.NOT_FOUND());
+    }
+
+    res.status(StatusCodes.OK).json({
+      data: userDeleted,
+      message: LL.USER.CONTROLLER.DELETED(),
+    });
+
+    logger.info("Delete user by id successfully");
+  } catch (error) {
+    logger.error("Delete user by id controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };

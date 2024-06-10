@@ -3,6 +3,7 @@ import {
   createUserWithAccount,
   getAllUsers,
   getUserById,
+  deleteUserById,
 } from "./user.controller.js"; // Ajusta la importación
 import { body, query, param } from "express-validator"; // Incluye query para validación de parámetros de consulta
 import { validateChecks } from "../../middleware/validate-checks.js";
@@ -137,6 +138,12 @@ router.route("/:id").get(
     validateChecks,
   ],
   getUserById, // Llama al controlador para obtener al usuario y sus cuentas por ID
+);
+router.delete(
+  "/:id",
+  message((LL) => LL.USER.ROUTES.INVALID_USER_ID()),
+  [param("id", "Invalid user ID").isMongoId(), validateChecks],
+  deleteUserById,
 );
 
 export default router;
