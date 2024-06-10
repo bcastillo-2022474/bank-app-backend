@@ -90,13 +90,18 @@ export const getAllUsers = async (req, res) => {
     logger.info("Starting get all users with accounts");
 
     const { limit = 0, page = 0 } = req.query;
+
+    const query = {
+      tp_status: ACTIVE,
+    };
+
     const [total, users] = await Promise.all([
-      User.countDocuments(),
-      User.find()
+      User.countDocuments(query),
+      User.find(query)
         .limit(limit)
         .skip(limit * page),
     ]);
-    logger.info("no jalo");
+
     res.status(StatusCodes.OK).json({
       message: LL.USER.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
       data: users,
