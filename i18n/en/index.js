@@ -149,6 +149,15 @@ const en = {
       PRICE_REQUIRED: "The price is required",
       CURRENCY_REQUIRED: "The currency is required",
       STOCK_REQUIRED: "The stock is required",
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple Retrieved successfully",
+      CREATED: "Product created successfully",
+      UPDATED: "Product updated successfully",
+      DELETED: "Product deleted successfully",
+    },
+    ERROR: {
+      NOT_FOUND: "Not Found",
     }
   },
   FAVORITE_ACCOUNT: {
