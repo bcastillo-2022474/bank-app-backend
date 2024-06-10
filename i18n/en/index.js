@@ -157,6 +157,9 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       ALIAS_REQUIRED: "The alias is required",
     },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Favorite account retrieved successfully",
+    }
   },
   SERVICE: {
     DB: {
