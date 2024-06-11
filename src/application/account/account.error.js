@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-export class AccountNotFound extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "AccountNotFound";
-  }
-}
-=======
 import { StatusCodes } from "http-status-codes";
 
 export class AccountAlreadyExist extends Error {
@@ -47,4 +39,3 @@ export class AccountDailyQuotaExceededError extends Error {
     this.name = "AccountDailyQuotaExceededError";
   }
 }
->>>>>>> develop

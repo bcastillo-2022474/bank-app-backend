@@ -1,5 +1,7 @@
 // @ts-check
 
+import { INSUFFICIENT_STORAGE } from 'http-status-codes';
+
 /**
  * @typedef { import('../i18n-types.js').BaseTranslation } BaseTranslation
  */
@@ -21,11 +23,15 @@ const en = {
     },
     ERROR: {
       GENERATE_TOKEN: "Error generating token",
-    }
+      }
   },
   TRANSFERENCE:{
     ERROR: {
       NOT_FOUND: "Transference not found",
+      NOT_SAME_CURRENCY_ACCOUNTS: "The account reciver has not the same currency",
+      NOT_SAME_CURRENCY: "The currency has to be the same as that of the accounts",
+      INSUFFICIENT_FOUNDS: "The account given has not enough founds",
+      
     },
     DB: {
       ACCOUNT_GIVEN_REQUIRED: "The account given is required",
@@ -35,14 +41,10 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
     },
     ROUTES: {
-<<<<<<< HEAD
       WHATEVER: "",
-=======
->>>>>>> develop
     },
     CONTROLLER: {
-
-
+      CREATED: "Transference successfully",
     }
   },
   PURCHASE:{
@@ -73,11 +75,6 @@ const en = {
       TOTAL_REQUIRED: "The total is required",
     },
     ROUTES: {
-<<<<<<< HEAD
-    },
-    CONTROLLER: {
-      
-=======
       INVALID_SERVICE: "service must be a MongoID",
       INVALID_TOTAL: "total must be a positive number",
       INVALID_DEBITED_ACCOUNT: "debited_account must be a valid MongoID",
@@ -92,7 +89,6 @@ const en = {
       CREATED: "Payout created successfully",
       UPDATED: "Payout update successfully",
       DELETED: "Payout deleted successfully",
->>>>>>> develop
     }
   },
   CURRENCY:{
@@ -132,13 +128,6 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       CURRENCY_REQUIRED: "The currency is required",
       BALANCE_REQUIRED: "The balance is required",
-<<<<<<< HEAD
-    },
-    ERROR: {
-     ACOUNT_NOT_FOUND: "The account not found", 
-    }
-
-=======
       TP_STATUS_REQUIRED: "The tp_status is required",
     },
     CONTROLLER: {
@@ -162,7 +151,6 @@ const en = {
       INVALID_OPTIONAL_CURRENCY: "If provided, currency must be a valid MongoID",
       INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
->>>>>>> develop
   },
   PRODUCT: {
     DB: {
