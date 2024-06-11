@@ -7,6 +7,7 @@ import { logger } from "../../utils/logger.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import { UserNotFound } from "./user.error.js";
+import { encrypt } from "../../utils/encrypt.js";
 
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
@@ -44,7 +45,7 @@ export const createUserWithAccount = async (req, res) => {
     const userDataWithMainAccount = {
       email,
       username,
-      password,
+      password: encrypt(password),
       name,
       last_name,
       address,
@@ -172,6 +173,59 @@ export const deleteUserById = async (req, res) => {
     logger.info("Delete user by id successfully");
   } catch (error) {
     logger.error("Delete user by id controller error of type: ", error.name);
+    handleResponse(res, error, LL);
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Start update user");
+
+    const { id } = req.params;
+    const {
+      username,
+      password,
+      name,
+      address,
+      phone_number,
+      job_name,
+      monthly_income,
+      currency_income,
+    } = req.body;
+
+    const isPasswordDefined = password !== undefined && password !== null;
+
+    const newPassword = isPasswordDefined ? encrypt(password) : password;
+
+    const userUpdated = await User.findOneAndUpdate(
+      { _id: id, tp_status: ACTIVE },
+      cleanObject({
+        username,
+        password: newPassword,
+        name,
+        address,
+        phone_number,
+        job_name,
+        monthly_income,
+        currency_income,
+        updated_at: Date.now(),
+      }),
+      { new: true },
+    );
+
+    if (!userUpdated) {
+      throw new UserNotFound(LL.USER.ERROR.NOT_FOUND());
+    }
+
+    res.status(StatusCodes.OK).json({
+      data: userUpdated,
+      message: LL.USER.CONTROLLER.UPDATED(),
+    });
+
+    logger.info("Update user successfully");
+  } catch (error) {
+    logger.error("Update user controller error of type: ", error.name);
     handleResponse(res, error, LL);
   }
 };
