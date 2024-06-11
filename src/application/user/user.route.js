@@ -141,8 +141,13 @@ router.route("/:id").get(
 );
 router.delete(
   "/:id",
-  message((LL) => LL.USER.ROUTES.INVALID_USER_ID()),
-  [param("id", "Invalid user ID").isMongoId(), validateChecks],
+  [
+    param(
+      "id",
+      message((LL) => LL.USER.ROUTES.INVALID_USER_ID()),
+    ).isMongoId(),
+    validateChecks,
+  ],
   deleteUserById,
 );
 
