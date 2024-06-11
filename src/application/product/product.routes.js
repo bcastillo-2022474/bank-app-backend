@@ -9,9 +9,11 @@ import {
   updateProduct,
   deleteProductById,
 } from "./product.controller.js";
-import { ProductAlreadyExist, ProductNotFound } from "./product.error.js";
+import { ProductNotFound } from "./product.error.js";
 import Product, { ACTIVE } from "./product.model.js";
+import Currency from "../currency/currency.model.js";
 import { custom } from "../../middleware/custom.js";
+import { CurrencyNotFound } from "../currency/currency.error.js";
 
 const router = Router();
 
@@ -19,7 +21,6 @@ router
   .route("/")
   .get(
     [
-      retrieveLocale,
       query("limit")
         .optional()
         .isInt({ min: 0 })
@@ -44,13 +45,6 @@ router
       )
         .isString()
         .isLength({ min: 3, max: 40 }),
-      custom(async (req, LL) => {
-        const { name } = req.body;
-        const product = await Product.findOne({ name, tp_status: ACTIVE });
-        if (product) {
-          throw new ProductAlreadyExist(LL.PRODUCT.ERROR.NAME_ALREADY_EXISTS());
-        }
-      }),
       body(
         "description",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_DESCRIPTION()),
@@ -60,7 +54,7 @@ router
       body(
         "price",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_NAME()),
-      ).isNumeric(),
+      ).isFloat({ min: 0 }),
       body(
         "currency",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_CURRENCY()),
@@ -68,10 +62,23 @@ router
       body(
         "stock",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
-      ).isNumeric(),
+      ).isInt({ min: 0 }),
+      validateChecks,
+      custom(async (req, LL) => {
+        const { currency } = req.body;
+        const currencyFound = await Currency.findOne({
+          _id: currency,
+          tp_status: ACTIVE,
+        });
+        if (!currencyFound) {
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+        }
+      }),
     ],
     createProduct,
   );
+
+// router.post("/add", )
 
 router
   .route("/:id")
@@ -85,38 +92,31 @@ router
         .optional()
         .isString()
         .isLength({ min: 3, max: 40 }),
-      custom(async (req, LL) => {
-        const { name } = req.body;
-        if (name === undefined || name === null) return;
-
-        const product = await Product.findOne({
-          _id: { $ne: req.params.id },
-          name,
-          tp_status: ACTIVE,
-        });
-        if (product) {
-          throw new ProductAlreadyExist(LL.PRODUCT.ERROR.NAME_ALREADY_EXISTS());
-        }
-      }),
       body(
         "description",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_OPTIONAL_DESCRIPTION()),
       )
         .optional()
         .isString()
-        .isLength({ min: 20, max: 255 }),
+        .isLength({ min: 3, max: 255 }),
       body(
         "price",
         message((LL) => LL.PRODUCT.ROUTES.INVALID_NAME()),
       )
         .optional()
-        .isNumeric(),
+        .isFloat({ min: 0 }),
       body(
         "currency",
         message((LL) => LL.ACCOUNT.ROUTES.INVALID_OPTIONAL_CURRENCY()),
       )
         .optional()
         .isMongoId(),
+      body(
+        "stock",
+        message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
+      )
+        .optional()
+        .isInt({ min: 0 }),
       validateChecks,
       custom(async (req, LL) => {
         const product = await Product.findOne({
@@ -127,25 +127,16 @@ router
           throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
         }
       }),
-      body(
-        "stock",
-        message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
-      )
-        .optional()
-        .isNumeric(),
       custom(async (req, LL) => {
-        const { stock } = req.body;
-        if (stock === undefined || stock === null) return;
+        const { currency } = req.body;
+        if (currency === undefined || currency === null) return;
 
-        const product = await Product.findOne({
-          _id: { $ne: req.params.id },
-          stock,
+        const currencyFound = await Currency.findOne({
+          _id: currency,
           tp_status: ACTIVE,
         });
-        if (product) {
-          throw new ProductAlreadyExist(
-            LL.PRODUCT.ERROR.STOCK_ALREADY_EXISTS(),
-          );
+        if (!currencyFound) {
+          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
         }
       }),
     ],
@@ -153,7 +144,6 @@ router
   )
   .delete(
     [
-      retrieveLocale,
       param("id")
         .isMongoId()
         .withMessage(message((LL) => LL.PRODUCT.ROUTES.INVALID_PRODUCT_ID())),
@@ -166,7 +156,7 @@ router
         });
 
         if (!product) {
-          throw new ProductAlreadyExist(LL.PRODUCT.ERROR.NOT_FOUND());
+          throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
         }
       }),
     ],
