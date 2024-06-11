@@ -13,6 +13,7 @@ import payoutRoutes from "./src//application/payout/payout.route.js";
 import userRoutes from "./src/application/user/user.route.js";
 import transactionRoutes from "./src/application/transaction/transaction.route.js";
 import servicesRoutes from "./src/application/service/service.route.js";
+import adminRoutes from "./src/application/admin/admin.route.js";
 
 if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   config({
@@ -60,6 +61,7 @@ app.use("/user", userRoutes);
 app.use("/payout", payoutRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/service", servicesRoutes);
+app.use("/admin", adminRoutes);
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);
