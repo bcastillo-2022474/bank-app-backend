@@ -3,8 +3,8 @@ import User, { ACTIVE } from "../user/user.model.js";
 import { logger } from "../../utils/logger.js";
 import { generateToken } from "../../utils/generate-token.js";
 import { StatusCodes } from "http-status-codes";
-import LL from "../../../i18n/en/index.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 
 class CredentialsError extends Error {
   constructor(message) {
@@ -16,6 +16,7 @@ class CredentialsError extends Error {
 
 export const login = async (req, res) => {
   const { email, username, password } = req.body;
+  const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Login endpoint start");
 
@@ -51,6 +52,7 @@ export const login = async (req, res) => {
 };
 
 export const validateToken = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Token validation endpoint start");
 
