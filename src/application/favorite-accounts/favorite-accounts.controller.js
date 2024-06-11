@@ -7,15 +7,18 @@ import { FavoriteAccountsNotFound } from "./favorite-accounts.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 
-export const getAllfavoriteAccounts = async (req, res = response) => {
+export const getAllfavoriteAccountsByUserId = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Starting get all favorite accounts");
 
     const { limit = 0, page = 0 } = req.query;
+    const { userId } = req.params;
+
+    const query = { owner: userId };
     const [total, favoriteAccounts] = await Promise.all([
-      FavoriteAccounts.countDocuments(),
-      FavoriteAccounts.find()
+      FavoriteAccounts.countDocuments(query),
+      FavoriteAccounts.find(query)
         .limit(limit)
         .skip(limit * page),
     ]);
@@ -30,7 +33,7 @@ export const getAllfavoriteAccounts = async (req, res = response) => {
   } catch (error) {
     logger.error(
       "Get all favorite accounts controller error of type: ",
-      error.account,
+      error.name,
     );
     handleResponse(res, error, LL);
   }
@@ -54,15 +57,15 @@ export const createFavoriteAccounts = async (req, res) => {
     await favoriteAccounts.save();
 
     res.status(StatusCodes.CREATED).json({
-      message: LL.CURRENCY.CONTROLLER.CREATED(),
+      message: LL.FAVORITE_ACCOUNT.CONTROLLER.CREATED(),
       data: favoriteAccounts,
     });
 
-    logger.info("Favorite accounts created successfully", favoriteAccounts);
+    logger.info("Favorite accounts created successfully");
   } catch (error) {
     logger.error(
       "Create favorite accounts controller error of type: ",
-      error.account,
+      error.name,
     );
     handleResponse(res, error, LL);
   }
@@ -74,28 +77,28 @@ export const updateFavoriteAccounts = async (req, res) => {
     logger.info("Starting update favorite accounts");
 
     const { id } = req.params;
-    const { account, owner, alias } = req.body;
+    const { alias } = req.body;
 
-    const favoriteAccounts = await FavoriteAccounts.findByIdAndUpdate(
+    const favoriteAccount = await FavoriteAccounts.findByIdAndUpdate(
       id,
-      cleanObject({ account, owner, alias }),
+      cleanObject({ alias }),
       { new: true },
     );
 
-    if (!favoriteAccounts) {
-      throw new FavoriteAccountsNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+    if (!favoriteAccount) {
+      throw new FavoriteAccountsNotFound(LL.FAVORITE_ACCOUNT.ERROR.NOT_FOUND());
     }
 
     res.status(StatusCodes.OK).json({
-      message: LL.CURRENCY.CONTROLLER.UPDATED(),
-      data: favoriteAccounts,
+      message: LL.FAVORITE_ACCOUNT.CONTROLLER.UPDATED(),
+      data: favoriteAccount,
     });
 
-    logger.info("Favorite accounts created successfully", favoriteAccounts);
+    logger.info("Favorite accounts created successfully", favoriteAccount);
   } catch (error) {
     logger.error(
       "Update favorite accounts controller error of type: ",
-      error.account,
+      error.name,
     );
     handleResponse(res, error, LL);
   }
@@ -107,21 +110,20 @@ export const deleteFavoriteAccountsById = async (req, res) => {
     logger.info("Starting delete favorite accounts by id");
 
     const { id } = req.params;
-    const favoriteAccounts = await FavoriteAccounts.findByIdAndUpdate(
-      id,
-      { tp_status: INACTIVE },
-      { new: true },
-    );
-    res.status(StatusCodes.OK).json({
-      message: LL.CURRENCY.CONTROLLER.DELETED(),
-      data: favoriteAccounts,
+    const favoriteAccount = await FavoriteAccounts.findByIdAndDelete(id, {
+      new: true,
     });
 
-    logger.info("Favorite accounts deleted successfully", favoriteAccounts);
+    res.status(StatusCodes.OK).json({
+      message: LL.FAVORITE_ACCOUNT.CONTROLLER.DELETED(),
+      data: favoriteAccount,
+    });
+
+    logger.info("Favorite accounts deleted successfully", favoriteAccount);
   } catch (error) {
     logger.error(
       "Delete favorite accounts controller error of type: ",
-      error.account,
+      error.name,
     );
     handleResponse(res, error, LL);
   }

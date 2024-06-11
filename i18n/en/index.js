@@ -159,6 +159,12 @@ const en = {
     },
     CONTROLLER: {
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Favorite account retrieved successfully",
+      CREATED: "Favorite account created successfully",
+      UPDATED: "Favorite account update successfully",
+      DELETED: "Favorite account Deleted successfully",
+    },
+    ERROR:{
+      NOT_FOUND: "Favorite account was not found",
     }
   },
   SERVICE: {
