@@ -74,20 +74,26 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const product = await Product.findByIdAndUpdate(id, updateData, {
-      new: true,
-    });
+    const product = await Product.findById(id);
 
     if (!product) {
       throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
     }
 
-    res.status(StatusCodes.OK).json({
-      message: LL.PRODUCT.CONTROLLER.UPDATED(),
-      data: product,
+    if (updateData.stock) {
+      updateData.stock += product.stock;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
+      new: true,
     });
 
-    logger.info("Product updated successfully", product);
+    res.status(StatusCodes.OK).json({
+      message: LL.PRODUCT.CONTROLLER.UPDATED(),
+      data: updatedProduct,
+    });
+
+    logger.info("Product updated successfully", updatedProduct);
   } catch (error) {
     logger.error("Update product controller error of type:", error.name);
     handleResponse(res, error, LL);

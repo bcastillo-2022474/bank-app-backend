@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { retrieveLocale } from "../../middleware/retrieve-locale.js";
 import { body, query, param } from "express-validator";
 import { message } from "../../utils/message.js";
 import { validateChecks } from "../../middleware/validate-checks.js";
@@ -13,6 +12,7 @@ import { ProductNotFound } from "./product.error.js";
 import Product, { ACTIVE } from "./product.model.js";
 import Currency from "../currency/currency.model.js";
 import { custom } from "../../middleware/custom.js";
+import { addStockToProduct } from "../../middleware/add-stock-to-product.js";
 import { CurrencyNotFound } from "../currency/currency.error.js";
 
 const router = Router();
@@ -78,7 +78,18 @@ router
     createProduct,
   );
 
-// router.post("/add", )
+router.route("/addStock").post([
+  body(
+    "productId",
+    message((LL) => LL.PRODUCT.ROUTES.INVALID_PRODUCT_ID()),
+  ).isMongoId(),
+  body(
+    "quantity",
+    message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
+  ).isInt({ min: 0 }),
+  validateChecks,
+  addStockToProduct,
+]);
 
 router
   .route("/:id")
