@@ -18,6 +18,9 @@ const en = {
     DB: {
         TP_STATUS_REQUIRED: "The tp_status is required",
         CREATED_AT_REQUIRED: "The created_at is required",
+    },
+    ERROR: {
+      GENERATE_TOKEN: "Error generating token",
     }
   },
   TRANSFERENCE:{
@@ -249,7 +252,16 @@ const en = {
       EMAIL_ALREADY_EXIST: "The email is already in use",
       NOT_FOUND: "The user was not found",
     }
-  }
+  },
+  AUTH: {
+    CONTROLLER: {
+      SUCCESS_TOKEN_VALIDATION: "Token was successfully validated",
+    },
+    ERROR: {
+      EMAIL_NOT_FOUND: "The email or username was not found",
+      INVALID_PASSWORD: "The password is incorrect",
+    }
+  },
 };
 
 export default en;

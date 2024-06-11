@@ -1,7 +1,7 @@
 import { pino } from "pino";
 // import prettyPrint from "pino-pretty";
 
-const isDevelopment = process.env.NODE_ENV !== "production";
+// const isDevelopment = process.env.NODE_ENV !== "production";
 
 const transport = {
   target: "pino-pretty",
@@ -21,5 +21,6 @@ export const logger = pino({
   // useOnlyCustomLevels: true,
 
   // ...(false ? transport : undefined),
-  transport: isDevelopment ? transport : undefined,
+  // transport: isDevelopment ? transport : undefined,
+  transport,
 });
