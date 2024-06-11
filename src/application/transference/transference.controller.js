@@ -36,7 +36,8 @@ export const createTransference = async (req, res) => {
         account_reciver, 
         quantity, 
         currency,
-    }),);
+    }),
+  );
 
     await transference.save();
     await account_g.save();
