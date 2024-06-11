@@ -1,7 +1,8 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
 
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const MAX_DAILY_QUOTA = 10_000;
 
 const UserSchema = new Schema({
   email: {
@@ -51,13 +52,13 @@ const UserSchema = new Schema({
   },
   main_account: {
     type: Schema.Types.ObjectId,
-    ref: "Acount",
+    ref: "Account",
     required: [true, L.en.USER.DB.MAIN_ACCOUNT_REQUIRED()],
   },
   accounts: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Acount",
+      ref: "Account",
       default: [],
     },
   ],

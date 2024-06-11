@@ -59,5 +59,6 @@ module.exports = {
     "unicorn/prefer-optional-catch-binding": "off",
     "capitalized-comments": "off",
     camelcase: "off",
+    "unicorn/no-array-callback-reference": "off",
   },
 };

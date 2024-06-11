@@ -1,25 +1,25 @@
 import { StatusCodes } from "http-status-codes";
 
-export class CurrencyAlreadyExist extends Error {
+export class UserAlreadyExist extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.CONFLICT;
-    this.name = "CurrencyAlreadyExist";
+    this.name = "UserAlreadyExist";
   }
 }
 
-export class CurrencyNotFound extends Error {
+export class UserNotFound extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.NOT_FOUND;
-    this.name = "CurrencyNotFound";
+    this.name = "UserNotFound";
   }
 }
 
-export class CurrencyInvalidValue extends Error {
+export class UserInvalidValue extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.BAD_REQUEST;
-    this.name = "CurrencyInvalidValue";
+    this.name = "UserInvalidValue";
   }
 }
