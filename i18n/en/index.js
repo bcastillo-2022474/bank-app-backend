@@ -158,6 +158,18 @@ const en = {
     },
     ERROR: {
       NOT_FOUND: "Not Found",
+      DESCRIPTION_ALREADY_EXISTS: "Description Already Exists",
+      NAME_ALREADY_EXISTS: "Name Already Exists",
+      STOCK_ALREADY_EXISTS: "Stock Already Exists",
+    },
+    ROUTES: {
+      INVALID_NAME: "Invalid Name",
+      INVALID_DESCRIPTION: "Invalid Description",
+      INVALID_CURRENCY: "Invalid Currency",
+      INVALID_STOCK: "Invalid Stock",
+      INVALID_OPTIONAL_NAME: "Invalid Optional Name",
+      INVALID_OPTIONAL_DESCRIPTION: "Invalid Optional Description",
+      INVALID_PRODUCT_ID: "Invalid Product Id",
     }
   },
   FAVORITE_ACCOUNT: {
