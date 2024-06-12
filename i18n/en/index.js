@@ -251,6 +251,8 @@ const en = {
       USER_ACCOUNTS_RETRIEVED_SUCCESSFULLY: "Users retrieved successfully",
       USER_NOT_FOUND: "User has not found in the db",
       RETRIEVED_SUCCESSFULLY: "User retrieved successfully",
+      DELETED: "User has been delet succesfuly",
+      UPDATED: "User has been updated succesfuly"
     },
     ROUTES: {
       USER_EMAIL: "The email must be a valid email",
@@ -266,6 +268,8 @@ const en = {
       INVALID_INITIAL_BALANCE: "The initial balance must be a positive number",
       INVALID_CURRENCY_INCOME: "The invalid currency income must be valid",
       INVALID_USER_ID: "User param url id must be a valid mongo id",
+      USER_NOT_FOUND: "The user doesnt find"
+      
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",
