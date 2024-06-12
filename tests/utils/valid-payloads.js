@@ -1,8 +1,9 @@
 import request from "supertest";
 import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
+import { StatusCodes } from "http-status-codes";
 
-export const getCurrency = (index) => {
+export const getCurrency = async (index) => {
   const currencies = [
     {
       symbol: "USD",
@@ -21,16 +22,25 @@ export const getCurrency = (index) => {
     },
   ];
 
-  const currency =
-    currencies[index ?? Math.floor(Math.random() * currencies.length)];
+  const currencyPos = index ?? Math.floor(Math.random() * currencies.length);
+  const currency = currencies[currencyPos];
 
-  return request(app).post("/currency").send(currency);
+  const response = await request(app).post("/currency").send(currency);
+
+  if (response.status !== StatusCodes.CREATED) {
+    if (response.body) {
+      console.log(response.body);
+    } else console.log(response);
+    console.log(currency, { currencyPosition: currencyPos }, index);
+  }
+
+  return response;
 };
 
-export const getUser = (user) => {
+export const getUser = async (user) => {
   const [firstName, lastName] = [
-    faker.person.firstName(),
-    faker.person.lastName(),
+    faker.person.firstName().padEnd(3, "0"),
+    faker.person.lastName().padEnd(3, "0"),
   ];
 
   const validPayload = {
@@ -59,7 +69,7 @@ export const getUser = (user) => {
     }),
     DPI: "1234567890123",
     phone_number: "12345678",
-    job_name: faker.person.jobTitle(),
+    job_name: faker.person.jobTitle().padEnd(3, "x"),
     monthly_income: faker.finance.amount({
       min: 1000,
       max: 10_000,
@@ -73,17 +83,34 @@ export const getUser = (user) => {
     ...user,
   };
 
-  return request(app).post("/user").send(validPayload);
+  const response = await request(app).post("/user").send(validPayload);
+
+  if (response.status !== StatusCodes.CREATED) {
+    if (response.body) {
+      console.log(response.body);
+    } else console.log(response);
+    console.log(validPayload, user);
+  }
+
+  return response;
 };
 
-export const getService = (service) => {
+export const getService = async (service) => {
   const validService = {
     name: faker.lorem.words(3),
     description: faker.lorem.words(5),
     price: faker.finance.amount(),
   };
 
-  return request(app)
+  const response = await request(app)
     .post("/service")
     .send({ ...validService, ...service });
+
+  if (response.status !== StatusCodes.CREATED) {
+    if (response.body) {
+      console.log(response.body);
+    } else console.log(response);
+  }
+
+  return response;
 };
