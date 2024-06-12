@@ -1,137 +1,112 @@
-import request from "supertest";
 import { StatusCodes } from "http-status-codes";
-import app from "../../app"; // Asegúrate de que esta ruta sea correcta
-import Admin from "./admin.model.js";
-import { setupDatabase, teardownDatabase } from "../../test/setup.js"; // Asumiendo que tienes un archivo setup.js para configurar tu base de datos de prueba
+import { app } from "../../routes.js";
+import request from "supertest";
+import { faker } from "@faker-js/faker";
+import Admin from "../../src/application/admin/admin.model.js";
 
-describe("Admin Controller", () => {
-  beforeAll(async () => {
-    await setupDatabase();
-  });
+const adminRoute = "/admin";
 
-  afterAll(async () => {
-    await teardownDatabase();
-  });
+const validPayload = {
+  email: faker.internet.email(),
+  username: faker.internet.userName().padEnd(4, "x"),
+  password:
+    "Aa1" +
+    faker.internet.password({ length: 6, numbers: true, symbols: false }),
+  name: faker.person.firstName(),
+  last_name: faker.person.lastName(),
+};
 
-  describe("POST /api/admin", () => {
-    it("should create a new admin", async () => {
-      const newAdmin = {
-        email: "testadmin@example.com",
-        username: "testadmin",
-        password: "TestAdmin123",
-        name: "Test",
-        last_name: "Admin",
-      };
-
+describe("Create admin endpoint", () => {
+  describe(`should return ${StatusCodes.BAD_REQUEST} code when`, () => {
+    it("the email is invalid", async () => {
       const response = await request(app)
-        .post("/api/admin")
-        .send(newAdmin)
-        .expect(StatusCodes.CREATED);
+        .post(adminRoute)
+        .send({ ...validPayload, email: "invalid-email" });
 
-      expect(response.body).toHaveProperty("data");
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors[0]).toContain("body[email]");
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+
+    it("the username is invalid", async () => {
+      const response = await request(app)
+        .post(adminRoute)
+        .send({ ...validPayload, username: "" });
+
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors[0]).toContain("body[username]");
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+
+    it("the password is invalid", async () => {
+      const response = await request(app)
+        .post(adminRoute)
+        .send({
+          ...validPayload,
+          password: faker.internet.password({
+            length: 7,
+            numbers: true,
+            memorable: true,
+          }),
+        });
+
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors[0]).toContain("body[password]");
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+
+    it("the name is invalid", async () => {
+      const response = await request(app)
+        .post(adminRoute)
+        .send({ ...validPayload, name: "a" });
+
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors[0]).toContain("body[name]");
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+
+    it("the last_name is invalid", async () => {
+      const response = await request(app)
+        .post(adminRoute)
+        .send({ ...validPayload, last_name: "a" });
+
+      expect(response.body.errors.length).toBe(1);
+      expect(response.body.errors[0]).toContain("body[last_name]");
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+  });
+
+  describe(`should return ${StatusCodes.CONFLICT} code when`, () => {
+    it("Email already exists", async () => {
+      const existingAdmin = new Admin(validPayload);
+      await existingAdmin.save();
+
+      const response = await request(app).post(adminRoute).send(validPayload);
+
+      expect(response.status).toBe(StatusCodes.CONFLICT);
+    });
+
+    it("Username already exists", async () => {
+      const existingAdmin = new Admin(validPayload);
+      await existingAdmin.save();
+
+      const newPayload = { ...validPayload, email: faker.internet.email() };
+      const response = await request(app).post(adminRoute).send(newPayload);
+
+      expect(response.status).toBe(StatusCodes.CONFLICT);
+    });
+  });
+
+  describe(`should return ${StatusCodes.CREATED} code when`, () => {
+    it("Everything is correct", async () => {
+      const response = await request(app).post(adminRoute).send(validPayload);
+
+      expect(response.status).toBe(StatusCodes.CREATED);
       expect(response.body.data).toHaveProperty("_id");
-      expect(response.body.data.email).toBe(newAdmin.email);
-      expect(response.body.data.username).toBe(newAdmin.username);
-      expect(response.body.data.name).toBe(newAdmin.name);
-      expect(response.body.data.last_name).toBe(newAdmin.last_name);
-    });
-
-    it("should not create a new admin if email already exists", async () => {
-      const existingAdmin = {
-        email: "existingadmin@example.com",
-        username: "existingadmin",
-        password: "ExistingAdmin123",
-        name: "Existing",
-        last_name: "Admin",
-      };
-
-      await new Admin(existingAdmin).save();
-
-      const newAdmin = {
-        email: "existingadmin@example.com",
-        username: "newadmin",
-        password: "NewAdmin123",
-        name: "New",
-        last_name: "Admin",
-      };
-
-      const response = await request(app)
-        .post("/api/admin")
-        .send(newAdmin)
-        .expect(StatusCodes.CONFLICT);
-
-      expect(response.body).toHaveProperty("error");
-      expect(response.body.error).toBe("Email already exists");
-    });
-
-    it("should not create a new admin if username already exists", async () => {
-      const existingAdmin = {
-        email: "uniqueemail@example.com",
-        username: "uniqueadmin",
-        password: "UniqueAdmin123",
-        name: "Unique",
-        last_name: "Admin",
-      };
-
-      await new Admin(existingAdmin).save();
-
-      const newAdmin = {
-        email: "newadmin@example.com",
-        username: "uniqueadmin",
-        password: "NewAdmin123",
-        name: "New",
-        last_name: "Admin",
-      };
-
-      const response = await request(app)
-        .post("/api/admin")
-        .send(newAdmin)
-        .expect(StatusCodes.CONFLICT);
-
-      expect(response.body).toHaveProperty("error");
-      expect(response.body.error).toBe("Username already exists");
-    });
-
-    it("should return validation error if fields are missing or invalid", async () => {
-      const newAdmin = {
-        email: "invalidemail",
-        username: "ab",
-        password: "weak",
-        name: "Te",
-        last_name: "Ad",
-      };
-
-      const response = await request(app)
-        .post("/api/admin")
-        .send(newAdmin)
-        .expect(StatusCodes.BAD_REQUEST);
-
-      expect(response.body).toHaveProperty("errors");
-      expect(response.body.errors).toContainEqual(
-        expect.objectContaining({
-          msg: expect.stringMatching(/valid email/),
-        }),
-      );
-      expect(response.body.errors).toContainEqual(
-        expect.objectContaining({
-          msg: expect.stringMatching(/Invalid username/),
-        }),
-      );
-      expect(response.body.errors).toContainEqual(
-        expect.objectContaining({
-          msg: expect.stringMatching(/Invalid password/),
-        }),
-      );
-      expect(response.body.errors).toContainEqual(
-        expect.objectContaining({
-          msg: expect.stringMatching(/Invalid name/),
-        }),
-      );
-      expect(response.body.errors).toContainEqual(
-        expect.objectContaining({
-          msg: expect.stringMatching(/Invalid last name/),
-        }),
-      );
+      expect(response.body.data.email).toBe(validPayload.email);
+      expect(response.body.data.username).toBe(validPayload.username);
+      expect(response.body.data.name).toBe(validPayload.name);
+      expect(response.body.data.last_name).toBe(validPayload.last_name);
     });
   });
 });
