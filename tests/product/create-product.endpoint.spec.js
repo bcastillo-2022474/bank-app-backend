@@ -65,7 +65,7 @@ describe("Create product", () => {
         name: "Test product",
         description: "Test description",
         price: 100,
-        currency: "doesnotexist",
+        currency: "nonexistent_currency_id",
         stock: 10,
       });
       expect(response.status).toBe(StatusCodes.NOT_FOUND);

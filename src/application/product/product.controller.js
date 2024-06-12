@@ -6,6 +6,8 @@ import { StatusCodes } from "http-status-codes";
 import { ProductNotFound } from "./product.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import Currency from "../currency/currency.model.js";
+import { CurrencyNotFound } from "../currency/currency.error.js";
 
 export const getAllProducts = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -41,6 +43,15 @@ export const createProduct = async (req, res) => {
     logger.info("Starting create product");
 
     const { name, description, price, currency, stock } = req.body;
+
+    const currencyFound = await Currency.findOne({
+      _id: currency,
+      tp_status: ACTIVE,
+    });
+
+    if (!currencyFound) {
+      throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
+    }
 
     const product = new Product(
       cleanObject({
