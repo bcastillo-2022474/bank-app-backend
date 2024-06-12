@@ -18,7 +18,7 @@ router.route("/").post([
       const LL = getTranslationFunctions(req.locale);
       const account = await Account.findById(accountId);
       if (!account) {
-        throw new CurrencyNotFound(LL.ACCOUNT.ERROR.ACOUNT_NOT_FOUND());
+        throw new CurrencyNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
       }
 
       return true;
@@ -26,11 +26,12 @@ router.route("/").post([
   body("account_reciver")
     .isMongoId()
     .withMessage(message((LL) => LL.TRANSFERENCE.ROUTES.WHATEVER()))
+
     .custom(async (accountId, { req }) => {
       const LL = getTranslationFunctions(req.locale);
       const account = await Account.findById(accountId);
       if (!account) {
-        throw new AccountNotFound(LL.ACCOUNT.ERROR.ACOUNT_NOT_FOUND());
+        throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
       }
 
       return true;

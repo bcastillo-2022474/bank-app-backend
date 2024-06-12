@@ -1,17 +1,25 @@
 import { StatusCodes } from "http-status-codes";
 
-export class NotSameQurrencyError extends Error {
+export class NotSameCurrencyError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.CONFLICT;
-    this.name = "NotSameQurrencyError";
+    this.name = "NotSameCurrencyError";
   }
 }
 
-export class NotSameQurrencyAccountsError extends Error {
+export class NotSameCurrencyAccountsError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.CONFLICT;
-    this.name = "NotSameQurrencyAccountsError";
+    this.name = "NotSameCurrencyAccountsError";
+  }
+}
+
+export class TransferenceNotFound extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.NOT_FOUND;
+    this.name = "TransferenceNotFound";
   }
 }

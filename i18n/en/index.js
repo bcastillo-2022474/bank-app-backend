@@ -30,8 +30,7 @@ const en = {
       NOT_FOUND: "Transference not found",
       NOT_SAME_CURRENCY_ACCOUNTS: "The account reciver has not the same currency",
       NOT_SAME_CURRENCY: "The currency has to be the same as that of the accounts",
-      INSUFFICIENT_FOUNDS: "The account given has not enough founds",
-      
+      INSUFFICIENT_FOUNDS: "The account given has not enough founds"
     },
     DB: {
       ACCOUNT_GIVEN_REQUIRED: "The account given is required",
@@ -260,6 +259,7 @@ const en = {
       USERNAME_ALREADY_EXIST: "The username is already in use",
       EMAIL_ALREADY_EXIST: "The email is already in use",
       NOT_FOUND: "The user was not found",
+      ACCOUNT_NOT_FOUND: "The user doesnt have a account"
     }
   },
   AUTH: {

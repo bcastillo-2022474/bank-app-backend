@@ -15,7 +15,7 @@ const transferenceSchema = new Schema({
     required: [true, L.en.TRANSFERENCE.DB.ACCOUNT_RECIVER_REQUIRED()],
   },
   quantity: {
-    type: Schema.Types.Decimal128,
+    type: Number,
     required: [true, L.en.TRANSFERENCE.DB.QUANTITY_REQUIRED()],
   },
   currency: {

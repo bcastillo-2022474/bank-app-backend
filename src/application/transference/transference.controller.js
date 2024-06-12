@@ -1,9 +1,13 @@
-import Transference, { INACTIVE } from "./transference.model.js";
+import Transference, { INACTIVE, ACTIVE } from "./transference.model.js";
 import Account from "../account/account.model.js";
-import { AccountInsufficientFundsError, AccountNotFound } from "../account/account.error.js";
 import {
-  NotSameQurrencyAccountsError,
-  NotSameQurrencyError,
+  AccountInsufficientFundsError,
+  AccountNotFound,
+} from "../account/account.error.js";
+import {
+  NotSameCurrencyAccountsError,
+  NotSameCurrencyError,
+  TransferenceNotFound,
 } from "../transference/transference.error.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
@@ -25,13 +29,13 @@ export const createTransference = async (req, res) => {
     const account_r = await Account.findById(account_reciver);
 
     if (account_g.currency !== account_r.currency) {
-      throw new NotSameQurrencyAccountsError(
+      throw new NotSameCurrencyAccountsError(
         LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY_ACCOUNTS(),
       );
     }
 
     if (account_g.currency !== currency) {
-      throw new NotSameQurrencyError(LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY());
+      throw new NotSameCurrencyError(LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY());
     }
 
     if (account_g.balance < quantity) {
@@ -76,6 +80,55 @@ export const createTransference = async (req, res) => {
 // cancelar transaccion cuando date.now() - `created_at` < 5 min
 // tp_status: INACTIVE
 
+export const deleteTransference = async (req, res) => {
+  const session = await Transference.startSession();
+  session.startTransaction();
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Start cancel transference");
+    const { transferenceId } = req.params;
+
+    const trans = await Transference.findOneAndUpdate(
+      {
+        _id: transferenceId,
+        tp_status: ACTIVE,
+      },
+      {
+        tp_status: INACTIVE,
+      },
+    );
+
+    if (!trans) {
+      throw new Transfere;
+    }
+
+    const [account_given, account_reciver] = await Promise.all([
+      Account.findById(trans.account_given),
+      Account.findById(trans.account_reciver),
+    ]);
+
+    account_given.balance += trans.quantity;
+    account_reciver.balance -= trans.quantity;
+
+    await account_given.save();
+    await account_reciver.save();
+    await session.commitTransaction();
+
+    res.status(StatusCodes.OK).json({
+      data: trans,
+      message: LL.TRANSFERENCE.CONTROLLER.DELETED(),
+    });
+
+    logger.info("Cancel transference successfully");
+  } catch (error) {
+    await session.abortTransaction();
+    logger.error("Cancel transaction controller error of type: ", error.name);
+    handleResponse(res, error, LL);
+  } finally {
+    session.endSession();
+  }
+};
+
 // GET ALL BY USER: GET
 export const getAllTransferencesByUser = async (req, res) => {
   const LL = getTranslationFunctions(req.locate);
@@ -86,10 +139,8 @@ export const getAllTransferencesByUser = async (req, res) => {
 
     const account_g = await Account.findOne({ owner: userId });
 
-    if(account_g == null){
-      throw new AccountNotFound(
-        LL.TRANSFERENCE.CONTROLLER.
-      )
+    if (!account_g) {
+      throw new AccountNotFound(LL.USER.ERROR.ACCOUNT_NOT_FOUND());
     }
 
     const query = cleanObject({
