@@ -7,12 +7,12 @@ import {
   getAllProducts,
   updateProduct,
   deleteProductById,
+  addStockToProduct,
 } from "./product.controller.js";
 import { ProductNotFound } from "./product.error.js";
 import Product, { ACTIVE } from "./product.model.js";
 import Currency from "../currency/currency.model.js";
 import { custom } from "../../middleware/custom.js";
-import { addStockToProduct } from "../../middleware/add-stock-to-product.js";
 import { CurrencyNotFound } from "../currency/currency.error.js";
 
 const router = Router();
@@ -78,18 +78,30 @@ router
     createProduct,
   );
 
-router.route("/addStock").post([
-  body(
-    "productId",
-    message((LL) => LL.PRODUCT.ROUTES.INVALID_PRODUCT_ID()),
-  ).isMongoId(),
-  body(
-    "quantity",
-    message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
-  ).isInt({ min: 0 }),
-  validateChecks,
+router.route("/addStock").post(
+  [
+    body(
+      "id",
+      message((LL) => LL.PRODUCT.ROUTES.INVALID_PRODUCT_ID()),
+    ).isMongoId(),
+    body(
+      "stock",
+      message((LL) => LL.PRODUCT.ROUTES.INVALID_STOCK()),
+    ).isInt({ min: 0 }),
+    validateChecks,
+    custom(async (req, LL) => {
+      const { product } = req.body;
+      const productFound = await Product.findOne({
+        _id: product,
+        tp_status: ACTIVE,
+      });
+      if (!productFound) {
+        throw new CurrencyNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
+      }
+    }),
+  ],
   addStockToProduct,
-]);
+);
 
 router
   .route("/:id")

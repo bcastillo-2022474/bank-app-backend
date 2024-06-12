@@ -74,7 +74,7 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const product = await Product.findById(id);
+    const product = await Product.findOne({ _id: id, tp_status: ACTIVE });
 
     if (!product) {
       throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
@@ -84,9 +84,13 @@ export const updateProduct = async (req, res) => {
       updateData.stock += product.stock;
     }
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
-      new: true,
-    });
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id, tp_status: ACTIVE },
+      updateData,
+      {
+        new: true,
+      },
+    );
 
     res.status(StatusCodes.OK).json({
       message: LL.PRODUCT.CONTROLLER.UPDATED(),
@@ -119,6 +123,35 @@ export const deleteProductById = async (req, res = response) => {
     logger.info("Product deleted successfully", product);
   } catch (error) {
     logger.error("Delete product controller error of type:", error.name);
+    handleResponse(res, error, LL);
+  }
+};
+
+export const addStockToProduct = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting add stock to product");
+
+    const { id } = req.params;
+    const { stock } = req.body;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
+    }
+
+    product.stock += stock;
+    await product.save();
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PRODUCT.CONTROLLER.STOCK_ADDED(),
+      data: product,
+    });
+
+    logger.info("Stock added to product successfully", product);
+  } catch (error) {
+    logger.error("Add stock to product controller error of type:", error.name);
     handleResponse(res, error, LL);
   }
 };
