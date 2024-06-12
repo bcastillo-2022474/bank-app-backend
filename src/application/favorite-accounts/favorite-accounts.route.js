@@ -64,8 +64,8 @@ router.post(
         tp_status: ACTIVE,
       });
       if (!accountFound) {
-        throw new AccountNotFound(
-          LL.FAVORITE_ACCOUNT.ERROR.ACCOUNT_ALREADY_EXISTS(),
+        throw new FavoriteAccountsNotFound(
+          LL.FAVORITE_ACCOUNT.ERROR.ACCOUNT_NOT_FOUND(),
         );
       }
     }),
@@ -77,8 +77,8 @@ router.post(
         tp_status: ACTIVE,
       });
       if (!accountFound) {
-        throw new AccountNotFound(
-          LL.FAVORITE_ACCOUNT.ERROR.OWNER_ALREADY_EXISTS(),
+        throw new FavoriteAccountsNotFound(
+          LL.FAVORITE_ACCOUNT.ERROR.OWNER_NOT_FOUND(),
         );
       }
     }),

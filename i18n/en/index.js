@@ -168,6 +168,8 @@ const en = {
       ACCOUNT_ALREADY_EXISTS: "Account Already Exists",
       OWNER_ALREADY_EXISTS: "Owner Already Exists",
       ALIAS_ALREADY_EXISTS: "Alias Already Exists",
+      OWNER_NOT_FOUND: "The owner was not found",
+      ACCOUNT_NOT_FOUND: "The account to be added was not found",
     }, 
     ROUTES:{
       INVALID_ACCOUNT: "Account must be a MongoID",
