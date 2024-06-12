@@ -44,7 +44,9 @@ const en = {
       WHATEVER: "",
     },
     CONTROLLER: {
-      CREATED: "Transference successfully",
+    RETRIEVED_FOR_USER_SUCCESSFULLY: "Transferences for user retrieved successfully",
+    RETRIEVED_FOR_ACCOUNT_SUCCESSFULLY: "Transferences for user retrieved successfully",
+    CREATED: "Transference successfully",
     }
   },
   PURCHASE:{

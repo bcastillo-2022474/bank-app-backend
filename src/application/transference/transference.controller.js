@@ -1,6 +1,6 @@
 import Transference, { INACTIVE } from "./transference.model.js";
 import Account from "../account/account.model.js";
-import { AccountInsufficientFundsError } from "../account/account.error.js";
+import { AccountInsufficientFundsError, AccountNotFound } from "../account/account.error.js";
 import {
   NotSameQurrencyAccountsError,
   NotSameQurrencyError,
@@ -77,7 +77,52 @@ export const createTransference = async (req, res) => {
 // tp_status: INACTIVE
 
 // GET ALL BY USER: GET
+export const getAllTransferencesByUser = async (req, res) => {
+  const LL = getTranslationFunctions(req.locate);
+  try {
+    logger.info("Start get all transferences by account");
+    const { userId } = req.params;
+    const { limit = 0, page = 0, currency } = req.query;
 
+    const account_g = await Account.findOne({ owner: userId });
+
+    if(account_g == null){
+      throw new AccountNotFound(
+        LL.TRANSFERENCE.CONTROLLER.
+      )
+    }
+
+    const query = cleanObject({
+      account_given: account_g.owner,
+      currency,
+    });
+
+    const [total, transactions] = await Promise.all([
+      Transference.countDocuments({ account: query.account }),
+      Transference.find(query)
+        .limit(limit)
+        .skip(limit * page)
+
+        .sort({
+          created_at: -1,
+        }),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      total,
+      data: transactions,
+      message: LL.TRANSFERENCE.CONTROLLER.RETRIEVED_FOR_USER_SUCCESSFULLY(),
+    });
+
+    logger.info("Transferencess by user retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all transferences by user controller error of type: ",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
 // GET ALL BY ACCOUNT
 
 export const getAllTransferencesByAccount = async (req, res) => {
@@ -93,11 +138,11 @@ export const getAllTransferencesByAccount = async (req, res) => {
     });
 
     const [total, transactions] = await Promise.all([
-      Transaction.countDocuments({ account: query.account }),
-      Transaction.find(query)
+      Transference.countDocuments({ account: query.account }),
+      Transference.find(query)
         .limit(limit)
         .skip(limit * page)
-        // get recents first
+
         .sort({
           created_at: -1,
         }),
@@ -106,13 +151,13 @@ export const getAllTransferencesByAccount = async (req, res) => {
     res.status(StatusCodes.OK).json({
       total,
       data: transactions,
-      message: LL.TRANSACTION.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      message: LL.TRANSFERENCE.CONTROLLER.RETRIEVED_FOR_ACCOUNT_SUCCESSFULLY(),
     });
 
-    logger.info("Transactions by account retrieved successfully");
+    logger.info("Transferencess by account retrieved successfully");
   } catch (error) {
     logger.error(
-      "Get all transactions by account controller error of type: ",
+      "Get all transferences by account controller error of type: ",
       error.name,
     );
     handleResponse(res, error, LL);
