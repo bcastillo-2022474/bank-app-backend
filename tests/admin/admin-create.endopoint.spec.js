@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import { app } from "../../routes.js";
 import request from "supertest";
 import { faker } from "@faker-js/faker";
-import Admin from "../../src/application/admin/admin.model.js";
 
 const adminRoute = "/admin";
 

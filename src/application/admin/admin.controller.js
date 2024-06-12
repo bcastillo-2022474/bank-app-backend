@@ -1,9 +1,8 @@
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
-import Admin, { ACTIVE, INACTIVE } from "./admin.model.js";
+import Admin, { ACTIVE } from "./admin.model.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import { StatusCodes } from "http-status-codes";
-import { cleanObject } from "../../utils/clean-object.js";
 
 export const createAdmin = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
