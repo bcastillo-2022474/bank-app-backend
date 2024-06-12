@@ -44,7 +44,7 @@ describe("Create admin endpoint", () => {
         .send({
           ...validPayload,
           password: faker.internet.password({
-            length: 7,
+            length: 6,
             numbers: true,
             memorable: true,
           }),
@@ -68,7 +68,7 @@ describe("Create admin endpoint", () => {
     it("the last_name is invalid", async () => {
       const response = await request(app)
         .post(adminRoute)
-        .send({ ...validPayload, last_name: "a" });
+        .send({ ...validPayload, last_name: 123 });
 
       expect(response.body.errors.length).toBe(1);
       expect(response.body.errors[0]).toContain("body[last_name]");
@@ -78,22 +78,25 @@ describe("Create admin endpoint", () => {
 
   describe(`should return ${StatusCodes.CONFLICT} code when`, () => {
     it("Email already exists", async () => {
-      const existingAdmin = new Admin(validPayload);
-      await existingAdmin.save();
+      const response1 = await request(app).post(adminRoute).send(validPayload);
+      const response2 = await request(app)
+        .post(adminRoute)
+        .send({
+          ...validPayload,
+          username: faker.internet.userName().padEnd(4, "o"),
+        });
 
-      const response = await request(app).post(adminRoute).send(validPayload);
-
-      expect(response.status).toBe(StatusCodes.CONFLICT);
+      expect(response2.status).toBe(StatusCodes.CONFLICT);
+      expect(response1.status).toBe(StatusCodes.CREATED);
     });
 
     it("Username already exists", async () => {
-      const existingAdmin = new Admin(validPayload);
-      await existingAdmin.save();
-
       const newPayload = { ...validPayload, email: faker.internet.email() };
-      const response = await request(app).post(adminRoute).send(newPayload);
+      const response1 = await request(app).post(adminRoute).send(newPayload);
+      const response2 = await request(app).post(adminRoute).send(validPayload);
 
-      expect(response.status).toBe(StatusCodes.CONFLICT);
+      expect(response2.status).toBe(StatusCodes.CONFLICT);
+      expect(response1.status).toBe(StatusCodes.CREATED);
     });
   });
 

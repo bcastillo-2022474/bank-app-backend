@@ -34,3 +34,34 @@ export const createAdmin = async (req, res) => {
     handleResponse(res, error, LL);
   }
 };
+
+export const getAllAdmins = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Start get all admins");
+
+    const { limit = 0, page = 0 } = req.query;
+
+    const query = {
+      tp_status: ACTIVE,
+    };
+
+    const [total, admins] = await Promise.all([
+      Admin.countDocuments(query),
+      Admin.find(query)
+        .limit(limit)
+        .skip(limit * page),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      data: admins,
+      message: LL.ADMIN.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      total,
+    });
+
+    logger.info("Get all admins successfully");
+  } catch (error) {
+    logger.error("Get all admins controller error of type: ", error.name);
+    handleResponse(res, error, LL);
+  }
+};

@@ -216,6 +216,7 @@ const en = {
     },
     CONTROLLER: {
       CREATED: "The Admin has been created succesfuly",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Admin retrieved successfully",
     },
     ROUTES: {
       ADMIN_EMAIL: "The email must be a valid email",
