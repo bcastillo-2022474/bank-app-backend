@@ -6,7 +6,7 @@
   "main": "server",
   "scripts": {
     "preinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('.git')) { require('child_process').execSync('git config core.hooksPath git-hooks'); }\"",
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests --detectOpenHandles --forceExit --coverage",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --passWithNoTests --detectOpenHandles --forceExit --coverage -i",
     "lint": "eslint .",
     "ts": "npx tsc --noEmit --skipLibCheck",
     "dev": "run-p devenv typesafe-i18n",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@joao-cst/eslint-plugin": "file:./eslint-custom-rules",
+    "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.12",
     "@types/supertest": "^6.0.2",
     "cross-env": "^7.0.3",

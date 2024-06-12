@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import request from "supertest";
 import { app } from "../../routes.js";
 import { getCurrency, getUser } from "../utils/valid-payloads.js";
+import { wait } from "../utils/wait.js";
 
 const userRoute = "/user";
 
@@ -18,8 +19,12 @@ describe("Get user by ID", () => {
     expect(response.status).toBe(StatusCodes.NOT_FOUND);
   });
 
-  it(`should return ${StatusCodes.OK} when the user ID is valid`, async () => {
+  it(`should return ${StatusCodes.OK} code when `, async () => {
+    // to give enough time for the db to be cleaned
+    await wait(2);
     const currencyResponse = await getCurrency();
+    const getCurrenciesResponse = await request(app).get("/currency");
+    console.log(getCurrenciesResponse.body.data, currencyResponse.body.data);
     const userResponse = await getUser({
       currency_income: currencyResponse.body.data._id,
     });
