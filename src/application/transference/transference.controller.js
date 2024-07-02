@@ -8,6 +8,8 @@ import {
   NotSameCurrencyAccountsError,
   NotSameCurrencyError,
   TransferenceNotFound,
+  TransferenceCancellationExpired,
+  DeniedAmount,
 } from "../transference/transference.error.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
@@ -15,6 +17,7 @@ import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import mongoose from "mongoose";
+import moment from "moment";
 
 export const createTransference = async (req, res) => {
   const session = await mongoose.startSession();
@@ -36,6 +39,10 @@ export const createTransference = async (req, res) => {
 
     if (account_g.currency !== currency) {
       throw new NotSameCurrencyError(LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY());
+    }
+
+    if (quantity > 2000) {
+      throw new DeniedAmount(LL.TRANSFERENCE.ERROR.AMOUNT_EXCEDDS_2000());
     }
 
     if (account_g.balance < quantity) {
@@ -80,10 +87,11 @@ export const createTransference = async (req, res) => {
 // cancelar transaccion cuando date.now() - `created_at` < 5 min
 // tp_status: INACTIVE
 
-export const deleteTransference = async (req, res) => {
+export const cancelTransference = async (req, res) => {
   const session = await Transference.startSession();
   session.startTransaction();
   const LL = getTranslationFunctions(req.locale);
+  const isNow = new Date();
   try {
     logger.info("Start cancel transference");
     const { transferenceId } = req.params;
@@ -99,7 +107,15 @@ export const deleteTransference = async (req, res) => {
     );
 
     if (!trans) {
-      throw new Transfere;
+      throw new TransferenceNotFound(LL.TRANSFERENCE.ERROR.NOT_FOUND());
+    }
+
+    const diffMinutes = moment(isNow).diff(trans.create_at, "minutes");
+
+    if (diffMinutes > 5) {
+      throw new TransferenceCancellationExpired(
+        LL.TRANSFERENCE.ERROR.CANCELLATION_TIME_EXPIRED(),
+      );
     }
 
     const [account_given, account_reciver] = await Promise.all([

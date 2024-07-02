@@ -30,7 +30,9 @@ const en = {
       NOT_FOUND: "Transference not found",
       NOT_SAME_CURRENCY_ACCOUNTS: "The account reciver has not the same currency",
       NOT_SAME_CURRENCY: "The currency has to be the same as that of the accounts",
-      INSUFFICIENT_FOUNDS: "The account given has not enough founds"
+      INSUFFICIENT_FOUNDS: "The account given has not enough founds",
+      CANCELLATION_TIME_EXPIRED: "The cancellation time (5min) has expired",
+      AMOUNT_EXCEDDS_2000: "The amount exceeds the 2000 allowed"
     },
     DB: {
       ACCOUNT_GIVEN_REQUIRED: "The account given is required",
@@ -40,12 +42,18 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
     },
     ROUTES: {
-      WHATEVER: "",
+      WHATEVER: "whateverrrrrrrrrrrrrrrr",
+      INVALID_QUATITY: "Quantity must be a valid value",
+      INVALID_CURRENCY_ID: "Currency id must be a valid mongoId",
+      INVALID_ACCOUNT_RECIVER_ID: "Account reciver id must be a valid mongoId",
+      INVALID_ACCOUNT_GIVEN_ID: "Account given id must be a valid mongoId",
+      INVALID_TRANSFERENCE_ID: "Transference param url id must be a valid mongo id",
     },
     CONTROLLER: {
     RETRIEVED_FOR_USER_SUCCESSFULLY: "Transferences for user retrieved successfully",
     RETRIEVED_FOR_ACCOUNT_SUCCESSFULLY: "Transferences for user retrieved successfully",
     CREATED: "Transference successfully",
+    DELETED: "Transference deleted",
     }
   },
   PURCHASE:{
@@ -99,7 +107,8 @@ const en = {
           SYMBOL_ALREADY_EXISTS: "A Currency with this symbol already exists",
           NAME_ALREADY_EXISTS: "A Currency with this name already exists",
           KEY_ALREADY_EXISTS: "A Currency with this key already exists",
-      },
+          CURRENCY_NOT_FOUND: "Currency not found"
+        },
       DB: {
           CURRENCY_REQUIRED: "Currency is required",
           SYMBOL_REQUIRED: "Symbol is required",
