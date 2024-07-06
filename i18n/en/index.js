@@ -118,40 +118,59 @@ const en = {
   },
   ACCOUNT: {
     DB: {
-      OWNER_REQUIRED: "The owner is required",
-      CURRENCY_REQUIRED: "The currency is required",
-      BALANCE_REQUIRED: "The balance is required",
-      TP_STATUS_REQUIRED: "The tp_status is required",
+      OWNER_REQUIRED: "The owner is required and cannot be empty.",
+      CURRENCY_REQUIRED: "The currency is required and must be specified.",
+      BALANCE_REQUIRED: "The balance is required and must be a valid number.",
+      TP_STATUS_REQUIRED: "The transaction status (tp_status) is required."
     },
     CONTROLLER: {
-      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple Retrieved successfully",
-      CREATED: "Account Created successfully",
-      UPDATED: "Account Updated successfully",
-      DELETED: "Account Deleted successfully",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple accounts retrieved successfully.",
+      CREATED: "The account has been created successfully.",
+      UPDATED: "The account has been updated successfully.",
+      DELETED: "The account has been deleted successfully."
     },
     ERROR: {
-      NOT_FOUND: "Account was not found",
-      OWNER_ALREADY_EXISTS: "Owner Already Exists",
-      CURRENCY_ALREADY_EXISTS: "Currency Already Exists",
-      BALANCE_ALREADY_EXISTS: "Balance Already Exists",
-      INSUFFICIENT_BALANCE: "Not enough funds to complete the transaction",
-      DAILY_QUOTA_EXCEEDED: "You have exceeded the daily quota",
+      NOT_FOUND: "The requested account was not found.",
+      OWNER_ALREADY_EXISTS: "An account with this owner already exists. Please choose a different owner.",
+      CURRENCY_ALREADY_EXISTS: "An account with this currency already exists. Please choose a different currency.",
+      BALANCE_ALREADY_EXISTS: "An account with this balance already exists. Please specify a different balance.",
+      INSUFFICIENT_BALANCE: "Not enough funds to complete the transaction.",
+      DAILY_QUOTA_EXCEEDED: "You have exceeded the daily transaction quota."
     },
     ROUTES: {
-      INVALID_OWNER: "owner must be a MongoID",
-      INVALID_CURRENCY: "currency must be a MongoID",
-      INVALID_BALANCE: "balnace must be a positive number",
-      INVALID_OPTIONAL_CURRENCY: "If provided, currency must be a valid MongoID",
-      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
+      INVALID_OWNER: "Owner must be a valid MongoDB ObjectId.",
+      INVALID_CURRENCY: "Currency must be a valid MongoDB ObjectId.",
+      INVALID_BALANCE: "Balance must be a positive number.",
+      INVALID_OPTIONAL_CURRENCY: "If provided, currency must be a valid MongoDB ObjectId.",
+      INVALID_ACCOUNT_ID: "Account parameter URL ID must be a valid MongoDB ObjectId."
     },
   },
   PRODUCT: {
     DB: {
-      NAME_REQUIRED: "The name is required",
-      DESCRIPTION_REQUIRED: "The description is required",
-      PRICE_REQUIRED: "The price is required",
-      CURRENCY_REQUIRED: "The currency is required",
-      STOCK_REQUIRED: "The stock is required",
+      NAME_REQUIRED: "The name is required and cannot be empty.",
+      DESCRIPTION_REQUIRED: "The description is required and cannot be empty.",
+      PRICE_REQUIRED: "The price is required and must be a valid number.",
+      CURRENCY_REQUIRED: "The currency is required and must be a valid MongoDB ObjectId.",
+      STOCK_REQUIRED: "The stock is required and must be a non-negative integer."
+    },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Multiple products retrieved successfully.",
+      CREATED: "The product has been created successfully.",
+      UPDATED: "The product has been updated successfully.",
+      DELETED: "The product has been deleted successfully.",
+      STOCK_ADDED: "More stock has been added to the product."    
+    },
+    ERROR: {
+      NOT_FOUND: "The requested item was not found.",    
+    },
+    ROUTES: {
+      INVALID_NAME: "Name must be between 3 and 40 characters long",
+      INVALID_DESCRIPTION: "Description must be between 3 and 40 characters long",
+      INVALID_CURRENCY: "Currency must be a valid MongoDB ID",
+      INVALID_STOCK: "Stock must be a positive integer",
+      INVALID_OPTIONAL_NAME: "Optional Name must be between 3 and 255 characters long",
+      INVALID_OPTIONAL_DESCRIPTION: "Optional Description must be between 3 and 255 characters long",
+      INVALID_PRODUCT_ID: "Product ID must be a valid MongoDB ID",
     }
   },
   FAVORITE_ACCOUNT: {

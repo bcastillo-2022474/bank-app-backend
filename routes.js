@@ -7,9 +7,10 @@ import dbConnection from "./src/db/db-connection.js";
 import { printLanguage } from "./src/middleware/print-language.js";
 import { retrieveLocale } from "./src/middleware/retrieve-locale.js";
 import { logger } from "./src/utils/logger.js";
-import currencyRoutes from "./src/application/currency/currency.route.js";
+import productRoutes from "./src/application/product/product.routes.js";
+import currencyRoutes from "./src/application/currency/currency.routes.js";
 import accountRoutes from "./src/application/account/account.routes.js";
-import payoutRoutes from "./src//application/payout/payout.route.js";
+import payoutRoutes from "./src/application/payout/payout.route.js";
 import userRoutes from "./src/application/user/user.route.js";
 import transactionRoutes from "./src/application/transaction/transaction.route.js";
 import servicesRoutes from "./src/application/service/service.route.js";
@@ -55,6 +56,7 @@ app.get("/", (req, res) => {
 
 app.use(printLanguage);
 
+app.use("/product", productRoutes);
 app.use("/currency", currencyRoutes);
 app.use("/account", accountRoutes);
 app.use("/user", userRoutes);
