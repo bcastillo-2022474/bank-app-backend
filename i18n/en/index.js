@@ -160,6 +160,29 @@ const en = {
       OWNER_REQUIRED: "The owner is required",
       ALIAS_REQUIRED: "The alias is required",
     },
+    CONTROLLER: {
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Favorite account retrieved successfully",
+      CREATED: "Favorite account created successfully",
+      UPDATED: "Favorite account update successfully",
+      DELETED: "Favorite account Deleted successfully",
+    },
+    ERROR:{
+      NOT_FOUND: "Favorite account was not found",
+      ACCOUNT_ALREADY_EXISTS: "Account Already Exists",
+      OWNER_ALREADY_EXISTS: "Owner Already Exists",
+      ALIAS_ALREADY_EXISTS: "Alias Already Exists",
+      OWNER_NOT_FOUND: "The owner was not found",
+      ACCOUNT_NOT_FOUND: "The account to be added was not found",
+    }, 
+    ROUTES:{
+      INVALID_ACCOUNT: "Account must be a MongoID",
+      INVALID_OWNER: "Owner must be a MongoID",
+      INVALID_ALIAS: "The alias must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_OPTIONAL_ACCOUNT: "If provided, account must be a valid mongo id",
+      INVALID_OPTIONAL_OWNER: "If provided, owner must be a valid mongo id",
+      INVALID_OPTIONAL_ALIAS: "If provided, alias must be a unique 3 characters long name",
+      INVALID_ACCOUNT_ID: "Favorite account param url id must be a valid mongo id",
+    }
   },
   SERVICE: {
     DB: {
