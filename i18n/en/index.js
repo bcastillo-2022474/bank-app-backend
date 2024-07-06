@@ -175,9 +175,9 @@ const en = {
       INVALID_ACCOUNT: "Account must be a MongoID",
       INVALID_OWNER: "Owner must be a MongoID",
       INVALID_ALIAS: "The alias must be a string at least 3 characters long and maximum 255 characters long",
-      INVALID_OPTIONAL_ACCOUNT: "If provided, account must be a valid",
-      INVALID_OPTIONAL_OWNER: "If provided, owner must be a valid",
-      INVALID_OPTIONAL_ALIAS: "If provided, alias must be a valid",
+      INVALID_OPTIONAL_ACCOUNT: "If provided, account must be a valid mongo id",
+      INVALID_OPTIONAL_OWNER: "If provided, owner must be a valid mongo id",
+      INVALID_OPTIONAL_ALIAS: "If provided, alias must be a unique 3 characters long name",
       INVALID_ACCOUNT_ID: "Favorite account param url id must be a valid mongo id",
     }
   },

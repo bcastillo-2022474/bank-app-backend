@@ -15,7 +15,6 @@ import {
 } from "./favorite-accounts.error.js";
 import { custom } from "../../middleware/custom.js";
 import FavoriteAccounts from "./favorite-accounts.model.js";
-import { AccountNotFound } from "../account/account.error.js";
 import Account, { ACTIVE } from "../account/account.model.js";
 
 const router = Router();

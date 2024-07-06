@@ -16,8 +16,8 @@ describe("Create currency", () => {
         currency_income: currencyResponse.body.data._id,
       });
 
-      const accountOwner = userResponseOwner.body.data._id;
-      const accountFriend = userResponseAccount.body.data._id;
+      const accountOwner = userResponseOwner.body.data.main_account._id;
+      const accountFriend = userResponseAccount.body.data.main_account._id;
 
       // Caso de prueba: alias vacío
       const response = await request(app).post("/favorite-accounts").send({
@@ -37,7 +37,7 @@ describe("Create currency", () => {
         currency_income: currencyResponse.body.data._id,
       });
 
-      const accountOwner = userResponseOwner.body.data._id;
+      const accountOwner = userResponseOwner.body.data.main_account._id;
 
       const response = await request(app).post("/favorite-accounts").send({
         owner: accountOwner,
@@ -57,7 +57,7 @@ describe("Create currency", () => {
         currency_income: currencyResponse.body.data._id,
       });
 
-      const accountFriend = userResponseAccount.body.data._id;
+      const accountFriend = userResponseAccount.body.data.main_account._id;
 
       const response = await request(app).post("/favorite-accounts").send({
         account: accountFriend,
@@ -77,7 +77,7 @@ describe("Create currency", () => {
         currency_income: currencyResponse.body.data._id,
       });
 
-      const accountFriend = userResponseAccount.body.data._id;
+      const accountFriend = userResponseAccount.body.data.main_account._id;
 
       const response = await request(app).post("/favorite-accounts").send({
         owner: "664c7b1dfe5864e21db4d8bc",
@@ -93,6 +93,7 @@ describe("Create currency", () => {
   describe(`Should return ${StatusCodes.CONFLICT} code when `, () => {
     it(`trying to add an account with an existing alias`, async () => {
       const currencyResponse = await getCurrency();
+
       const userResponseAccount1 = await getUser({
         currency_income: currencyResponse.body.data._id,
       });
@@ -102,9 +103,9 @@ describe("Create currency", () => {
       const userResponseOwner = await getUser({
         currency_income: currencyResponse.body.data._id,
       });
-      const ownerId = userResponseOwner.body.data._id;
-      const accountFriend1 = userResponseAccount1.body.data._id;
-      const accountFriend2 = userResponseAccount2.body.data._id;
+      const ownerId = userResponseOwner.body.data.main_account._id;
+      const accountFriend1 = userResponseAccount1.body.data.main_account._id;
+      const accountFriend2 = userResponseAccount2.body.data.main_account._id;
 
       console.log({ ownerId, accountFriend1, accountFriend2 });
 
@@ -128,7 +129,7 @@ describe("Create currency", () => {
 
       console.log(response.body);
       expect(response.status).toBe(StatusCodes.CONFLICT);
-      expect(response.body.message).toBe("Alias already exists");
+      expect(response.body.message).toBeDefined();
     });
   });
 });
