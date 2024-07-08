@@ -28,8 +28,14 @@ export const createTransference = async (req, res) => {
 
     const { account_given, account_reciver, quantity, currency } = req.body;
 
-    const account_g = await Account.findById(account_given);
-    const account_r = await Account.findById(account_reciver);
+    const account_g = await Account.findOne({
+      _id: account_given,
+      tp_status: ACTIVE,
+    });
+    const account_r = await Account.findOne({
+      _id: account_reciver,
+      tp_status: ACTIVE,
+    });
 
     if (account_g.currency !== account_r.currency) {
       throw new NotSameCurrencyAccountsError(
