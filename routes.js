@@ -12,6 +12,8 @@ import currencyRoutes from "./src/application/currency/currency.routes.js";
 import accountRoutes from "./src/application/account/account.routes.js";
 import payoutRoutes from "./src/application/payout/payout.route.js";
 import userRoutes from "./src/application/user/user.route.js";
+import transferenceRoutes from "./src/application/transference/transference.route.js";
+
 import transactionRoutes from "./src/application/transaction/transaction.route.js";
 import servicesRoutes from "./src/application/service/service.route.js";
 import favoriteAccountRoutes from "./src/application/favorite-accounts/favorite-accounts.route.js";
@@ -62,6 +64,8 @@ app.use("/account", accountRoutes);
 app.use("/user", userRoutes);
 app.use("/payout", payoutRoutes);
 app.use("/transaction", transactionRoutes);
+app.use("/transference", transferenceRoutes);
+
 app.use("/service", servicesRoutes);
 app.use("/favorite-accounts", favoriteAccountRoutes);
 

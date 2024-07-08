@@ -19,7 +19,7 @@ const purchaseSchema = new Schema({
     required: [true, L.en.PURCHASE.DB.QUANTITY_REQUIRED()],
   },
   total: {
-    type: Schema.Types.Decimal128,
+    type: Number,
     required: [true, L.en.PURCHASE.DB.TOTAL_REQUIRED()],
   },
   currency: {

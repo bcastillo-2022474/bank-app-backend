@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 import { message } from "../../utils/message.js";
 
 import Transference, { ACTIVE } from "./transference.model.js";
@@ -98,6 +98,10 @@ router.route("/account/:accountId").get(
         throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
       }
     }),
+    query(
+      "currency",
+      message((LL) => LL.TRANSACTION.ROUTES.INVALID_OPTIONAL_CURRENCY_PARAM()),
+    ),
     custom(async (req, LL) => {
       const { currency } = req.query;
       if (currency === undefined || currency === null) return;
@@ -134,6 +138,10 @@ router.route("/user/:userId").get(
         throw new UserNotFound(LL.USER.ERROR.NOT_FOUND());
       }
     }),
+    query(
+      "currency",
+      message((LL) => LL.TRANSACTION.ROUTES.INVALID_OPTIONAL_CURRENCY_PARAM()),
+    ),
     custom(async (req, LL) => {
       const { currency } = req.query;
       if (currency === undefined || currency === null) return;

@@ -16,6 +16,14 @@ export class ProductNotFound extends Error {
   }
 }
 
+export class InsufficientStock extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.FORBIDDEN;
+    this.name = "InsufficientStock";
+  }
+}
+
 export class ProductInvalidValue extends Error {
   constructor(message) {
     super(message);

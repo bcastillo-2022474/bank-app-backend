@@ -95,6 +95,36 @@ export const getUser = async (user) => {
   return response;
 };
 
+export const getAccount = async (account) => {
+  const userResponse = await getUser();
+  const currencyResponse = await getCurrency();
+
+  const user = userResponse.body;
+  const currency = currencyResponse.body;
+
+  const validPayload = {
+    owner: user.id,
+    currency: currency.id,
+    balance: faker.finance.amount({
+      min: 1000,
+      max: 10_000,
+      dec: 2,
+    }),
+    ...account,
+  };
+
+  const response = await request(app).post("/account").send(validPayload);
+
+  if (response.status !== StatusCodes.CREATED) {
+    if (response.body) {
+      console.log(response.body);
+    } else console.log(response);
+    console.log(validPayload, account);
+  }
+
+  return response;
+};
+
 export const getService = async (service) => {
   const validService = {
     name: faker.lorem.words(3),
