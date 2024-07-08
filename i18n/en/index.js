@@ -252,6 +252,27 @@ const en = {
       EXCEEDED_MAX_WITHDRAWAL_PER_TRANSACTION: "The amount exceeds the maximum withdrawal per transaction",
     }
   },
+  ADMIN:{
+    DB:{
+
+    },
+    CONTROLLER: {
+      CREATED: "The Admin has been created succesfuly",
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Admin retrieved successfully",
+    },
+    ROUTES: {
+      ADMIN_EMAIL: "The email must be a valid email",
+      INVALID_USERNAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
+      INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+    },
+    ERROR: {
+      EMAIL_ALREADY_EXIST: "The Email is already in use",
+      USERNAME_ALREADY_EXIST: "The Email is already in use",
+    },
+  },
+
   USER: {
     DB: {
       EMAIL_REQUIRED: "The email is required",
