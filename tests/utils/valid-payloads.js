@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
 import { StatusCodes } from "http-status-codes";
+import dbConnection from "../../src/db/db-connection.js";
 
 export const getCurrency = async (index) => {
   const currencies = [
@@ -114,3 +115,19 @@ export const getService = async (service) => {
 
   return response;
 };
+
+await dbConnection();
+
+await getUser({
+  email: "joao@gmail.com",
+  username: "joaooo",
+  password: "A12345678a",
+  last_name: "castillo",
+  address: "kinal zona 7",
+  DPI: "1234567891234",
+  phone_number: "12345678",
+  job_name: "prostitua",
+  monthly_income: 0,
+  currency_income: "668d8c661617f879c4b65aed",
+  initial_balance: 0,
+});

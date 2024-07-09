@@ -32,6 +32,7 @@ export const createUserWithAccount = async (req, res) => {
 
     // Crear la cuenta
     const accountData = {
+      name: undefined,
       owner: undefined, // Se asignará después de crear el usuario
       currency: currency_income,
       balance: initial_balance,
@@ -63,6 +64,7 @@ export const createUserWithAccount = async (req, res) => {
     logger.info("Saving user");
     await newUser.save({ session });
     newAccount.owner = newUser._id;
+    newAccount.name = `GT-${newUser._id.toString().slice(0, 4)}-${Math.floor(Math.random() * 3)}`;
 
     logger.info("Saving account");
     await newAccount.save({ session });
