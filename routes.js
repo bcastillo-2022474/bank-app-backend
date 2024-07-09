@@ -16,6 +16,7 @@ import transactionRoutes from "./src/application/transaction/transaction.route.j
 import servicesRoutes from "./src/application/service/service.route.js";
 import favoriteAccountRoutes from "./src/application/favorite-accounts/favorite-accounts.route.js";
 import adminRoutes from "./src/application/admin/admin.route.js";
+import authRoutes from "./src/application/auth/auth.routes.js";
 
 if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   config({
@@ -66,6 +67,7 @@ app.use("/transaction", transactionRoutes);
 app.use("/service", servicesRoutes);
 app.use("/favorite-accounts", favoriteAccountRoutes);
 app.use("/admin", adminRoutes);
+app.use("/auth", authRoutes);
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);

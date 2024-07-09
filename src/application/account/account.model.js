@@ -4,6 +4,11 @@ import { L } from "../../../i18n/i18n-node.js";
 export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const AccountSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",

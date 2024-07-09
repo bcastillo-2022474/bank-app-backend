@@ -42,7 +42,7 @@ export const login = async (req, res) => {
       throw new CredentialsError(LL.AUTH.ERROR.INVALID_PASSWORD());
     }
 
-    const token = await generateToken(user.toJSON());
+    const token = await generateToken(user.toJSON(), req);
     res.status(200).json({ message: "Login successful", data: user, token });
     logger.info("Login successful");
   } catch (error) {

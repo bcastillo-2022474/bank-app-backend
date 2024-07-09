@@ -3,7 +3,7 @@ import User from "../application/user/user.model.js";
 import { StatusCodes } from "http-status-codes";
 
 export const validateJwt = async (req, res, next) => {
-  const token = req.header("x-token");
+  const token = req.header("Authorization").replace("Bearer ", "");
 
   if (!token) {
     // eslint-disable-next-line @joao-cst/enforce-consistent-return-express
@@ -21,7 +21,7 @@ export const validateJwt = async (req, res, next) => {
       // eslint-disable-next-line @joao-cst/enforce-consistent-return-express
       return res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: "User not found, this user might be deleted" });
+        .json({ message: "User not found, this user might have been deleted" });
     }
 
     req.loggedUser = user;
