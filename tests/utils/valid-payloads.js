@@ -117,7 +117,7 @@ export const getService = async (service) => {
 };
 
 await dbConnection();
-
+const currency = await getCurrency();
 await getUser({
   email: "joao@gmail.com",
   username: "joaooo",
@@ -128,6 +128,6 @@ await getUser({
   phone_number: "12345678",
   job_name: "prostitua",
   monthly_income: 0,
-  currency_income: "668d8c661617f879c4b65aed",
+  currency_income: currency.body.data._id,
   initial_balance: 0,
 });

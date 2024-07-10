@@ -168,24 +168,7 @@ router
       body(
         "username",
         message((LL) => LL.USER.ROUTES.INVALID_USERNAME()),
-      )
-        .optional()
-        .isString()
-        .isLength({ min: 3, max: 255 }),
-      body(
-        "password",
-        message((LL) => LL.USER.ROUTES.INVALID_PASSWORD()),
-      )
-        .optional()
-        .isString()
-        .isLength({ min: 6 }),
-      body(
-        "name",
-        message((LL) => LL.USER.ROUTES.INVALID_NAME()),
-      )
-        .optional()
-        .isString()
-        .isLength({ min: 3, max: 255 }),
+      ),
       body(
         "address",
         message((LL) => LL.USER.ROUTES.INVALID_ADDRESS()),
@@ -193,13 +176,6 @@ router
         .optional()
         .isString()
         .isLength({ min: 5, max: 255 }),
-      body(
-        "phone_number",
-        message((LL) => LL.USER.ROUTES.INVALID_PHONE_NUMBER()),
-      )
-        .optional()
-        .isString()
-        .isLength({ min: 8, max: 8 }),
       body(
         "job_name",
         message((LL) => LL.USER.ROUTES.INVALID_JOB_NAME()),
@@ -213,27 +189,7 @@ router
       )
         .optional()
         .isFloat({ min: 0 }),
-      body(
-        "currency_income",
-        message((LL) => LL.USER.ROUTES.INVALID_CURRENCY_INCOME()),
-      )
-        .optional()
-        .isMongoId(),
       validateChecks,
-      custom(async (req, LL) => {
-        const { currency_income } = req.body;
-
-        if (currency_income === undefined || currency_income === null) return;
-
-        const currencyFound = await Currency.findOne({
-          _id: currency_income,
-          tp_status: ACTIVE,
-        });
-
-        if (!currencyFound) {
-          throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
-        }
-      }),
     ],
     updateUser,
   );

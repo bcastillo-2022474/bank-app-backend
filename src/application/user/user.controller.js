@@ -185,32 +185,15 @@ export const updateUser = async (req, res) => {
     logger.info("Start update user");
 
     const { id } = req.params;
-    const {
-      username,
-      password,
-      name,
-      address,
-      phone_number,
-      job_name,
-      monthly_income,
-      currency_income,
-    } = req.body;
-
-    const isPasswordDefined = password !== undefined && password !== null;
-
-    const newPassword = isPasswordDefined ? encrypt(password) : password;
+    const { username, address, job_name, monthly_income } = req.body;
 
     const userUpdated = await User.findOneAndUpdate(
       { _id: id, tp_status: ACTIVE },
       cleanObject({
         username,
-        password: newPassword,
-        name,
         address,
-        phone_number,
         job_name,
         monthly_income,
-        currency_income,
         updated_at: Date.now(),
       }),
       { new: true },
