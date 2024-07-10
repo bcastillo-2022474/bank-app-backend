@@ -46,6 +46,7 @@ export const getAllAccountsByUserId = async (req, res = response) => {
     const [total, accounts] = await Promise.all([
       Account.countDocuments(query),
       Account.find(query)
+        .populate("currency")
         .limit(limit)
         .skip(limit * page),
     ]);
