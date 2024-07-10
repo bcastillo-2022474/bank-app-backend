@@ -8,6 +8,7 @@ import {
   updateProduct,
   deleteProductById,
   addStockToProduct,
+  getProductById, // Importa la función del controlador getProductById
 } from "./product.controller.js";
 import { ProductNotFound } from "./product.error.js";
 import Product, { ACTIVE } from "./product.model.js";
@@ -105,6 +106,22 @@ router.route("/addStock").post(
 
 router
   .route("/:id")
+  .get(
+    [
+      param("id").isMongoId(),
+      validateChecks,
+      custom(async (req, LL) => {
+        const product = await Product.findOne({
+          _id: req.params.id,
+          tp_status: ACTIVE,
+        });
+        if (!product) {
+          throw new ProductNotFound(LL.PRODUCT.ERROR.NOT_FOUND());
+        }
+      }),
+    ],
+    getProductById, // Agrega la función getProductById como controlador para la ruta GET /:id
+  )
   .put(
     [
       param("id").isMongoId(),

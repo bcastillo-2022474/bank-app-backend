@@ -166,3 +166,27 @@ export const addStockToProduct = async (req, res) => {
     handleResponse(res, error, LL);
   }
 };
+
+export const getProductById = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+
+  try {
+    logger.info("Starting add stock to product");
+    const { id } = req.params;
+
+    const product = await Product.findOne({
+      _id: id,
+      tp_status: ACTIVE,
+    });
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PRODUCT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: product,
+    });
+
+    logger.info("Product retrieved successfully", product);
+  } catch (error) {
+    logger.error("Get product by ID controller error of type:", error.name);
+    handleResponse(res, error, LL);
+  }
+};

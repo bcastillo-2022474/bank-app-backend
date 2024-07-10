@@ -3,6 +3,7 @@ import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
 import { StatusCodes } from "http-status-codes";
 import dbConnection from "../../src/db/db-connection.js";
+import mongoose from "mongoose";
 
 export const getCurrency = async (index) => {
   const currencies = [
@@ -128,6 +129,6 @@ await getUser({
   phone_number: "12345678",
   job_name: "prostitua",
   monthly_income: 0,
-  currency_income: "668d8c661617f879c4b65aed",
+  currency_income: "668df897919fe3027d73c41d",
   initial_balance: 0,
 });
