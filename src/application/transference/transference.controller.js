@@ -57,7 +57,7 @@ export const createTransference = async (req, res) => {
       account_g.currency,
     );
     const rateReceiver = await getMoneyExchangeRate(
-      currency,
+      currencyTransference,
       account_r.currency,
     );
 
