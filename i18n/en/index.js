@@ -30,7 +30,8 @@ const en = {
       NOT_SAME_CURRENCY: "The currency has to be the same as that of the accounts",
       INSUFFICIENT_FOUNDS: "The account given has not enough founds",
       CANCELLATION_TIME_EXPIRED: "The cancellation time (5min) has expired",
-      AMOUNT_EXCEDDS_2000: "The amount exceeds the 2000 allowed"
+      AMOUNT_EXCEDDS_2000: "The amount exceeds the 2000 allowed",
+      NOT_SAME_ACCOUNT_ALLOWED: "The account given and reciver must be different",
     },
     DB: {
       ACCOUNT_GIVEN_REQUIRED: "The account given is required",

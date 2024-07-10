@@ -39,3 +39,10 @@ export class DeniedAmount extends Error {
     this.name = "DeniedAmount";
   }
 }
+
+export class TransferenceToSelftNotAllowed extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.FORBIDDEN;
+  }
+}

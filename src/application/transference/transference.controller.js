@@ -8,6 +8,7 @@ import {
   TransferenceNotFound,
   TransferenceCancellationExpired,
   DeniedAmount,
+  TransferenceToSelftNotAllowed,
 } from "./transference.error.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
@@ -28,6 +29,12 @@ export const createTransference = async (req, res) => {
 
     const { account_given, account_reciver, quantity, currency, description } =
       req.body;
+
+    if (account_given === account_reciver) {
+      throw new TransferenceToSelftNotAllowed(
+        LL.TRANSFERENCE.ERROR.NOT_SAME_ACCOUNT_ALLOWED(),
+      );
+    }
 
     const currencyTransference = await Currency.findOne({
       _id: currency,
