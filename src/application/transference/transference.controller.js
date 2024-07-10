@@ -5,22 +5,23 @@ import {
   AccountNotFound,
 } from "../account/account.error.js";
 import {
-  NotSameCurrencyAccountsError,
   NotSameCurrencyError,
   TransferenceNotFound,
   TransferenceCancellationExpired,
   DeniedAmount,
-} from "./transference.error.JS";
+} from "./transference.error.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import mongoose from "mongoose";
+import { getMoneyExchangeRate } from "../../utils/get-money-exchange-rate.js";
 
+const MAX_MINUTES_BEFORE_CANCEL = 1;
 export const createTransference = async (req, res) => {
   const session = await mongoose.startSession();
-  session.startTransaction();
+  await session.startTransaction();
   const LL = getTranslationFunctions(req.locate);
   try {
     logger.info("Starting generate a transference");
@@ -36,12 +37,6 @@ export const createTransference = async (req, res) => {
       tp_status: ACTIVE,
     });
 
-    if (account_g.currency !== account_r.currency) {
-      throw new NotSameCurrencyAccountsError(
-        LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY_ACCOUNTS(),
-      );
-    }
-
     if (account_g.currency !== currency) {
       throw new NotSameCurrencyError(LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY());
     }
@@ -56,8 +51,14 @@ export const createTransference = async (req, res) => {
       );
     }
 
-    account_g.balance -= quantity;
-    account_r.balance += quantity;
+    const rateGiven = await getMoneyExchangeRate(currency, account_g.currency);
+    const rateReceiver = await getMoneyExchangeRate(
+      currency,
+      account_r.currency,
+    );
+
+    account_g.balance -= quantity * rateGiven;
+    account_r.balance += quantity * rateReceiver;
 
     const transference = new Transference(
       cleanObject({
@@ -115,9 +116,9 @@ export const cancelTransference = async (req, res) => {
       throw new TransferenceNotFound(LL.TRANSFERENCE.ERROR.NOT_FOUND());
     }
 
-    const diffMinutes = moment(isNow).diff(trans.create_at, "minutes");
+    const diffMinutes = (isNow - new Date(trans.created_at)) / 1000 / 60;
 
-    if (diffMinutes > 5) {
+    if (diffMinutes > MAX_MINUTES_BEFORE_CANCEL) {
       throw new TransferenceCancellationExpired(
         LL.TRANSFERENCE.ERROR.CANCELLATION_TIME_EXPIRED(),
       );

@@ -9,8 +9,8 @@ import mongoose from "mongoose";
 import { ACTIVE, INACTIVE } from "../user/user.model.js";
 import Product from "../product/product.model.js";
 import { ProductNotEnoughStock } from "./purchase.errors.js";
-import { getMoneyExchangeRate } from "./purchase.util.js";
 import { AccountInsufficientFundsError } from "../account/account.error.js";
+import { getMoneyExchangeRate } from "../../utils/get-money-exchange-rate.js";
 
 export const createPurchase = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
