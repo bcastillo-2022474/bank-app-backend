@@ -9,6 +9,8 @@ import {
   updateAccountCurrency,
   getAccountsAscendant,
   getAccountsDescendant,
+  getAccountsAscendantUsage,
+  getAccountsDescendantUsage,
 } from "./account.controller.js";
 import Account, { ACTIVE } from "./account.model.js";
 import { AccountNotFound } from "./account.error.js";
@@ -52,6 +54,40 @@ router.route("/descendant").get(
     validateChecks,
   ],
   getAccountsDescendant,
+);
+
+router.route("/ascendant-usage").get(
+  [
+    query("limit")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_LIMIT()))
+      .toInt(),
+    query("page")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_PAGE()))
+      .toInt(),
+    validateChecks,
+  ],
+  getAccountsAscendantUsage,
+);
+
+router.route("/descendant-usage").get(
+  [
+    query("limit")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_LIMIT()))
+      .toInt(),
+    query("page")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_PAGE()))
+      .toInt(),
+    validateChecks,
+  ],
+  getAccountsDescendantUsage,
 );
 
 router

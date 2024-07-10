@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { AccountNotFound } from "./account.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import { getUsage } from "./account.utils.js";
 
 export const getAllAccounts = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -156,6 +157,70 @@ export const getAccountsDescendant = async (req, res = response) => {
     res.status(StatusCodes.OK).json({
       message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
       data: accounts,
+    });
+
+    logger.info("Accounts retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all accounts descendant controller error of type:",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
+
+export const getAccountsDescendantUsage = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all accounts descendant");
+    const accounts = await Account.find({ tp_status: ACTIVE });
+
+    const promises = accounts.map((account) => getUsage(account));
+
+    const accountUsage = await Promise.all(promises);
+
+    accountUsage.sort((a, b) => b.totalUsage - a.totalUsage);
+
+    const responseData = accountUsage.map((item) => ({
+      account: item.account,
+      totalUsage: item.totalUsage,
+    }));
+
+    res.status(StatusCodes.OK).json({
+      message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: responseData,
+    });
+
+    logger.info("Accounts retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all accounts descendant controller error of type:",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
+
+export const getAccountsAscendantUsage = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all accounts descendant");
+    const accounts = await Account.find({ tp_status: ACTIVE });
+
+    const promises = accounts.map((account) => getUsage(account));
+
+    const accountUsage = await Promise.all(promises);
+
+    accountUsage.sort((a, b) => a.totalUsage - b.totalUsage);
+
+    const responseData = accountUsage.map((item) => ({
+      account: item.account,
+      totalUsage: item.totalUsage,
+    }));
+
+    res.status(StatusCodes.OK).json({
+      message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: responseData,
     });
 
     logger.info("Accounts retrieved successfully");
