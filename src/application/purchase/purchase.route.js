@@ -14,6 +14,7 @@ import {
   getPurchaseByAccount,
   getPurchaseByProduct,
   getPurchaseById,
+  getPurchaseByUserId,
 } from "./purchase.controller.js";
 import Product from "../product/product.model.js";
 import Account from "../account/account.model.js";
