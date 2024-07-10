@@ -44,6 +44,12 @@ router.route("/").post(
       .withMessage(
         message((LL) => LL.TRANSFERENCE.ROUTES.INVALID_CURRENCY_ID()),
       ),
+    body(
+      "description",
+      message((LL) => LL.TRANSFERENCE.ROUTES.INVALID_DESCRIPTION()),
+    )
+      .isString()
+      .isLength({ min: 3, max: 255 }),
     validateChecks,
     custom(async (req, LL) => {
       const { account_given } = req.body;

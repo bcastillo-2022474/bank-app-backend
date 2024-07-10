@@ -26,7 +26,8 @@ export const createTransference = async (req, res) => {
   try {
     logger.info("Starting generate a transference");
 
-    const { account_given, account_reciver, quantity, currency } = req.body;
+    const { account_given, account_reciver, quantity, currency, description } =
+      req.body;
 
     const currencyTransference = await Currency.findOne({
       _id: currency,
@@ -69,7 +70,8 @@ export const createTransference = async (req, res) => {
         account_given,
         account_reciver,
         quantity,
-        currency,
+        currecy: currencyTransference._id,
+        description,
       }),
     );
 

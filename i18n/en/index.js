@@ -45,6 +45,7 @@ const en = {
       INVALID_ACCOUNT_RECIVER_ID: "Account reciver id must be a valid mongoId",
       INVALID_ACCOUNT_GIVEN_ID: "Account given id must be a valid mongoId",
       INVALID_TRANSFERENCE_ID: "Transference param url id must be a valid mongo id",
+      INVALID_DESCRIPTION: "Description must be a string at least 3 characters long and maximum 255 characters long",
     },
     CONTROLLER: {
       RETRIEVED_FOR_USER_SUCCESSFULLY: "Transferences for user retrieved successfully",
