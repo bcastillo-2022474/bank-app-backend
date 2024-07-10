@@ -119,3 +119,51 @@ export const deleteAccountById = async (req, res = response) => {
     handleResponse(res, error, LL);
   }
 };
+
+export const getAccountsAscendant = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all accounts ascendant");
+
+    const accounts = await Account.find({ tp_status: ACTIVE }).sort({
+      balance: 1,
+    });
+
+    res.status(StatusCodes.OK).json({
+      message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: accounts,
+    });
+
+    logger.info("Accounts retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all accounts ascendant controller error of type:",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
+
+export const getAccountsDescendant = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all accounts descendant");
+
+    const accounts = await Account.find({ tp_status: ACTIVE }).sort({
+      balance: -1,
+    });
+
+    res.status(StatusCodes.OK).json({
+      message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: accounts,
+    });
+
+    logger.info("Accounts retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all accounts descendant controller error of type:",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};

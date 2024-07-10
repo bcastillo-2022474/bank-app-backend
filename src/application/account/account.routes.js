@@ -7,6 +7,8 @@ import {
   getAllAccounts,
   deleteAccountById,
   updateAccountCurrency,
+  getAccountsAscendant,
+  getAccountsDescendant,
 } from "./account.controller.js";
 import Account, { ACTIVE } from "./account.model.js";
 import { AccountNotFound } from "./account.error.js";
@@ -17,6 +19,40 @@ import Currency from "../currency/currency.model.js";
 import { CurrencyNotFound } from "../currency/currency.error.js";
 
 const router = Router();
+
+router.route("/ascendant").get(
+  [
+    query("limit")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_LIMIT()))
+      .toInt(),
+    query("page")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_PAGE()))
+      .toInt(),
+    validateChecks,
+  ],
+  getAccountsAscendant,
+);
+
+router.route("/descendant").get(
+  [
+    query("limit")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_LIMIT()))
+      .toInt(),
+    query("page")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_PAGE()))
+      .toInt(),
+    validateChecks,
+  ],
+  getAccountsDescendant,
+);
 
 router
   .route("/")
