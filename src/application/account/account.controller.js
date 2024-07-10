@@ -35,6 +35,37 @@ export const getAllAccounts = async (req, res = response) => {
   }
 };
 
+export const getAllAccountsByUserId = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all accounts by user ID");
+
+    const { userId } = req.params;
+    const { limit = 0, page = 0 } = req.query;
+    const query = { owner: userId, tp_status: ACTIVE };
+    const [total, accounts] = await Promise.all([
+      Account.countDocuments(query),
+      Account.find(query)
+        .limit(limit)
+        .skip(limit * page),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.ACCOUNT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: accounts,
+      total,
+    });
+
+    logger.info("Accounts retrieved successfully by user ID");
+  } catch (error) {
+    logger.error(
+      "Get all accounts by user ID controller error of type: ",
+      error.name,
+    );
+    handleResponse(res, error, LL);
+  }
+};
+
 export const createAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {

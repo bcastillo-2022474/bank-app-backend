@@ -7,6 +7,7 @@ import {
   getAllAccounts,
   deleteAccountById,
   updateAccountCurrency,
+  getAllAccountsByUserId,
 } from "./account.controller.js";
 import Account, { ACTIVE } from "./account.model.js";
 import { AccountNotFound } from "./account.error.js";
@@ -78,6 +79,27 @@ router
     ],
     createAccount,
   );
+
+router.route("/user/:userId").get(
+  [
+    param(
+      "userId",
+      message((LL) => LL.ACCOUNT.ROUTES.INVALID_USER_ID()),
+    ).isMongoId(),
+    query("limit")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_LIMIT()))
+      .toInt(),
+    query("page")
+      .optional()
+      .isInt({ min: 0 })
+      .withMessage(message((LL) => LL.GENERAL.ROUTES.INVALID_OPTIONAL_PAGE()))
+      .toInt(),
+    validateChecks,
+  ],
+  getAllAccountsByUserId,
+);
 
 router
   .route("/:id")
