@@ -20,6 +20,7 @@ export const getAllServices = async (req, res) => {
     const [total, services] = await Promise.all([
       Service.countDocuments(query),
       Service.find(query)
+        .populate("currency")
         .limit(limit)
         .skip(limit * page),
     ]);
