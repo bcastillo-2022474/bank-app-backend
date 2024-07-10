@@ -70,7 +70,7 @@ export const createTransference = async (req, res) => {
         account_given,
         account_reciver,
         quantity,
-        currecy: currencyTransference._id,
+        currency: currencyTransference._id,
         description,
       }),
     );
