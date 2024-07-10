@@ -77,7 +77,7 @@ export const getPurchaseByUserId = async (req, res) => {
     logger.info("Starting get all purchase by account id");
 
     const { limit = 0, page = 0 } = req.query;
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     const user = await User.findOne({
       _id: userId,

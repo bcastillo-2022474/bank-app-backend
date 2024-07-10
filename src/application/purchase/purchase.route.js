@@ -83,7 +83,14 @@ router.route("/product/:productId").get(
   getPurchaseByProduct,
 );
 
-router.route("/user/:userId").get(getPurchaseByUserId);
+router.route("/user/:userId").get([
+  param(
+    "userId",
+    message((LL) => LL.PURCHASE.ROUTES.INVALID_USER_ID()),
+  ).isMongoId(),
+  validateChecks,
+  getPurchaseByUserId,
+]);
 
 router.route("/:id").get(
   [
