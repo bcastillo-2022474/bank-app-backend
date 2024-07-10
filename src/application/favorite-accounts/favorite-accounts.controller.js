@@ -7,6 +7,7 @@ import { FavoriteAccountsNotFound } from "./favorite-accounts.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import User, { ACTIVE } from "../user/user.model.js";
+import Account from "../account/account.model.js";
 
 export const getAllfavoriteAccountsByUserId = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -52,9 +53,16 @@ export const createFavoriteAccounts = async (req, res) => {
 
     const { account, owner, alias } = req.body;
 
+    const foundAccount = await Account.findOne({
+      name: account,
+      tp_status: ACTIVE,
+    });
+
+    const accountId = foundAccount._id;
+
     const favoriteAccounts = new FavoriteAccounts(
       cleanObject({
-        account,
+        account: accountId,
         owner,
         alias,
       }),

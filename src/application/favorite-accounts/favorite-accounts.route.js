@@ -59,7 +59,7 @@ router.post(
       const { account } = req.body;
       // Check if the account already exists in the database
       const accountFound = await Account.findOne({
-        _id: account,
+        name: account,
         tp_status: ACTIVE,
       });
       if (!accountFound) {
