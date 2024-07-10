@@ -52,10 +52,16 @@ const en = {
       CURRENCY_REQUIRED: "Te currency is required",
     },
     ROUTES: {
-
+      INVALID_PURCHASER: "Purchaser must be a MongoID",
+      INVALID_PURCHASE_ID: "Purchase param url id must be a valid mongo id",
+      INVALID_PRODUCT_ID: "Product param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
-
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Pruchases retrieved successfully",
+      CREATED: "Purchase created successfully",
+      UPDATED: "Purchase update successfully",
+      DELETED: "Purchase deleted successfully",
     }
   },
   PAYOUT:{

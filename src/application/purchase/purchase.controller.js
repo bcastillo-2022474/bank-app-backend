@@ -12,6 +12,125 @@ import { ProductNotEnoughStock } from "./purchase.errors.js";
 import { getMoneyExchangeRate } from "./purchase.util.js";
 import { AccountInsufficientFundsError } from "../account/account.error.js";
 
+export const getAllPurcahse = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all purchase");
+
+    const { limit = 0, page = 0 } = req.query;
+
+    const query = { tp_status: ACTIVE };
+
+    const [total, purchase] = await Promise.all([
+      Purchase.countDocuments(query),
+      Purchase.find(query)
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PURCHASE.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: purchase,
+      total,
+    });
+
+    logger.info("Purchase retrieved successfully");
+  } catch (error) {
+    logger.error("Get all Purchase controller error of type: ", error.name);
+    handleResponse(error, LL);
+  }
+};
+
+export const getPurchaseByAccount = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  const { accountId } = req.params;
+  try {
+    logger.info("Starting get all purchase by account id");
+
+    const { limit = 0, page = 0 } = req.query;
+
+    const query = { purchaser: accountId, tp_status: ACTIVE };
+
+    const [total, purchase] = await Promise.all([
+      Purchase.countDocuments(query),
+      Purchase.find(query)
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PURCHASE.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: purchase,
+      total,
+    });
+
+    logger.info("Purchase retrieved successfully");
+  } catch (error) {
+    logger.error("Get all Purchase controller error of type: ", error.name);
+    handleResponse(error, LL);
+  }
+};
+
+export const getPurchaseByProduct = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  const { productId } = req.params;
+  try {
+    logger.info("Starting get all purchase by product id");
+
+    const { limit = 0, page = 0 } = req.query;
+
+    const query = { product: productId, tp_status: ACTIVE };
+
+    const [total, purchase] = await Promise.all([
+      Purchase.countDocuments(query),
+      Purchase.find(query)
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PURCHASE.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: purchase,
+      total,
+    });
+
+    logger.info("Purchase retrieved successfully");
+  } catch (error) {
+    logger.error("Get all Purchase controller error of type: ", error.name);
+    handleResponse(error, LL);
+  }
+};
+
+export const getPurchaseById = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  const { id } = req.params;
+  try {
+    logger.info("Starting get purchase by id");
+
+    const { limit = 0, page = 0 } = req.query;
+
+    const query = { _id: id, tp_status: ACTIVE };
+
+    const [total, purchase] = await Promise.all([
+      Purchase.countDocuments(query),
+      Purchase.find(query)
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PURCHASE.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: purchase,
+      total,
+    });
+
+    logger.info("Purchase retrieved successfully");
+  } catch (error) {
+    logger.error("Get all Purchase controller error of type: ", error.name);
+    handleResponse(error, LL);
+  }
+};
+
 export const createPurchase = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   const session = await mongoose.startSession();
