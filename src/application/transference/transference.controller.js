@@ -5,7 +5,6 @@ import {
   AccountNotFound,
 } from "../account/account.error.js";
 import {
-  NotSameCurrencyError,
   TransferenceNotFound,
   TransferenceCancellationExpired,
   DeniedAmount,
@@ -17,6 +16,7 @@ import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import mongoose from "mongoose";
 import { getMoneyExchangeRate } from "../../utils/get-money-exchange-rate.js";
+import Currency from "../currency/currency.model.js";
 
 const MAX_MINUTES_BEFORE_CANCEL = 1;
 export const createTransference = async (req, res) => {
@@ -28,14 +28,19 @@ export const createTransference = async (req, res) => {
 
     const { account_given, account_reciver, quantity, currency } = req.body;
 
+    const currencyTransference = await Currency.findOne({
+      _id: currency,
+      tp_status: ACTIVE,
+    });
+
     const account_g = await Account.findOne({
       _id: account_given,
       tp_status: ACTIVE,
-    });
+    }).populate("currency");
     const account_r = await Account.findOne({
       _id: account_reciver,
       tp_status: ACTIVE,
-    });
+    }).populate("currency");
 
     if (quantity > 2000) {
       throw new DeniedAmount(LL.TRANSFERENCE.ERROR.AMOUNT_EXCEDDS_2000());
@@ -47,7 +52,10 @@ export const createTransference = async (req, res) => {
       );
     }
 
-    const rateGiven = await getMoneyExchangeRate(currency, account_g.currency);
+    const rateGiven = await getMoneyExchangeRate(
+      currencyTransference,
+      account_g.currency,
+    );
     const rateReceiver = await getMoneyExchangeRate(
       currency,
       account_r.currency,
