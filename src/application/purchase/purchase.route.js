@@ -82,6 +82,8 @@ router.route("/product/:productId").get(
   getPurchaseByProduct,
 );
 
+router.route("/user/:userId").get(getPurchaseByUserId);
+
 router.route("/:id").get(
   [
     param(

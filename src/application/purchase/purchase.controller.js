@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
 import mongoose from "mongoose";
-import { ACTIVE, INACTIVE } from "../user/user.model.js";
+import User, { ACTIVE, INACTIVE } from "../user/user.model.js";
 import Product from "../product/product.model.js";
 import { ProductNotEnoughStock } from "./purchase.errors.js";
 import { AccountInsufficientFundsError } from "../account/account.error.js";
@@ -50,6 +50,43 @@ export const getPurchaseByAccount = async (req, res) => {
     const { limit = 0, page = 0 } = req.query;
 
     const query = { purchaser: accountId, tp_status: ACTIVE };
+
+    const [total, purchase] = await Promise.all([
+      Purchase.countDocuments(query),
+      Purchase.find(query)
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PURCHASE.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: purchase,
+      total,
+    });
+
+    logger.info("Purchase retrieved successfully");
+  } catch (error) {
+    logger.error("Get all Purchase controller error of type: ", error.name);
+    handleResponse(error, LL);
+  }
+};
+
+export const getPurchaseByUserId = async (req, res) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all purchase by account id");
+
+    const { limit = 0, page = 0 } = req.query;
+    const { userId } = req.body;
+
+    const user = await User.findOne({
+      _id: userId,
+      tp_status: ACTIVE,
+    });
+
+    const { accounts } = user;
+
+    const query = { purchaser: { $in: accounts }, tp_status: ACTIVE };
 
     const [total, purchase] = await Promise.all([
       Purchase.countDocuments(query),
