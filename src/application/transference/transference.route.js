@@ -53,7 +53,7 @@ router.route("/").post(
       });
 
       if (!account) {
-        throw new CurrencyNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
+        throw new AccountNotFound(LL.ACCOUNT.ERROR.NOT_FOUND());
       }
     }),
     custom(async (req, LL) => {

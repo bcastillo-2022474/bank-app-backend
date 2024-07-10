@@ -22,7 +22,7 @@ const MAX_MINUTES_BEFORE_CANCEL = 1;
 export const createTransference = async (req, res) => {
   const session = await mongoose.startSession();
   await session.startTransaction();
-  const LL = getTranslationFunctions(req.locate);
+  const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Starting generate a transference");
 
@@ -153,7 +153,7 @@ export const cancelTransference = async (req, res) => {
 
 // GET ALL BY USER: GET
 export const getAllTransferencesByUser = async (req, res) => {
-  const LL = getTranslationFunctions(req.locate);
+  const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Start get all transferences by account");
     const { userId } = req.params;
@@ -199,7 +199,7 @@ export const getAllTransferencesByUser = async (req, res) => {
 // GET ALL BY ACCOUNT
 
 export const getAllTransferencesByAccount = async (req, res) => {
-  const LL = getTranslationFunctions(req.locate);
+  const LL = getTranslationFunctions(req.locale);
   try {
     logger.info("Start get all transferences by account");
     const { accountId } = req.params;
