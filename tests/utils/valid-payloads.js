@@ -117,3 +117,22 @@ export const getService = async (service) => {
 
   return response;
 };
+
+export const getAdmin = async (override = {}) => {
+  const adminPayload = {
+    email: "testadmin@example.com",
+    username: "testadmin",
+    password: "TestPassword123!",
+    name: "Test",
+    last_name: "Admin",
+    ...override,
+  };
+
+  const response = await request(app)
+    .post("/admin")
+    .send(adminPayload)
+    .expect("Content-Type", /json/)
+    .expect(StatusCodes.CREATED);
+
+  return response;
+};

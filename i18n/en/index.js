@@ -274,6 +274,8 @@ const en = {
     CONTROLLER: {
       CREATED: "The Admin has been created succesfuly",
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Admin retrieved successfully",
+      DELETED: "The admin has been deleeted successfully",
+      UPDATED: "Admin has been updated succesfuly"
     },
     ROUTES: {
       ADMIN_EMAIL: "The email must be a valid email",
@@ -281,10 +283,12 @@ const en = {
       INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
       INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
       INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_ADMIN_ID: "Admin param url id must be a valid mongo id",
     },
     ERROR: {
       EMAIL_ALREADY_EXIST: "The Email is already in use",
-      USERNAME_ALREADY_EXIST: "The Email is already in use",
+      USERNAME_ALREADY_EXIST: "The Username is already in use",
+      NOT_FOUND: "Dont found this admin",
     },
   },
 

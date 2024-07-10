@@ -7,3 +7,11 @@ export class AdminAlreadyExist extends Error {
     this.statusCode = StatusCodes.CONFLICT;
   }
 }
+
+export class AdminNotFound extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = StatusCodes.NOT_FOUND;
+    this.name = "AdminNotFound";
+  }
+}
