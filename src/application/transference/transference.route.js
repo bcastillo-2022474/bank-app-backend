@@ -133,7 +133,6 @@ router.route("/account/:accountId").get(
 // TODAS LAS TRANSFERENCIAS DE ESE USUARIO
 router.route("/user/:userId").get(
   [
-    validateJwt,
     param(
       "userId",
       message((LL) => LL.USER.ROUTES.INVALID_USER_ID()),
