@@ -5,6 +5,8 @@ import { logger } from "../../utils/logger.js";
 import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import Account from "../account/account.model.js";
+import mongoose from "mongoose";
 
 export const getAllPayout = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -103,6 +105,8 @@ export const getAllPayoutsByServiceId = async (req, res = response) => {
 
 export const createPayout = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
+  const session = await mongoose.startSession();
+  await session.startTransaction();
   try {
     logger.info("Starting create payout");
 
@@ -116,7 +120,18 @@ export const createPayout = async (req, res) => {
       }),
     );
 
+    await Account.findOneAndUpdate(
+      {
+        _id: debited_account,
+        tp_status: ACTIVE,
+      },
+      {
+        $inc: { balance: -total },
+      },
+    );
+
     await payout.save();
+    await session.commitTransaction();
 
     res.status(StatusCodes.CREATED).json({
       message: LL.PAYOUT.CONTROLLER.CREATED(),
@@ -125,13 +140,18 @@ export const createPayout = async (req, res) => {
 
     logger.info("Payout created successfully", payout);
   } catch (error) {
+    await session.abortTransaction();
     logger.error("Create User controller error of type: ", error.name);
     handleResponse(error, LL);
+  } finally {
+    session.endSession();
   }
 };
 
 export const deletePayoutById = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
+  const session = await mongoose.startSession();
+  await session.startTransaction();
   try {
     logger.info("Starting delete payout by id");
 
@@ -141,6 +161,19 @@ export const deletePayoutById = async (req, res) => {
       { tp_status: INACTIVE, update_at: new Date() },
       { new: true },
     );
+
+    await Account.findOneAndUpdate(
+      {
+        _id: payout.debited_account,
+        tp_status: ACTIVE,
+      },
+      {
+        $inc: { balance: payout.total },
+      },
+    );
+
+    await session.commitTransaction();
+
     res.status(StatusCodes.OK).json({
       message: LL.PAYOUT.CONTROLLER.DELETED(),
       data: payout,
@@ -148,7 +181,11 @@ export const deletePayoutById = async (req, res) => {
 
     logger.info("Payout deleted successfully", payout);
   } catch (error) {
+    await session.abortTransaction();
+
     logger.error("Delete Payout controller error of type: ", error.name);
     handleResponse(error, LL);
+  } finally {
+    session.endSession();
   }
 };
