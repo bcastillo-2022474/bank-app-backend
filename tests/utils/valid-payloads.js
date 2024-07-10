@@ -3,6 +3,8 @@ import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
 import { StatusCodes } from "http-status-codes";
 import dbConnection from "../../src/db/db-connection.js";
+import mongoose, { mongo } from "mongoose";
+import userModel from "../../src/application/user/user.model.js";
 
 export const getCurrency = async (index) => {
   const currencies = [
@@ -118,16 +120,26 @@ export const getService = async (service) => {
 
 await dbConnection();
 
-await getUser({
-  email: "joao@gmail.com",
-  username: "joaooo",
-  password: "A12345678a",
-  last_name: "castillo",
-  address: "kinal zona 7",
-  DPI: "1234567891234",
-  phone_number: "12345678",
-  job_name: "prostitua",
-  monthly_income: 0,
-  currency_income: "668d8c661617f879c4b65aed",
-  initial_balance: 0,
-});
+const currencies = [
+  "668df298537c841c3bc72de2",
+  "668df2d0c5bbecbe35fae21b",
+  "668df2d6943aee95b7234bf3",
+];
+
+// const ownerId = "668df47bc854d426145b8304";
+
+for (let i = 0; i < 30; i++) {
+  const currency = currencies[Math.round(Math.random() * 2)];
+  // eslint-disable-next-line no-await-in-loop
+  await request(app).post("/service").send({
+    name: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    price: faker.finance.amount(),
+    currency,
+  });
+}
+// if (response.status !== StatusCodes.CREATED) {
+//   console.log(response.body);
+//   throw new Error("Error creating favorite account");
+// }
+// }

@@ -64,7 +64,7 @@ export const createUserWithAccount = async (req, res) => {
     logger.info("Saving user");
     await newUser.save({ session });
     newAccount.owner = newUser._id;
-    newAccount.name = `GT-${newUser._id.toString().slice(0, 4)}-${Math.floor(Math.random() * 3)}`;
+    newAccount.name = `GT-${newUser.name.slice(0, 2)}${last_name.slice(0, 2)}-${newUser._id.toString().slice(0, 4)}-${Math.random().toString(9).slice(2, 6)}-${new Date().getFullYear()}`;
 
     logger.info("Saving account");
     await newAccount.save({ session });
