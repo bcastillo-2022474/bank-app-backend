@@ -37,10 +37,6 @@ export const createTransference = async (req, res) => {
       tp_status: ACTIVE,
     });
 
-    if (account_g.currency !== currency) {
-      throw new NotSameCurrencyError(LL.TRANSFERENCE.ERROR.NOT_SAME_CURRENCY());
-    }
-
     if (quantity > 2000) {
       throw new DeniedAmount(LL.TRANSFERENCE.ERROR.AMOUNT_EXCEDDS_2000());
     }
