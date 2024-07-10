@@ -3,6 +3,8 @@ import { app } from "../../routes.js";
 import { faker } from "@faker-js/faker";
 import { StatusCodes } from "http-status-codes";
 import dbConnection from "../../src/db/db-connection.js";
+import mongoose, { mongo } from "mongoose";
+import userModel from "../../src/application/user/user.model.js";
 
 export const getCurrency = async (index) => {
   const currencies = [
@@ -116,6 +118,7 @@ export const getService = async (service) => {
   return response;
 };
 
+<<<<<<< HEAD
 await dbConnection();
 const currency = await getCurrency();
 await getUser({
@@ -131,3 +134,39 @@ await getUser({
   currency_income: currency.body.data._id,
   initial_balance: 0,
 });
+||||||| 5da703a
+await dbConnection();
+
+await getUser({
+  email: "joao@gmail.com",
+  username: "joaooo",
+  password: "A12345678a",
+  last_name: "castillo",
+  address: "kinal zona 7",
+  DPI: "1234567891234",
+  phone_number: "12345678",
+  job_name: "prostitua",
+  monthly_income: 0,
+  currency_income: "668d8c661617f879c4b65aed",
+  initial_balance: 0,
+});
+=======
+export const getAdmin = async (override = {}) => {
+  const adminPayload = {
+    email: "testadmin@example.com",
+    username: "testadmin",
+    password: "TestPassword123!",
+    name: "Test",
+    last_name: "Admin",
+    ...override,
+  };
+
+  const response = await request(app)
+    .post("/admin")
+    .send(adminPayload)
+    .expect("Content-Type", /json/)
+    .expect(StatusCodes.CREATED);
+
+  return response;
+};
+>>>>>>> 8ac254b63f92a65ce9b77ab0419d0cb39f434956

@@ -17,6 +17,8 @@ import servicesRoutes from "./src/application/service/service.route.js";
 import favoriteAccountRoutes from "./src/application/favorite-accounts/favorite-accounts.route.js";
 import adminRoutes from "./src/application/admin/admin.route.js";
 import authRoutes from "./src/application/auth/auth.routes.js";
+import transferenceRoutes from "./src/application/transference/transference.route.js";
+import purchaseRoutes from "./src/application/purchase/purchase.route.js";
 
 if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   config({
@@ -68,6 +70,8 @@ app.use("/service", servicesRoutes);
 app.use("/favorite-accounts", favoriteAccountRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
+app.use("/transference", transferenceRoutes);
+app.use("/purchase", purchaseRoutes);
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);

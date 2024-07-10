@@ -26,6 +26,12 @@ const en = {
   TRANSFERENCE:{
     ERROR: {
       NOT_FOUND: "Transference not found",
+      NOT_SAME_CURRENCY_ACCOUNTS: "The account reciver has not the same currency",
+      NOT_SAME_CURRENCY: "The currency has to be the same as that of the accounts",
+      INSUFFICIENT_FOUNDS: "The account given has not enough founds",
+      CANCELLATION_TIME_EXPIRED: "The cancellation time (5min) has expired",
+      AMOUNT_EXCEDDS_2000: "The amount exceeds the 2000 allowed",
+      NOT_SAME_ACCOUNT_ALLOWED: "The account given and reciver must be different",
     },
     DB: {
       ACCOUNT_GIVEN_REQUIRED: "The account given is required",
@@ -35,9 +41,18 @@ const en = {
       DESCRIPTION_REQUIRED: "The description is required",
     },
     ROUTES: {
+      INVALID_QUATITY: "Quantity must be a valid value",
+      INVALID_CURRENCY_ID: "Currency id must be a valid mongoId",
+      INVALID_ACCOUNT_RECIVER_ID: "Account reciver id must be a valid mongoId",
+      INVALID_ACCOUNT_GIVEN_ID: "Account given id must be a valid mongoId",
+      INVALID_TRANSFERENCE_ID: "Transference param url id must be a valid mongo id",
+      INVALID_DESCRIPTION: "Description must be a string at least 3 characters long and maximum 255 characters long",
     },
     CONTROLLER: {
-
+      RETRIEVED_FOR_USER_SUCCESSFULLY: "Transferences for user retrieved successfully",
+      RETRIEVED_FOR_ACCOUNT_SUCCESSFULLY: "Transferences for user retrieved successfully",
+      CREATED: "Transference successfully",
+      DELETED: "Transference deleted",
     }
   },
   PURCHASE:{
@@ -50,12 +65,19 @@ const en = {
       QUANTITY_REQUIRED: "The quantity is required",
       TOTAL_REQUIRED: "The total is required",
       CURRENCY_REQUIRED: "Te currency is required",
+      CURRENCY_NOT_FOUND: "Currency not found",
     },
     ROUTES: {
-
+      INVALID_PURCHASER: "Purchaser must be a MongoID",
+      INVALID_PURCHASE_ID: "Purchase param url id must be a valid mongo id",
+      INVALID_PRODUCT_ID: "Product param url id must be a valid mongo id",
+      INVALID_ACCOUNT_ID: "Account param url id must be a valid mongo id",
     },
     CONTROLLER: {
-
+      MULTIPLE_RETRIEVED_SUCCESSFULLY: "Pruchases retrieved successfully",
+      CREATED: "Purchase created successfully",
+      UPDATED: "Purchase update successfully",
+      DELETED: "Purchase deleted successfully",
     }
   },
   PAYOUT:{
@@ -158,10 +180,11 @@ const en = {
       CREATED: "The product has been created successfully.",
       UPDATED: "The product has been updated successfully.",
       DELETED: "The product has been deleted successfully.",
-      STOCK_ADDED: "More stock has been added to the product."    
+      STOCK_ADDED: "More stock has been added to the product."
     },
     ERROR: {
-      NOT_FOUND: "The requested item was not found.",    
+      NOT_FOUND: "The requested item was not found.",
+      NOT_ENOUGH_STOCK: "The product has not enough stock to complete the transaction.",
     },
     ROUTES: {
       INVALID_NAME: "Name must be between 3 and 40 characters long",
@@ -192,7 +215,7 @@ const en = {
       ALIAS_ALREADY_EXISTS: "Alias Already Exists",
       OWNER_NOT_FOUND: "The owner was not found",
       ACCOUNT_NOT_FOUND: "The account to be added was not found",
-    }, 
+    },
     ROUTES:{
       INVALID_ACCOUNT: "Account must be a MongoID",
       INVALID_OWNER: "Owner must be a MongoID",
@@ -259,6 +282,8 @@ const en = {
     CONTROLLER: {
       CREATED: "The Admin has been created succesfuly",
       MULTIPLE_RETRIEVED_SUCCESSFULLY: "Admin retrieved successfully",
+      DELETED: "The admin has been deleeted successfully",
+      UPDATED: "Admin has been updated succesfuly"
     },
     ROUTES: {
       ADMIN_EMAIL: "The email must be a valid email",
@@ -266,10 +291,12 @@ const en = {
       INVALID_PASSWORD: "The password must have at least 8 characters, 1 letter LowerCase minimum, 1 letter Uppercase minimun and 1 number minimun",
       INVALID_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
       INVALID_LAST_NAME: "The username must be a string at least 3 characters long and maximum 255 characters long",
+      INVALID_ADMIN_ID: "Admin param url id must be a valid mongo id",
     },
     ERROR: {
       EMAIL_ALREADY_EXIST: "The Email is already in use",
-      USERNAME_ALREADY_EXIST: "The Email is already in use",
+      USERNAME_ALREADY_EXIST: "The Username is already in use",
+      NOT_FOUND: "Dont found this admin",
     },
   },
 
@@ -312,7 +339,7 @@ const en = {
       INVALID_CURRENCY_INCOME: "The invalid currency income must be valid",
       INVALID_USER_ID: "User param url id must be a valid mongo id",
       USER_NOT_FOUND: "The user doesnt find"
-      
+
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",

@@ -12,7 +12,7 @@ import { encrypt } from "../../utils/encrypt.js";
 export const createUserWithAccount = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   const session = await mongoose.startSession();
-  session.startTransaction();
+  await session.startTransaction();
   try {
     logger.info("Start create User account ednpoint");
     const {
@@ -64,7 +64,7 @@ export const createUserWithAccount = async (req, res) => {
     logger.info("Saving user");
     await newUser.save({ session });
     newAccount.owner = newUser._id;
-    newAccount.name = `GT-${newUser._id.toString().slice(0, 4)}-${Math.floor(Math.random() * 3)}`;
+    newAccount.name = `GT-${newUser.name.slice(0, 2)}${last_name.slice(0, 2)}-${newUser._id.toString().slice(0, 4)}-${Math.random().toString(9).slice(2, 6)}-${new Date().getFullYear()}`;
 
     logger.info("Saving account");
     await newAccount.save({ session });
@@ -79,7 +79,7 @@ export const createUserWithAccount = async (req, res) => {
 
     logger.info("User create endpoint ended successfully");
   } catch (error) {
-    session.abortTransaction();
+    await session.abortTransaction();
     logger.error("Create User controller error of type: ", error.name);
     handleResponse(res, error, LL);
   } finally {

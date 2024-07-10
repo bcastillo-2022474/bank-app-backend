@@ -9,6 +9,7 @@ import {
   deletePayoutById,
   getAllPayoutsByAccount,
   getAllPayoutsByServiceId,
+  getAllPayoutsByUserId,
 } from "./payout.controller.js";
 import Payout, { ACTIVE } from "./payout.model.js";
 import Service from "../service/service.model.js";
@@ -84,6 +85,8 @@ router
     ],
     createPayout,
   );
+
+router.route("/user/:userId").get(getAllPayoutsByUserId);
 
 router.route("/account/:accountId").get(
   [

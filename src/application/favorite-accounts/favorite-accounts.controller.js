@@ -6,6 +6,8 @@ import { StatusCodes } from "http-status-codes";
 import { FavoriteAccountsNotFound } from "./favorite-accounts.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import User, { ACTIVE } from "../user/user.model.js";
+import Account from "../account/account.model.js";
 
 export const getAllfavoriteAccountsByUserId = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -15,10 +17,15 @@ export const getAllfavoriteAccountsByUserId = async (req, res = response) => {
     const { limit = 0, page = 0 } = req.query;
     const { userId } = req.params;
 
-    const query = { owner: userId };
+    const user = await User.findOne({ _id: userId, tp_status: ACTIVE });
+    const query = {
+      owner: { $in: user.accounts },
+    };
+
     const [total, favoriteAccounts] = await Promise.all([
       FavoriteAccounts.countDocuments(query),
       FavoriteAccounts.find(query)
+        .populate("account owner")
         .limit(limit)
         .skip(limit * page),
     ]);
@@ -46,9 +53,16 @@ export const createFavoriteAccounts = async (req, res) => {
 
     const { account, owner, alias } = req.body;
 
+    const foundAccount = await Account.findOne({
+      name: account,
+      tp_status: ACTIVE,
+    });
+
+    const accountId = foundAccount._id;
+
     const favoriteAccounts = new FavoriteAccounts(
       cleanObject({
-        account,
+        account: accountId,
         owner,
         alias,
       }),

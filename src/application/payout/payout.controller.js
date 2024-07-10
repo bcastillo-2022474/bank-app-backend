@@ -5,6 +5,9 @@ import { logger } from "../../utils/logger.js";
 import { StatusCodes } from "http-status-codes";
 import { cleanObject } from "../../utils/clean-object.js";
 import { handleResponse } from "../../utils/handle-reponse.js";
+import Account from "../account/account.model.js";
+import mongoose from "mongoose";
+import User from "../user/user.model.js";
 
 export const getAllPayout = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -68,6 +71,43 @@ export const getAllPayoutsByAccount = async (req, res = response) => {
   }
 };
 
+export const getAllPayoutsByUserId = async (req, res = response) => {
+  const LL = getTranslationFunctions(req.locale);
+  try {
+    logger.info("Starting get all payouts by account id");
+
+    const { limit = 0, page = 0 } = req.query;
+    const { userId } = req.params;
+
+    const user = await User.findOne({ _id: userId, tp_status: ACTIVE });
+    const { accounts } = user;
+
+    const query = { debited_account: { $in: accounts }, tp_status: ACTIVE };
+
+    const [total, payout] = await Promise.all([
+      Payout.countDocuments(query),
+      Payout.find(query)
+        .populate("debited_account")
+        .skip(limit * page)
+        .limit(limit),
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      message: LL.PAYOUT.CONTROLLER.MULTIPLE_RETRIEVED_SUCCESSFULLY(),
+      data: payout,
+      total,
+    });
+
+    logger.info("Payout retrieved successfully");
+  } catch (error) {
+    logger.error(
+      "Get all Payouts by Account controller error of type: ",
+      error.name,
+    );
+    handleResponse(error, LL);
+  }
+};
+
 export const getAllPayoutsByServiceId = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
   const { serviceId } = req.params;
@@ -103,6 +143,8 @@ export const getAllPayoutsByServiceId = async (req, res = response) => {
 
 export const createPayout = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
+  const session = await mongoose.startSession();
+  await session.startTransaction();
   try {
     logger.info("Starting create payout");
 
@@ -116,7 +158,18 @@ export const createPayout = async (req, res) => {
       }),
     );
 
+    await Account.findOneAndUpdate(
+      {
+        _id: debited_account,
+        tp_status: ACTIVE,
+      },
+      {
+        $inc: { balance: -total },
+      },
+    );
+
     await payout.save();
+    await session.commitTransaction();
 
     res.status(StatusCodes.CREATED).json({
       message: LL.PAYOUT.CONTROLLER.CREATED(),
@@ -125,13 +178,18 @@ export const createPayout = async (req, res) => {
 
     logger.info("Payout created successfully", payout);
   } catch (error) {
+    await session.abortTransaction();
     logger.error("Create User controller error of type: ", error.name);
     handleResponse(error, LL);
+  } finally {
+    session.endSession();
   }
 };
 
 export const deletePayoutById = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
+  const session = await mongoose.startSession();
+  await session.startTransaction();
   try {
     logger.info("Starting delete payout by id");
 
@@ -141,6 +199,19 @@ export const deletePayoutById = async (req, res) => {
       { tp_status: INACTIVE, update_at: new Date() },
       { new: true },
     );
+
+    await Account.findOneAndUpdate(
+      {
+        _id: payout.debited_account,
+        tp_status: ACTIVE,
+      },
+      {
+        $inc: { balance: payout.total },
+      },
+    );
+
+    await session.commitTransaction();
+
     res.status(StatusCodes.OK).json({
       message: LL.PAYOUT.CONTROLLER.DELETED(),
       data: payout,
@@ -148,7 +219,11 @@ export const deletePayoutById = async (req, res) => {
 
     logger.info("Payout deleted successfully", payout);
   } catch (error) {
+    await session.abortTransaction();
+
     logger.error("Delete Payout controller error of type: ", error.name);
     handleResponse(error, LL);
+  } finally {
+    session.endSession();
   }
 };

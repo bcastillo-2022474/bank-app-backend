@@ -1,6 +1,11 @@
 import { Router } from "express";
-import { createAdmin, getAllAdmins } from "./admin.controller.js";
-import { body, query } from "express-validator";
+import {
+  createAdmin,
+  getAllAdmins,
+  deleteAdminById,
+  updateAdmin,
+} from "./admin.controller.js";
+import { body, query, param } from "express-validator";
 import { validateChecks } from "../../middleware/validate-checks.js";
 import Admin, { ACTIVE } from "./admin.model.js";
 import { AdminAlreadyExist } from "./admin.error.js";
@@ -84,5 +89,64 @@ router
     ],
     getAllAdmins,
   );
+router
+  .route("/:id")
+  .delete(
+    [
+      param(
+        "id",
+        message((LL) => LL.ADMIN.ROUTES.INVALID_ADMIN_ID()),
+      ).isMongoId(),
+      validateChecks,
+    ],
+    deleteAdminById,
+  )
+  .put(
+    [
+      body(
+        "username",
+        message((LL) => LL.ADMIN.ROUTES.INVALID_USERNAME()),
+      )
+        .optional()
+        .isString()
+        .isLength({ min: 3, max: 255 }),
+      body(
+        "password",
+        message((LL) => LL.ADMIN.ROUTES.INVALID_PASSWORD()),
+      )
+        .optional()
+        .isString()
+        .isLength({ min: 8, max: 255 }),
+      body(
+        "name",
+        message((LL) => LL.ADMIN.ROUTES.INVALID_NAME()),
+      )
+        .optional()
+        .isString()
+        .isLength({ min: 3, max: 255 }),
+      body(
+        "last_name",
+        message((LL) => LL.ADMIN.ROUTES.INVALID_LAST_NAME()),
+      )
+        .optional()
+        .isString()
+        .isLength({ min: 3, max: 255 }),
+      validateChecks,
+      custom(async (req, LL) => {
+        const { username } = req.body;
 
+        if (username === undefined || username === null) return;
+
+        const adminFound = await Admin.findOne({
+          username,
+          tp_status: ACTIVE,
+        });
+
+        if (adminFound) {
+          throw new AdminAlreadyExist(LL.ADMIN.ERROR.USERNAME_ALREADY_EXIST());
+        }
+      }),
+    ],
+    updateAdmin,
+  );
 export default router;
