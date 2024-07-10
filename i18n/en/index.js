@@ -158,10 +158,11 @@ const en = {
       CREATED: "The product has been created successfully.",
       UPDATED: "The product has been updated successfully.",
       DELETED: "The product has been deleted successfully.",
-      STOCK_ADDED: "More stock has been added to the product."    
+      STOCK_ADDED: "More stock has been added to the product."
     },
     ERROR: {
-      NOT_FOUND: "The requested item was not found.",    
+      NOT_FOUND: "The requested item was not found.",
+      NOT_ENOUGH_STOCK: "The product has not enough stock to complete the transaction.",
     },
     ROUTES: {
       INVALID_NAME: "Name must be between 3 and 40 characters long",
@@ -192,7 +193,7 @@ const en = {
       ALIAS_ALREADY_EXISTS: "Alias Already Exists",
       OWNER_NOT_FOUND: "The owner was not found",
       ACCOUNT_NOT_FOUND: "The account to be added was not found",
-    }, 
+    },
     ROUTES:{
       INVALID_ACCOUNT: "Account must be a MongoID",
       INVALID_OWNER: "Owner must be a MongoID",
@@ -312,7 +313,7 @@ const en = {
       INVALID_CURRENCY_INCOME: "The invalid currency income must be valid",
       INVALID_USER_ID: "User param url id must be a valid mongo id",
       USER_NOT_FOUND: "The user doesnt find"
-      
+
     },
     ERROR: {
       USERNAME_ALREADY_EXIST: "The username is already in use",

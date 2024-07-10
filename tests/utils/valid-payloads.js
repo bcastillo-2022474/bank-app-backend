@@ -117,29 +117,3 @@ export const getService = async (service) => {
 
   return response;
 };
-
-await dbConnection();
-
-const currencies = [
-  "668df298537c841c3bc72de2",
-  "668df2d0c5bbecbe35fae21b",
-  "668df2d6943aee95b7234bf3",
-];
-
-// const ownerId = "668df47bc854d426145b8304";
-
-for (let i = 0; i < 30; i++) {
-  const currency = currencies[Math.round(Math.random() * 2)];
-  // eslint-disable-next-line no-await-in-loop
-  await request(app).post("/service").send({
-    name: faker.commerce.productName(),
-    description: faker.commerce.productDescription(),
-    price: faker.finance.amount(),
-    currency,
-  });
-}
-// if (response.status !== StatusCodes.CREATED) {
-//   console.log(response.body);
-//   throw new Error("Error creating favorite account");
-// }
-// }
