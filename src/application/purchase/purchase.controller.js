@@ -37,7 +37,7 @@ export const getAllPurcahse = async (req, res) => {
     logger.info("Purchase retrieved successfully");
   } catch (error) {
     logger.error("Get all Purchase controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -67,7 +67,7 @@ export const getPurchaseByAccount = async (req, res) => {
     logger.info("Purchase retrieved successfully");
   } catch (error) {
     logger.error("Get all Purchase controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -104,7 +104,7 @@ export const getPurchaseByUserId = async (req, res) => {
     logger.info("Purchase retrieved successfully");
   } catch (error) {
     logger.error("Get all Purchase controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -134,7 +134,7 @@ export const getPurchaseByProduct = async (req, res) => {
     logger.info("Purchase retrieved successfully");
   } catch (error) {
     logger.error("Get all Purchase controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -164,7 +164,7 @@ export const getPurchaseById = async (req, res) => {
     logger.info("Purchase retrieved successfully");
   } catch (error) {
     logger.error("Get all Purchase controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -235,7 +235,7 @@ export const createPurchase = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     logger.error("Create User controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   } finally {
     session.endSession();
   }
@@ -277,7 +277,7 @@ export const deletePurchaseById = async (req, res) => {
     await session.abortTransaction();
 
     logger.error("Delete Payout controller error of type: ", error.name);
-    handleResponse(error, LL);
+    handleResponse(res, error, LL);
   } finally {
     session.endSession();
   }
