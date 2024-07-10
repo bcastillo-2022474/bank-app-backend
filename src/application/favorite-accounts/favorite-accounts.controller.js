@@ -24,6 +24,7 @@ export const getAllfavoriteAccountsByUserId = async (req, res = response) => {
     const [total, favoriteAccounts] = await Promise.all([
       FavoriteAccounts.countDocuments(query),
       FavoriteAccounts.find(query)
+        .populate("account owner")
         .limit(limit)
         .skip(limit * page),
     ]);
