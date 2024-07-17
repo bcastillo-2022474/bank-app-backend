@@ -39,13 +39,13 @@ module.exports = {
 
           const isInCatchClause = isWithinCatchClause(node);
 
-          if (isInCatchClause && (!messageProp || !errorProp)) {
-            context.report({
-              node,
-              message: "Use res.json({ message: string, error: any })",
-            });
-            return;
-          }
+          // if (isInCatchClause && (!messageProp || !errorProp)) {
+          //   context.report({
+          //     node,
+          //     message: "Use res.json({ message: string, error: any })",
+          //   });
+          //   return;
+          // }
 
           if (isInCatchClause) return;
 
@@ -58,13 +58,13 @@ module.exports = {
         } else {
           const isInCatchClause = isWithinCatchClause(node);
 
-          if (isInCatchClause) {
-            context.report({
-              node,
-              message: "Use res.json({ message: string, error: any })",
-            });
-            return;
-          }
+          // if (isInCatchClause) {
+          //   context.report({
+          //     node,
+          //     message: "Use res.json({ message: string, error: any })",
+          //   });
+          //   return;
+          // }
 
           if (isInCatchClause) return;
 

@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
-
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
-const [DEPOSIT, WITHDRAWAL] = ["DEPOSIT", "WITHDRAWAL"];
+export const [DEPOSIT, WITHDRAWAL] = ["DEPOSIT", "WITHDRAWAL"];
+export const MAX_WITHDRAWAL_PER_TRANSACTION = 2000;
 
 const transactionSchema = new Schema({
   type: {
@@ -10,9 +9,9 @@ const transactionSchema = new Schema({
     enum: [DEPOSIT, WITHDRAWAL],
     required: [true, L.en.TRANSACTION.DB.TYPE_REQUIRED()],
   },
-  quantity: {
+  amount: {
     type: Number,
-    required: [true, L.en.TRANSACTION.DB.QUANTITY_REQUIRED()],
+    required: [true, L.en.TRANSACTION.DB.AMOUNT_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
@@ -24,19 +23,10 @@ const transactionSchema = new Schema({
     ref: "Account",
     required: [true, L.en.TRANSACTION.DB.ACCOUNT_REQUIRED()],
   },
-  tp_status: {
-    type: String,
-    required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
-    enum: [ACTIVE, INACTIVE],
-    default: ACTIVE,
-  },
   created_at: {
     type: Date,
     default: Date.now,
     required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
-  },
-  updated_at: {
-    type: Date,
   },
 });
 

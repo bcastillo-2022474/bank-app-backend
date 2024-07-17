@@ -11,3 +11,6 @@ i18n/i18n-util.js
 i18n/i18n-util.sync.js
 
 *.log
+# Local Netlify folder
+.netlify
+.env

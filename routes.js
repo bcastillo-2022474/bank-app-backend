@@ -7,7 +7,18 @@ import dbConnection from "./src/db/db-connection.js";
 import { printLanguage } from "./src/middleware/print-language.js";
 import { retrieveLocale } from "./src/middleware/retrieve-locale.js";
 import { logger } from "./src/utils/logger.js";
-import currencyRoutes from "./src/application/currency/currency.route.js";
+import productRoutes from "./src/application/product/product.routes.js";
+import currencyRoutes from "./src/application/currency/currency.routes.js";
+import accountRoutes from "./src/application/account/account.routes.js";
+import payoutRoutes from "./src/application/payout/payout.route.js";
+import userRoutes from "./src/application/user/user.route.js";
+import transactionRoutes from "./src/application/transaction/transaction.route.js";
+import servicesRoutes from "./src/application/service/service.route.js";
+import favoriteAccountRoutes from "./src/application/favorite-accounts/favorite-accounts.route.js";
+import adminRoutes from "./src/application/admin/admin.route.js";
+import authRoutes from "./src/application/auth/auth.routes.js";
+import transferenceRoutes from "./src/application/transference/transference.route.js";
+import purchaseRoutes from "./src/application/purchase/purchase.route.js";
 
 if (process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test") {
   config({
@@ -49,7 +60,18 @@ app.get("/", (req, res) => {
 
 app.use(printLanguage);
 
+app.use("/product", productRoutes);
 app.use("/currency", currencyRoutes);
+app.use("/account", accountRoutes);
+app.use("/user", userRoutes);
+app.use("/payout", payoutRoutes);
+app.use("/transaction", transactionRoutes);
+app.use("/service", servicesRoutes);
+app.use("/favorite-accounts", favoriteAccountRoutes);
+app.use("/admin", adminRoutes);
+app.use("/auth", authRoutes);
+app.use("/transference", transferenceRoutes);
+app.use("/purchase", purchaseRoutes);
 
 app.use("*", (req, res) => {
   const locale = (req.headers["accept-language"] || "en").slice(0, 2);

@@ -18,5 +18,6 @@ export const getErrorFromErrors = (error, errors) => {
     code: found?.code || StatusCodes.INTERNAL_SERVER_ERROR,
     type: (errorClassFound ?? { name: "Fatal" }).name,
     stack: error.stack,
+    message: found?.message,
   };
 };

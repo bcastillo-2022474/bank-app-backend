@@ -1,8 +1,14 @@
 import { Schema, model } from "mongoose";
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 import { L } from "../../../i18n/i18n-node.js";
 
+export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+
 const AccountSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -23,6 +29,13 @@ const AccountSchema = new Schema({
     default: ACTIVE,
     required: [true, L.en.GENERAL.DB.TP_STATUS_REQUIRED()],
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+    required: [true, L.en.GENERAL.DB.CREATED_AT_REQUIRED()],
+  },
+  updated_at: {
+    type: Date,
+  },
 });
-
 export default model("Account", AccountSchema);

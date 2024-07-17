@@ -3,8 +3,9 @@ import Currency, { INACTIVE } from "./currency.model.js";
 import { getTranslationFunctions } from "../../utils/get-translations-locale.js";
 import { logger } from "../../utils/logger.js";
 import { StatusCodes } from "http-status-codes";
-import { CurrencyNotFound, getError } from "./currency.error.js";
+import { CurrencyNotFound } from "./currency.error.js";
 import { cleanObject } from "../../utils/clean-object.js";
+import { handleResponse } from "../../utils/handle-reponse.js";
 
 export const getAllCurrencies = async (req, res = response) => {
   const LL = getTranslationFunctions(req.locale);
@@ -27,15 +28,8 @@ export const getAllCurrencies = async (req, res = response) => {
 
     logger.info("Currencies retrieved successfully");
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
-    logger.error("Get all currencies controller error of type: ", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Get all currencies controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -63,15 +57,8 @@ export const createCurrency = async (req, res) => {
 
     logger.info("Currency created successfully", currency);
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
-    logger.error("Create currency controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Create currency controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -90,7 +77,7 @@ export const updateCurrency = async (req, res) => {
     );
 
     if (!currency) {
-      throw new CurrencyNotFound(LL.CURRENCY.ERROR.CURRENCY_NOT_FOUND());
+      throw new CurrencyNotFound(LL.CURRENCY.ERROR.NOT_FOUND());
     }
 
     res.status(StatusCodes.OK).json({
@@ -100,15 +87,8 @@ export const updateCurrency = async (req, res) => {
 
     logger.info("Currency created successfully", currency);
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
-    logger.error("Update currency controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Update currency controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };
 
@@ -130,14 +110,7 @@ export const deleteCurrencyById = async (req, res) => {
 
     logger.info("Currency deleted successfully", currency);
   } catch (error) {
-    const { code, stack, type } = getError(error);
-
-    logger.error("Delete currency controller error of type:", type);
-    logger.error(stack);
-
-    res.status(code).json({
-      message: LL.GENERAL.ROUTES.INTERNAL_SERVER_ERROR(),
-      error,
-    });
+    logger.error("Delete currency controller error of type: ", error.name);
+    handleResponse(res, error, LL);
   }
 };

@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { L } from "../../../i18n/i18n-node.js";
 
-const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
+export const [ACTIVE, INACTIVE] = ["ACTIVE", "INACTIVE"];
 
 const transferenceSchema = new Schema({
   account_given: {
@@ -15,13 +15,17 @@ const transferenceSchema = new Schema({
     required: [true, L.en.TRANSFERENCE.DB.ACCOUNT_RECIVER_REQUIRED()],
   },
   quantity: {
-    type: Schema.Types.Decimal128,
+    type: Number,
     required: [true, L.en.TRANSFERENCE.DB.QUANTITY_REQUIRED()],
   },
   currency: {
     type: Schema.Types.ObjectId,
     ref: "Currency",
     required: [true, L.en.TRANSFERENCE.DB.CURRENCY_REQUIRED()],
+  },
+  description: {
+    type: String,
+    required: [true, L.en.TRANSFERENCE.DB.DESCRIPTION_REQUIRED()],
   },
   create_at: {
     type: Date,
